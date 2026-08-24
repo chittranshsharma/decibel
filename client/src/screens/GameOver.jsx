@@ -16,10 +16,8 @@ export function GameOver({ gameOver, players, myId, onRestart, messages, onChat 
 
   return (
     <div className="space-y-8 animate-rise">
-      <div className="text-center space-y-2">
-        <span className="inline-block rounded-full border border-[#50e3c2]/30 bg-[#50e3c2]/10 px-3.5 py-1 font-console text-[11px] font-bold text-[#50e3c2] uppercase tracking-wider">
-          Match Concluded
-        </span>
+      <div className="text-center space-y-1">
+        <p className={EYEBROW}>Match Concluded</p>
         <h2 className="font-geist text-4xl font-extrabold tracking-[-1.5px] text-white">
           Final Leaderboard
         </h2>

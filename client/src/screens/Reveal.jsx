@@ -49,7 +49,7 @@ export function Reveal({ reveal, myId, onReact, players }) {
         >
           <div className="p-6">
             <div className="flex items-center justify-between">
-              <span className="rounded-full border border-[#50e3c2]/40 bg-[#50e3c2]/10 px-3 py-0.5 font-console text-[10px] font-bold text-[#50e3c2] uppercase">
+              <span className="font-console text-xs font-semibold text-[#50e3c2] uppercase tracking-wider">
                 Fastest Correct Answer
               </span>
               {winnerStreak > 0 && (
@@ -100,7 +100,7 @@ export function Reveal({ reveal, myId, onReact, players }) {
                   <Avatar name={r.name} src={avatarOf[r.id]} size={24} />
                   <span className="truncate font-geist text-sm font-medium text-white">{r.name}</span>
                   {r.currentStreak > 1 && (
-                    <span className="rounded-full border border-[#f5a623]/40 bg-[#f5a623]/10 px-2 py-0.5 font-console text-[10px] font-bold text-[#f5a623]">
+                    <span className="font-console text-xs font-bold text-[#f5a623]">
                       🔥 x{r.currentStreak}
                     </span>
                   )}

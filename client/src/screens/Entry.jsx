@@ -28,10 +28,8 @@ export function EntryScreen({ onCreate, onJoin, onQuick, onHome }) {
         </button>
       )}
 
-      <div className="space-y-2">
-        <span className="inline-block rounded-full border border-[#50e3c2]/30 bg-[#50e3c2]/10 px-3 py-0.5 font-console text-[10px] font-bold text-[#50e3c2] uppercase tracking-wider">
-          Multiplayer Access
-        </span>
+      <div className="space-y-1">
+        <p className={EYEBROW}>Multiplayer Access</p>
         <h2 className="font-geist text-3xl font-bold tracking-[-1px] text-white">
           Enter the Room
         </h2>

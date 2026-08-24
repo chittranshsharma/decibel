@@ -1,6 +1,6 @@
 // Home hub, profile, and side menu — Jam & Linear Bento Aesthetic.
 import { useEffect, useRef, useState } from "react";
-import { EYEBROW, PANEL, BTN_AMBER } from "../ui";
+import { EYEBROW, PANEL, BTN_AMBER, BTN_GHOST } from "../ui";
 import DriftWall from "../components/DriftWall";
 import BorderGlow from "../components/BorderGlow";
 
@@ -23,12 +23,13 @@ export function Home({ games, stats, onOpen, onProfile }) {
 
       {/* Hero Section */}
       <div className="relative z-10 space-y-6 pt-4 text-center sm:text-left">
-        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1 font-console text-[11px] font-semibold tracking-[0.14em] text-bone backdrop-blur-md shadow-sm">
-            <span className="h-2 w-2 rounded-full bg-[#50e3c2] animate-ping" />
+        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
+          <span className="inline-flex items-center gap-2 font-console text-xs tracking-wider text-[#50e3c2]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#50e3c2] animate-ping" />
             78,890 TRACKS LIVE
           </span>
-          <span className="rounded-full border border-[#7928ca]/30 bg-[#7928ca]/10 px-3 py-1 font-console text-[11px] font-semibold text-[#aaffec] uppercase tracking-wider">
+          <span className="text-white/20">·</span>
+          <span className="font-console text-xs tracking-wider text-dim uppercase">
             11 SCENE ROSTERS
           </span>
         </div>
@@ -55,7 +56,7 @@ export function Home({ games, stats, onOpen, onProfile }) {
           <button
             type="button"
             onClick={() => onOpen(games.find((g) => g.key === "create"))}
-            className="rounded-full border border-white/15 bg-white/5 px-6 py-3.5 font-geist text-sm font-semibold text-white backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 active:scale-[.97]"
+            className={`${BTN_GHOST} px-6 py-3 text-sm font-semibold text-white`}
           >
             Create Private Room
           </button>
@@ -76,7 +77,7 @@ export function Home({ games, stats, onOpen, onProfile }) {
           className="flex w-full items-center justify-between p-5 text-left transition-all group cursor-pointer"
         >
           <span className="flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-lg group-hover:scale-105 transition-transform">
+            <span className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/5 text-lg group-hover:scale-105 transition-transform">
               ★
             </span>
             <div>
@@ -97,9 +98,6 @@ export function Home({ games, stats, onOpen, onProfile }) {
             <p className={EYEBROW}>11 Curated Scene Rosters</p>
             <h3 className="font-geist text-lg font-bold text-white tracking-[-0.4px]">Interactive 3D Music Crate</h3>
           </div>
-          <span className="rounded-full border border-[#50e3c2]/30 bg-[#50e3c2]/10 px-3 py-0.5 font-console text-[10px] font-semibold text-[#50e3c2] uppercase">
-            Click Scene to Play
-          </span>
         </div>
         <div className="relative h-[240px] sm:h-[300px] w-full overflow-hidden rounded-2xl border border-white/10 bg-black/90 shadow-2xl">
           <DriftWall
@@ -128,9 +126,6 @@ export function Home({ games, stats, onOpen, onProfile }) {
             <p className={EYEBROW}>Game Catalog</p>
             <h2 className="font-geist text-xl font-bold text-white tracking-[-0.5px]">Select Mode</h2>
           </div>
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 font-console text-[10px] text-dim uppercase">
-            7 Playable Modes
-          </span>
         </div>
 
         <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
@@ -170,8 +165,8 @@ function GameBentoCard({ game, onOpen }) {
           >
             {game.glyph}
           </span>
-          <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1 font-console text-[10px] font-semibold uppercase tracking-wider text-dim group-hover:text-white group-hover:border-white/30 transition-colors">
-            Play →
+          <span className="font-console text-xs text-dim group-hover:text-[#50e3c2] transition-colors">
+            →
           </span>
         </div>
 
@@ -197,16 +192,13 @@ const WHY_ITEMS = [
 
 function WhyDecibel() {
   return (
-    <div className="space-y-4">
-      <div>
-        <p className={EYEBROW}>Engine Capabilities</p>
-        <h2 className="font-geist text-xl font-bold text-white tracking-[-0.5px]">Built for Music Heads</h2>
-      </div>
+    <div className="space-y-4 pt-4">
+      <p className={EYEBROW}>Engine Architecture</p>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {WHY_ITEMS.map((i) => (
-          <div key={i.t} className={`${PANEL} p-5`}>
-            <p className="font-geist text-sm font-semibold text-white tracking-[-0.2px]">{i.t}</p>
-            <p className="mt-1.5 font-geist text-xs leading-relaxed text-[#8f8f8f]">{i.d}</p>
+        {WHY_ITEMS.map((item) => (
+          <div key={item.t} className={`${PANEL} p-5 space-y-1`}>
+            <p className="font-geist text-sm font-semibold text-white">{item.t}</p>
+            <p className="font-geist text-xs leading-relaxed text-[#8f8f8f]">{item.d}</p>
           </div>
         ))}
       </div>
@@ -215,52 +207,34 @@ function WhyDecibel() {
 }
 
 const FAQ_ITEMS = [
-  {
-    q: "How does Spotify playlist integration work?",
-    a: "Paste any public Spotify playlist URL into the lobby. Decibel extracts the song metadata without API keys and matches each track with a high-bitrate 30-second playable audio preview.",
-  },
-  {
-    q: "What genres and eras are supported?",
-    a: "11 curated scenes: Modern Hip-Hop, Old School Rap, Trap, Hyperpop, Desi Hip Hop, Rock & Alt, Indie, Bedroom Pop, R&B & Soul, Pop & Dance, and Desi Indie.",
-  },
-  {
-    q: "Can I play solo or with friends?",
-    a: "Both! Play single-player puzzles (Harmonies, Wordzic, Lyricles, Crosszic, Heardle) or create private multiplayer rooms for up to 8 players with real-time scoring and live reactions.",
-  },
-  {
-    q: "Are downloads or accounts required?",
-    a: "Zero friction. It runs instantly in any desktop or mobile browser as a modern progressive web app.",
-  },
+  { q: "How do custom playlists work?", a: "Enter any public Spotify playlist URL in Create Room. The engine fetches tracks instantly and streams legal 30s audio previews with zero delay." },
+  { q: "How does scoring calculate speed?", a: "Base score is awarded for correct answers, plus up to 350 speed bonus points based on millisecond reaction time." },
+  { q: "Can I play solo?", a: "Yes! Single-player modes include Harmonies (connections), Wordzic (5-letter term), Lyricles (progression guesser), and Crosszic (5x5 crossword)." },
 ];
 
 function Faq() {
-  const [open, setOpen] = useState(-1);
+  const [openIdx, setOpenIdx] = useState(null);
+
   return (
-    <div className="space-y-4">
-      <div>
-        <p className={EYEBROW}>Support & Knowledge</p>
-        <h2 className="font-geist text-xl font-bold text-white tracking-[-0.5px]">Frequently Asked Questions</h2>
-      </div>
+    <div className="space-y-4 pt-4">
+      <p className={EYEBROW}>Frequently Asked Questions</p>
       <div className="space-y-2">
-        {FAQ_ITEMS.map((f, i) => {
-          const isOpen = open === i;
+        {FAQ_ITEMS.map((item, idx) => {
+          const isOpen = openIdx === idx;
           return (
-            <div key={f.q} className={`${PANEL} overflow-hidden`}>
+            <div key={item.q} className={`${PANEL} overflow-hidden`}>
               <button
                 type="button"
-                onClick={() => setOpen(isOpen ? -1 : i)}
-                aria-expanded={isOpen}
-                className="flex w-full items-center justify-between p-4 text-left font-geist text-sm font-medium text-bone transition-colors hover:text-white"
+                onClick={() => setOpenIdx(isOpen ? null : idx)}
+                className="flex w-full items-center justify-between p-4 text-left font-geist text-sm font-medium text-white transition-colors hover:text-[#50e3c2]"
               >
-                <span>{f.q}</span>
-                <span className="shrink-0 font-console text-xs text-dim" aria-hidden="true">
-                  {isOpen ? "−" : "+"}
-                </span>
+                <span>{item.q}</span>
+                <span className="font-console text-xs text-dim">{isOpen ? "▲" : "▼"}</span>
               </button>
               {isOpen && (
-                <p className="border-t border-white/5 bg-black/40 p-4 font-geist text-xs leading-relaxed text-[#8f8f8f]">
-                  {f.a}
-                </p>
+                <div className="border-t border-white/5 px-4 py-3 font-geist text-xs leading-relaxed text-[#8f8f8f]">
+                  {item.a}
+                </div>
               )}
             </div>
           );
@@ -272,16 +246,9 @@ function Faq() {
 
 function SiteFooter() {
   return (
-    <footer className="border-t border-white/10 pt-8 space-y-3">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="font-geist text-lg font-bold tracking-[-0.5px] text-white">
-          DECIBEL<span className="text-[#50e3c2]">.</span>
-        </span>
-        <span className={EYEBROW}>High-Frequency Real-Time Music Engine</span>
-      </div>
-      <p className="font-geist text-xs leading-relaxed text-dim">
-        Engineered with React 18, Vite, Socket.IO, and Supabase PostgreSQL 17.
-      </p>
+    <footer className="pt-8 text-center font-console text-[11px] text-dim border-t border-white/5 space-y-2">
+      <p>Decibel · Multiplayer Music Engine & Scene Crate Discovery</p>
+      <p className="text-[10px] text-dim/60">Built with Vite, Tailwind CSS, Supabase PostgreSQL, and Apple iTunes Search API.</p>
     </footer>
   );
 }

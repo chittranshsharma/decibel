@@ -124,9 +124,6 @@ export function Lobby({
       <div className={`${PANEL} p-5 space-y-2`}>
         <div className="flex items-center justify-between">
           <span className={EYEBROW}>Room Access Code</span>
-          <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 font-console text-[10px] text-dim uppercase">
-            Share Link
-          </span>
         </div>
         <div className="flex items-center justify-between gap-3 pt-1">
           <span className="font-geist text-4xl font-extrabold tracking-[0.2em] text-white">
@@ -165,8 +162,8 @@ export function Lobby({
               </span>
               <span className="font-console text-xs text-dim">
                 {p.isHost ? (
-                  <span className="rounded-full border border-[#f5a623]/30 bg-[#f5a623]/10 px-2 py-0.5 font-bold text-[#f5a623]">
-                    HOST
+                  <span className="font-console text-xs font-bold text-[#f5a623]">
+                    ★ HOST
                   </span>
                 ) : (
                   "Ready"
@@ -191,14 +188,14 @@ export function Lobby({
                     key={g.value}
                     onClick={() => handleGenreChange(g.value)}
                     aria-pressed={active}
-                    className={`rounded-full px-4 py-2 font-geist text-xs font-semibold uppercase tracking-wider transition-all active:scale-95 ${
+                    className={`rounded-xl px-4 py-2.5 font-geist text-xs font-semibold uppercase tracking-wider transition-all active:scale-95 ${
                       active
                         ? isSpotify
                           ? "bg-[#50e3c2] text-black shadow-[0_0_20px_rgba(80,227,194,0.4)]"
                           : "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]"
                         : isSpotify
                         ? "border border-[#50e3c2]/40 bg-[#50e3c2]/5 text-[#50e3c2] hover:border-[#50e3c2]"
-                        : "border border-white/10 bg-white/5 text-dim hover:text-white hover:border-white/20"
+                        : "border border-white/10 bg-[#121218]/90 text-bone hover:border-white/25 hover:bg-[#181822]"
                     }`}
                   >
                     {g.label}

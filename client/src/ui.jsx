@@ -6,13 +6,13 @@ import sound from "./sound";
 export const EYEBROW = "font-console text-[11px] uppercase tracking-[0.18em] text-dim font-medium";
 export const PANEL = "bento-card";
 
-// Mint Green / Neon Jam CTA Pill
+// Mint Green / Neon Jam CTA Button
 export const BTN_AMBER =
-  "bg-[#50e3c2] px-6 py-3.5 font-geist font-semibold text-sm rounded-full text-black " +
-  "shadow-[0_0_24px_rgba(80,227,194,0.35)] hover:shadow-[0_0_35px_rgba(80,227,194,0.55)] " +
-  "transition-all hover:bg-[#68eed0] hover:scale-[1.01] active:scale-[.97] " +
+  "bg-[#50e3c2] px-6 py-3 font-geist font-semibold text-sm rounded-xl text-black " +
+  "shadow-[0_0_20px_rgba(80,227,194,0.25)] hover:shadow-[0_0_30px_rgba(80,227,194,0.45)] " +
+  "transition-all hover:bg-[#68eed0] active:scale-[.98] " +
   "focus:outline-none focus:ring-2 focus:ring-[#50e3c2] focus:ring-offset-2 focus:ring-offset-black " +
-  "disabled:cursor-not-allowed disabled:bg-rule disabled:text-dim disabled:shadow-none disabled:transform-none";
+  "disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-dim disabled:shadow-none disabled:transform-none";
 
 // Dark Glass 8px Rounded Button
 export const BTN_GHOST =
