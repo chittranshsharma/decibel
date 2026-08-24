@@ -1,68 +1,100 @@
-// Home hub, profile, and side menu — Vercel Geist Design System + Arcade Accents.
+// Home hub, profile, and side menu — Jam & Linear Bento Aesthetic.
 import { useEffect, useRef, useState } from "react";
-import { EYEBROW, PANEL } from "../ui";
+import { EYEBROW, PANEL, BTN_AMBER } from "../ui";
 
 export const GAMES = [
-  { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM", accent: "text-[#ff0080]" },
-  { key: "heardle", glyph: "▶", title: "Heardle", sub: "Guess the song from its intro", status: "play", clip: "INTRO", accent: "text-[#3df07a]" },
-  { key: "create", glyph: "+", title: "Create Room", sub: "Private multiplayer room for friends", status: "play", clip: "RANDOM", accent: "text-[#0070f3]" },
-  { key: "harmonies", glyph: "⌘", title: "Harmonies", sub: "Music connections 4x4 puzzle", status: "play", accent: "text-[#00dfd8]" },
-  { key: "wordzic", glyph: "▦", title: "Wordzic", sub: "Guess the 5-letter music term", status: "play", accent: "text-[#f9cb28]" },
-  { key: "lyricles", glyph: "❝", title: "Lyricles", sub: "Guess the song from its lyrics", status: "play", accent: "text-[#7928ca]" },
-  { key: "crosszic", glyph: "✚", title: "Crosszic", sub: "Interactive 5x5 music crossword", status: "play", accent: "text-[#3df07a]" },
+  { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM", gradient: "from-[#ff0080] to-[#7928ca]" },
+  { key: "heardle", glyph: "▶", title: "Heardle", sub: "Guess the song from its intro", status: "play", clip: "INTRO", gradient: "from-[#50e3c2] to-[#007cf0]" },
+  { key: "create", glyph: "+", title: "Create Room", sub: "Private multiplayer room for friends", status: "play", clip: "RANDOM", gradient: "from-[#0070f3] to-[#00dfd8]" },
+  { key: "harmonies", glyph: "⌘", title: "Harmonies", sub: "Music connections 4x4 puzzle", status: "play", gradient: "from-[#00dfd8] to-[#50e3c2]" },
+  { key: "wordzic", glyph: "▦", title: "Wordzic", sub: "Guess the 5-letter music term", status: "play", gradient: "from-[#f9cb28] to-[#ff4d4d]" },
+  { key: "lyricles", glyph: "❝", title: "Lyricles", sub: "Guess the song from its lyrics", status: "play", gradient: "from-[#7928ca] to-[#ff0080]" },
+  { key: "crosszic", glyph: "✚", title: "Crosszic", sub: "Interactive 5x5 music crossword", status: "play", gradient: "from-[#50e3c2] to-[#3df07a]" },
 ];
 
 // ---------- Home hub (landing) ----------
 export function Home({ games, stats, onOpen, onProfile }) {
   return (
     <div className="relative animate-rise space-y-12">
-      {/* Vercel Multi-Stop Hero Mesh Gradient */}
-      <div className="vercel-mesh-bg" />
+      {/* Background Multi-Point Aurora Spotlight */}
+      <div className="jam-aurora" />
 
       {/* Hero Section */}
-      <div className="relative z-10 space-y-5 pt-4 text-left">
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 font-console text-[11px] font-medium tracking-[0.14em] text-dim backdrop-blur-md">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#00dfd8] animate-pulse" />
-            LIVE // 78,890 TRACKS
+      <div className="relative z-10 space-y-6 pt-4 text-center sm:text-left">
+        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1 font-console text-[11px] font-semibold tracking-[0.14em] text-bone backdrop-blur-md shadow-sm">
+            <span className="h-2 w-2 rounded-full bg-[#50e3c2] animate-ping" />
+            78,890 TRACKS LIVE
+          </span>
+          <span className="rounded-full border border-[#7928ca]/30 bg-[#7928ca]/10 px-3 py-1 font-console text-[11px] font-semibold text-[#aaffec] uppercase tracking-wider">
+            11 SCENE ROSTERS
           </span>
         </div>
 
-        <h1 className="font-geist text-5xl font-semibold tracking-[-2.4px] text-white leading-[1.04] sm:text-6xl">
-          Guess the track.
+        <h1 className="font-geist text-5xl font-extrabold tracking-[-2.4px] text-white leading-[1.04] sm:text-6xl">
+          Guess the song.
           <br />
-          <span className="text-gradient-full">Beat your squad.</span>
+          <span className="text-gradient-jam">Beat your squad.</span>
         </h1>
 
-        <p className="max-w-lg font-geist text-base font-normal leading-relaxed text-[#888888]">
-          The zero-latency, server-authoritative multiplayer audio engine. 11 curated genres, custom Spotify playlists, and daily music puzzles.
+        <p className="mx-auto sm:mx-0 max-w-lg font-geist text-base font-normal leading-relaxed text-[#8f8f8f]">
+          Real-time multiplayer music trivia with zero latency. Scrape custom Spotify playlists or battle through underground crate cuts.
         </p>
+
+        <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3">
+          <button
+            type="button"
+            onClick={() => onOpen(games.find((g) => g.key === "musicquiz"))}
+            className={`${BTN_AMBER} inline-flex items-center gap-2`}
+          >
+            <span>Play Music Quiz</span>
+            <span className="text-xs">▶</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => onOpen(games.find((g) => g.key === "create"))}
+            className="rounded-full border border-white/15 bg-white/5 px-6 py-3.5 font-geist text-sm font-semibold text-white backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 active:scale-[.97]"
+          >
+            Create Private Room
+          </button>
+        </div>
       </div>
 
-      {/* Profile Bar Card */}
+      {/* Player Profile Spotlight Card */}
       <button
         type="button"
         onClick={onProfile}
-        className={`${PANEL} flex w-full items-center justify-between px-5 py-4 text-left`}
+        className={`${PANEL} flex w-full items-center justify-between p-5 text-left transition-all hover:border-[#50e3c2]/40 group`}
       >
         <span className="flex items-center gap-3">
-          <span className="h-2 w-2 rounded-full bg-[#f5a623]" />
-          <span className={EYEBROW}>Player Profile</span>
+          <span className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-lg group-hover:scale-105 transition-transform">
+            ★
+          </span>
+          <div>
+            <p className="font-geist text-sm font-semibold text-white">Player Profile & Records</p>
+            <p className="font-console text-xs text-dim">Local device performance</p>
+          </div>
         </span>
-        <span className="font-console text-xs font-semibold tabular-nums text-bone">
+        <span className="font-console text-xs font-semibold tabular-nums text-[#50e3c2]">
           {stats.games} MATCHES · {stats.wins} WINS · BEST {stats.bestScore}
         </span>
       </button>
 
-      {/* Game Selection Matrix */}
+      {/* Bento Grid: Game Modes Matrix */}
       <div>
-        <div className="flex items-center justify-between pb-3">
-          <p className={EYEBROW}>Select Game Mode</p>
-          <span className="font-console text-[11px] text-dim uppercase">7 Modes Ready</span>
+        <div className="flex items-center justify-between pb-4">
+          <div>
+            <p className={EYEBROW}>Game Catalog</p>
+            <h2 className="font-geist text-xl font-bold text-white tracking-[-0.5px]">Select Mode</h2>
+          </div>
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 font-console text-[10px] text-dim uppercase">
+            7 Playable Modes
+          </span>
         </div>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+
+        <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
           {games.map((g) => (
-            <GameCard key={g.key} game={g} onOpen={onOpen} />
+            <GameBentoCard key={g.key} game={g} onOpen={onOpen} />
           ))}
         </div>
       </div>
@@ -74,57 +106,59 @@ export function Home({ games, stats, onOpen, onProfile }) {
   );
 }
 
-function GameCard({ game, onOpen }) {
+function GameBentoCard({ game, onOpen }) {
   const playable = game.status === "play";
   return (
     <button
       type="button"
       onClick={() => playable && onOpen(game)}
       disabled={!playable}
-      className={`${PANEL} flex items-start gap-4 p-4 text-left transition-all ${
-        playable ? "hover:border-white/20 active:scale-[.98]" : "opacity-50"
-      }`}
+      className={`${PANEL} flex flex-col justify-between p-5 text-left group`}
     >
-      <span
-        className={`grid h-10 w-10 shrink-0 place-items-center rounded-md border border-white/10 bg-black font-geist text-lg font-semibold ${
-          game.accent || "text-white"
-        }`}
-      >
-        {game.glyph}
-      </span>
-      <span className="min-w-0 flex-1">
-        <span className="flex items-center justify-between">
-          <span className="font-geist text-base font-medium tracking-[-0.4px] text-white">
-            {game.title}
-          </span>
-          <span className="font-console text-[11px] uppercase tracking-wider text-dim hover:text-white">
-            Play →
-          </span>
+      <div className="flex items-start justify-between gap-3">
+        <span
+          className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${
+            game.gradient || "from-white/10 to-white/5"
+          } font-geist text-xl font-bold text-white shadow-md group-hover:scale-105 transition-transform`}
+        >
+          {game.glyph}
         </span>
-        <span className="mt-1 block font-geist text-xs leading-relaxed text-[#888888]">
+        <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1 font-console text-[10px] font-semibold uppercase tracking-wider text-dim group-hover:text-white group-hover:border-white/30 transition-colors">
+          Play →
+        </span>
+      </div>
+
+      <div className="mt-4 space-y-1">
+        <h3 className="font-geist text-base font-semibold tracking-[-0.3px] text-white group-hover:text-[#50e3c2] transition-colors">
+          {game.title}
+        </h3>
+        <p className="font-geist text-xs leading-relaxed text-[#8f8f8f]">
           {game.sub}
-        </span>
-      </span>
+        </p>
+      </div>
     </button>
   );
 }
 
 const WHY_ITEMS = [
-  { t: "Massive 78k+ Catalog", d: "11 meticulously curated genres, updated live via Apple Search CDN & Supabase PostgreSQL." },
-  { t: "Sub-2ms Database Queries", d: "GIN array containment indexes & B-Tree point lookups for instantaneous sampling." },
-  { t: "Keyless Spotify Import", d: "Extract public Spotify playlists and stream high-bitrate preview snippets in real-time." },
-  { t: "Vibe Tier Selector", d: "Toggle between mainstream billboard anthems and deep underground crate cuts." },
+  { t: "78,890 Indexed Tracks", d: "11 scene rosters powered by Supabase PostgreSQL and Apple Search CDN." },
+  { t: "<1.8ms Query Latency", d: "Optimized GIN array containment and point index lookups for instant rounds." },
+  { t: "Keyless Spotify Scraper", d: "Paste any Spotify playlist URL to parse songs and stream direct 30s clips." },
+  { t: "Arcade Power-Ups", d: "50:50 Eliminator, 2X Double Down Multiplier, and Streak Shields." },
 ];
 
 function WhyDecibel() {
   return (
-    <div className="space-y-3">
-      <p className={EYEBROW}>System Architecture</p>
+    <div className="space-y-4">
+      <div>
+        <p className={EYEBROW}>Engine Capabilities</p>
+        <h2 className="font-geist text-xl font-bold text-white tracking-[-0.5px]">Built for Music Heads</h2>
+      </div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {WHY_ITEMS.map((i) => (
           <div key={i.t} className={`${PANEL} p-5`}>
-            <p className="font-geist text-sm font-semibold tracking-[-0.3px] text-white">{i.t}</p>
-            <p className="mt-1.5 font-geist text-xs leading-relaxed text-[#888888]">{i.d}</p>
+            <p className="font-geist text-sm font-semibold text-white tracking-[-0.2px]">{i.t}</p>
+            <p className="mt-1.5 font-geist text-xs leading-relaxed text-[#8f8f8f]">{i.d}</p>
           </div>
         ))}
       </div>
@@ -134,28 +168,31 @@ function WhyDecibel() {
 
 const FAQ_ITEMS = [
   {
-    q: "How does the Spotify playlist scraper work?",
-    a: "Decibel uses a zero-dependency headless resolver to extract public Spotify embed payloads and match tracks against high-quality 30-second audio stream CDN endpoints.",
+    q: "How does Spotify playlist integration work?",
+    a: "Paste any public Spotify playlist URL into the lobby. Decibel extracts the song metadata without API keys and matches each track with a high-bitrate 30-second playable audio preview.",
   },
   {
-    q: "What music genres are included in the engine?",
-    a: "11 scene rosters: Modern Hip-Hop, Old School Rap, Trap, Hyperpop, Desi Hip Hop, Rock & Alt, Indie, Bedroom Pop, R&B & Soul, Pop & Dance, and Desi Indie.",
+    q: "What genres and eras are supported?",
+    a: "11 curated scenes: Modern Hip-Hop, Old School Rap, Trap, Hyperpop, Desi Hip Hop, Rock & Alt, Indie, Bedroom Pop, R&B & Soul, Pop & Dance, and Desi Indie.",
   },
   {
-    q: "How does scoring and velocity calculation work?",
-    a: "Scores scale with round depth (300 to 2550+ pts), speed velocity bonus (up to +350 pts based on millisecond latency), and consecutive answer streak multipliers.",
+    q: "Can I play solo or with friends?",
+    a: "Both! Play single-player puzzles (Harmonies, Wordzic, Lyricles, Crosszic, Heardle) or create private multiplayer rooms for up to 8 players with real-time scoring and live reactions.",
   },
   {
-    q: "Are accounts or downloads required?",
-    a: "No downloads or authentication barriers. Play directly in any modern desktop or mobile browser as a progressive web app.",
+    q: "Are downloads or accounts required?",
+    a: "Zero friction. It runs instantly in any desktop or mobile browser as a modern progressive web app.",
   },
 ];
 
 function Faq() {
   const [open, setOpen] = useState(-1);
   return (
-    <div className="space-y-3">
-      <p className={EYEBROW}>Frequently Asked Questions</p>
+    <div className="space-y-4">
+      <div>
+        <p className={EYEBROW}>Support & Knowledge</p>
+        <h2 className="font-geist text-xl font-bold text-white tracking-[-0.5px]">Frequently Asked Questions</h2>
+      </div>
       <div className="space-y-2">
         {FAQ_ITEMS.map((f, i) => {
           const isOpen = open === i;
@@ -165,7 +202,7 @@ function Faq() {
                 type="button"
                 onClick={() => setOpen(isOpen ? -1 : i)}
                 aria-expanded={isOpen}
-                className="flex w-full items-center justify-between p-4 text-left font-geist text-sm font-medium tracking-[-0.2px] text-bone transition-colors hover:text-white"
+                className="flex w-full items-center justify-between p-4 text-left font-geist text-sm font-medium text-bone transition-colors hover:text-white"
               >
                 <span>{f.q}</span>
                 <span className="shrink-0 font-console text-xs text-dim" aria-hidden="true">
@@ -173,7 +210,7 @@ function Faq() {
                 </span>
               </button>
               {isOpen && (
-                <p className="border-t border-white/10 bg-black/40 p-4 font-geist text-xs leading-relaxed text-[#888888]">
+                <p className="border-t border-white/5 bg-black/40 p-4 font-geist text-xs leading-relaxed text-[#8f8f8f]">
                   {f.a}
                 </p>
               )}
@@ -189,8 +226,8 @@ function SiteFooter() {
   return (
     <footer className="border-t border-white/10 pt-8 space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="font-geist text-lg font-semibold tracking-[-0.5px] text-white">
-          DECIBEL<span className="text-[#00dfd8]">.</span>
+        <span className="font-geist text-lg font-bold tracking-[-0.5px] text-white">
+          DECIBEL<span className="text-[#50e3c2]">.</span>
         </span>
         <span className={EYEBROW}>High-Frequency Real-Time Music Engine</span>
       </div>
@@ -222,15 +259,15 @@ export function Profile({ stats, onBack }) {
       </button>
 
       <div className="flex items-center justify-between border-b border-white/10 pb-3">
-        <h2 className="font-geist text-3xl font-semibold tracking-[-1px] text-white">
+        <h2 className="font-geist text-3xl font-bold tracking-[-1px] text-white">
           Player Profile
         </h2>
-        <span className="font-console text-xs text-dim uppercase">Stats Overview</span>
+        <span className="font-console text-xs text-[#50e3c2] uppercase">Performance Records</span>
       </div>
 
-      <div className={`${PANEL} p-5 space-y-4`}>
+      <div className={`${PANEL} p-6 space-y-4`}>
         {rows.map((r) => (
-          <div key={r.k} className="flex items-center justify-between border-b border-white/5 pb-2 last:border-0 last:pb-0">
+          <div key={r.k} className="flex items-center justify-between border-b border-white/5 pb-3 last:border-0 last:pb-0">
             <span className={EYEBROW}>{r.k}</span>
             <span className="font-console text-sm text-bone font-semibold tabular-nums">{r.v}</span>
           </div>
@@ -255,14 +292,14 @@ export function SideMenu({ games, onClose, onHome, onOpen, onProfile }) {
 
   return (
     <div className="fixed inset-0 z-[70] flex" role="dialog" aria-modal="true" aria-label="Menu">
-      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity" onClick={onClose} />
       <nav
         ref={panelRef}
-        className="animate-rise relative z-10 w-72 max-w-[80vw] overflow-y-auto border-r border-white/10 bg-[#0d0d10]/95 p-6 backdrop-blur-md"
+        className="animate-rise relative z-10 w-72 max-w-[80vw] overflow-y-auto border-r border-white/10 bg-[#0d0d12]/95 p-6 backdrop-blur-xl"
       >
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
-          <span className="font-geist text-lg font-semibold tracking-[-0.5px] text-white">
-            DECIBEL<span className="text-[#00dfd8]">.</span>
+          <span className="font-geist text-lg font-bold tracking-[-0.5px] text-white">
+            DECIBEL<span className="text-[#50e3c2]">.</span>
           </span>
           <button
             type="button"
@@ -274,16 +311,16 @@ export function SideMenu({ games, onClose, onHome, onOpen, onProfile }) {
           </button>
         </div>
 
-        <p className={`${EYEBROW} mt-6`}>Game Modes</p>
-        <ul className="mt-3 space-y-1">
+        <p className={`${EYEBROW} mt-6`}>Game Catalog</p>
+        <ul className="mt-3 space-y-1.5">
           {playable.map((g) => (
             <li key={g.key}>
               <button
                 type="button"
                 onClick={() => onOpen(g)}
-                className="flex min-h-11 w-full items-center gap-3 px-3 py-2 text-left font-geist text-sm text-bone transition-all hover:bg-white/5 hover:text-white rounded-md"
+                className="flex min-h-11 w-full items-center gap-3 px-3 py-2 text-left font-geist text-sm font-medium text-bone transition-all hover:bg-white/5 hover:text-white rounded-lg"
               >
-                <span className={`w-5 text-center font-bold ${g.accent || "text-white"}`}>
+                <span className="grid h-7 w-7 place-items-center rounded-md bg-white/5 font-bold text-xs text-[#50e3c2]">
                   {g.glyph}
                 </span>
                 {g.title}
@@ -296,14 +333,14 @@ export function SideMenu({ games, onClose, onHome, onOpen, onProfile }) {
           <button
             type="button"
             onClick={onHome}
-            className="flex min-h-11 w-full items-center gap-3 px-3 py-2 text-left font-geist text-sm text-dim hover:text-white rounded-md"
+            className="flex min-h-11 w-full items-center gap-3 px-3 py-2 text-left font-geist text-sm text-dim hover:text-white rounded-lg"
           >
             ⌂ Home Hub
           </button>
           <button
             type="button"
             onClick={onProfile}
-            className="flex min-h-11 w-full items-center gap-3 px-3 py-2 text-left font-geist text-sm text-dim hover:text-white rounded-md"
+            className="flex min-h-11 w-full items-center gap-3 px-3 py-2 text-left font-geist text-sm text-dim hover:text-[#50e3c2] rounded-lg"
           >
             ★ Player Profile
           </button>

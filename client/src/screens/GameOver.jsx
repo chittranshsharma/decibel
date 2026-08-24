@@ -1,8 +1,7 @@
-// Game over: champion, high scores, round history, chat, restart.
+// Game over: champion podium card, high scores, round history, chat, restart.
 import { useState } from "react";
 import { EYEBROW, PANEL, BTN_AMBER, Avatar, Chat, Leaderboard, useCountUp } from "../ui";
 
-// ---------- Game Over ----------
 export function GameOver({ gameOver, players, myId, onRestart, messages, onChat }) {
   const rows =
     gameOver?.leaderboard ??
@@ -15,38 +14,45 @@ export function GameOver({ gameOver, players, myId, onRestart, messages, onChat 
   const shownScore = useCountUp(champ?.score ?? 0, 900);
 
   return (
-    <div className="space-y-8">
-      <p className="animate-rise text-center font-marquee text-4xl font-black uppercase tracking-tight text-bone [text-wrap:balance]">
-        Game Over
-      </p>
+    <div className="space-y-8 animate-rise">
+      <div className="text-center space-y-2">
+        <span className="inline-block rounded-full border border-[#50e3c2]/30 bg-[#50e3c2]/10 px-3.5 py-1 font-console text-[11px] font-bold text-[#50e3c2] uppercase tracking-wider">
+          Match Concluded
+        </span>
+        <h2 className="font-geist text-4xl font-extrabold tracking-[-1.5px] text-white">
+          Final Leaderboard
+        </h2>
+      </div>
 
       {champ && (
         <div
-          className="animate-rise border border-amber/50 bg-amber/5 px-6 py-6 text-center shadow-[0_0_36px_-12px_#FFC93C]"
+          className={`${PANEL} p-6 text-center border-[#50e3c2]/40 bg-gradient-to-b from-[#50e3c2]/10 to-transparent shadow-[0_0_40px_rgba(80,227,194,0.25)] space-y-3`}
           style={{ animationDelay: "120ms" }}
         >
-          <p className="font-coin text-xs text-amber">1UP · Champion</p>
-          <div className="mt-3 flex items-center justify-center gap-3">
-            <Avatar name={champ.name} src={avatarOf[champ.id]} size={32} />
-            <p className="font-console uppercase tracking-wide text-bone">{champ.name}</p>
+          <p className="font-console text-xs font-bold text-[#50e3c2] uppercase tracking-widest">
+            👑 Match Champion
+          </p>
+          <div className="flex items-center justify-center gap-3">
+            <Avatar name={champ.name} src={avatarOf[champ.id]} size={36} />
+            <p className="font-geist text-2xl font-bold text-white">{champ.name}</p>
           </div>
-          <p className="mt-1 animate-scoreroll font-marquee text-4xl font-black tabular-nums text-amber">
-            {shownScore}
+          <p className="font-geist text-5xl font-extrabold tabular-nums text-white">
+            {shownScore} <span className="text-sm font-normal text-dim">PTS</span>
           </p>
         </div>
       )}
 
       {rest.length > 0 && (
-        <div className="animate-rise" style={{ animationDelay: "220ms" }}>
-          <p className={EYEBROW}>High scores</p>
-          <ol className={`mt-3 ${PANEL} divide-y divide-rule`}>
+        <div className="space-y-2" style={{ animationDelay: "220ms" }}>
+          <p className={EYEBROW}>Rankings</p>
+          <ol className={`${PANEL} divide-y divide-white/5 overflow-hidden`}>
             {rest.map((r, i) => (
-              <li key={r.id ?? r.name ?? i} className="flex items-center justify-between px-4 py-2.5">
+              <li key={r.id ?? r.name ?? i} className="flex items-center justify-between px-5 py-3">
                 <span className="flex items-center gap-3">
                   <span className="w-6 font-console text-xs text-dim">{String(r.rank ?? i + 2).padStart(2, "0")}</span>
-                  <span className="font-console text-sm uppercase tracking-wide text-dim">{r.name}</span>
+                  <span className="font-geist text-sm font-medium text-dim">{r.name}</span>
                 </span>
-                <span className="font-console text-sm tabular-nums text-dim">{r.score}</span>
+                <span className="font-console text-sm font-semibold tabular-nums text-bone">{r.score}</span>
               </li>
             ))}
           </ol>
@@ -55,39 +61,41 @@ export function GameOver({ gameOver, players, myId, onRestart, messages, onChat 
 
       {history && history.length > 0 && <RoundHistory history={history} />}
 
-      <Chat messages={messages} onChat={onChat} myId={myId} title="Chat" />
+      <Chat messages={messages} onChat={onChat} myId={myId} title="Post-Match Chat" />
 
       <button type="button" onClick={onRestart} className={`${BTN_AMBER} w-full`}>
-        <span aria-hidden="true">↻ </span>Play again
+        Play Again ↻
       </button>
     </div>
   );
 }
 
-// Collapsible per-round recap shown on game over (Feature 6).
 function RoundHistory({ history }) {
   const [open, setOpen] = useState(false);
   return (
-    <div>
-      <button type="button"
+    <div className="space-y-2">
+      <button
+        type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        aria-controls="round-history"
-        className={`${EYEBROW} flex min-h-11 w-full items-center gap-2 text-left hover:text-amber`}
+        className={`${EYEBROW} flex min-h-11 w-full items-center justify-between text-left hover:text-white`}
       >
-        <span className="text-amber" aria-hidden="true">{open ? "▼" : "▶"}</span> See all rounds
+        <span>Match Timeline & Track Recap</span>
+        <span className="text-dim font-console text-xs">{open ? "Hide ▲" : "View ▼"}</span>
       </button>
       {open && (
-        <ol id="round-history" className={`mt-3 ${PANEL} divide-y divide-rule`}>
+        <ol className={`${PANEL} divide-y divide-white/5 overflow-hidden`}>
           {history.map((h, i) => (
-            <li key={i} className="flex items-center justify-between gap-3 px-4 py-2.5 font-console text-xs">
+            <li key={i} className="flex items-center justify-between gap-3 px-4 py-3 font-geist text-xs">
               <span className="flex min-w-0 items-center gap-3">
-                <span className="w-6 text-dim">{String(i + 1).padStart(2, "0")}</span>
+                <span className="w-5 font-console text-dim">{String(i + 1).padStart(2, "0")}</span>
                 <span className="truncate text-dim">
-                  <span className="text-bone">{h.artistName}</span> — {h.trackName}
+                  <span className="text-white font-medium">{h.artistName}</span> — {h.trackName}
                 </span>
               </span>
-              <span className="shrink-0 uppercase tracking-wide text-amber">{h.winner || "No one"}</span>
+              <span className="shrink-0 font-console font-semibold uppercase text-[#50e3c2]">
+                {h.winner || "No one"}
+              </span>
             </li>
           ))}
         </ol>
@@ -95,3 +103,5 @@ function RoundHistory({ history }) {
     </div>
   );
 }
+
+export default GameOver;

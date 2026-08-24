@@ -167,12 +167,12 @@ export function Wordzic({ onBack }) {
                 return (
                   <div
                     key={colIndex}
-                    className={`flex h-12 w-12 items-center justify-center font-marquee text-lg font-black uppercase border transition-all ${
+                    className={`flex h-12 w-12 items-center justify-center rounded-lg font-geist text-lg font-bold uppercase border transition-all ${
                       guess
                         ? getTileClass(guess, colIndex)
                         : isCurrentRow && letter
-                        ? "border-bone bg-cabinet text-bone animate-pulse"
-                        : "border-rule bg-cabinet text-bone"
+                        ? "border-white/40 bg-white/10 text-white animate-pulse"
+                        : "border-white/10 bg-[#121218]/80 text-bone"
                     }`}
                   >
                     {letter}
@@ -185,15 +185,15 @@ export function Wordzic({ onBack }) {
       </div>
 
       {toast && (
-        <p className="font-console text-center text-sm font-bold text-amber animate-pulse">
+        <p className="font-geist text-center text-sm font-semibold text-[#50e3c2] animate-pulse">
           {toast}
         </p>
       )}
 
       {/* Victory / Game Over card */}
       {status !== "playing" && (
-        <div className={`${PANEL} p-4 text-center space-y-3 border-good`}>
-          <p className="font-marquee text-xl font-black uppercase text-bone">
+        <div className={`${PANEL} p-5 text-center space-y-3 border-[#50e3c2]/40`}>
+          <p className="font-geist text-xl font-bold uppercase text-white">
             {status === "won" ? "★ PUZZLE SOLVED! ★" : `WORD WAS: ${targetWord}`}
           </p>
           <div className="flex gap-2">
@@ -218,17 +218,17 @@ export function Wordzic({ onBack }) {
             {row.map((k) => {
               const st = keyStatuses[k];
               const isWide = k === "ENTER" || k === "⌫";
-              let bg = "bg-cabinet text-bone border-rule";
-              if (st === "correct") bg = "bg-good text-black font-bold border-good";
-              else if (st === "present") bg = "bg-amber text-black font-bold border-amber";
-              else if (st === "absent") bg = "bg-void text-dim/40 border-rule/40";
+              let bg = "bg-[#121218]/90 text-bone border-white/10";
+              if (st === "correct") bg = "bg-[#50e3c2] text-black font-bold border-[#50e3c2]";
+              else if (st === "present") bg = "bg-[#f5a623] text-black font-bold border-[#f5a623]";
+              else if (st === "absent") bg = "bg-black/60 text-dim/30 border-white/5";
 
               return (
                 <button
                   type="button"
                   key={k}
                   onClick={() => onKeyPress(k)}
-                  className={`flex h-11 items-center justify-center rounded-none border font-console text-xs uppercase transition-[border-color,background-color,transform] active:scale-[.94] ${
+                  className={`flex h-11 items-center justify-center rounded-md border font-geist text-xs font-semibold uppercase transition-all active:scale-95 ${
                     isWide ? "px-3 text-[11px]" : "w-8 sm:w-10"
                   } ${bg}`}
                 >

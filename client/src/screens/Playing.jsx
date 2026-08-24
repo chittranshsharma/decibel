@@ -2,19 +2,17 @@
 import { useEffect, useRef, useState } from "react";
 import { EYEBROW, BTN_GHOST, ReactionBar } from "../ui";
 
-// Fallback scoring constants, mirroring server.js (banner uses roundMeta first).
 const QUESTION_BASE = 300;
 const QUESTION_STEP = 250;
 const MAX_SPEED_BONUS = 350;
 
 const OPT_COLORS = [
-  { num: "text-cyan", sel: "border-cyan bg-cyan/10 ring-cyan", hov: "enabled:hover:border-cyan enabled:hover:bg-cyan/10" },
-  { num: "text-pink", sel: "border-pink bg-pink/10 ring-pink", hov: "enabled:hover:border-pink enabled:hover:bg-pink/10" },
-  { num: "text-good", sel: "border-good bg-good/10 ring-good", hov: "enabled:hover:border-good enabled:hover:bg-good/10" },
-  { num: "text-yellow", sel: "border-yellow bg-yellow/10 ring-yellow", hov: "enabled:hover:border-yellow enabled:hover:bg-yellow/10" },
+  { num: "text-[#00dfd8]", sel: "border-[#00dfd8] bg-[#00dfd8]/10 ring-[#00dfd8]", hov: "enabled:hover:border-[#00dfd8] enabled:hover:bg-[#00dfd8]/5" },
+  { num: "text-[#ff0080]", sel: "border-[#ff0080] bg-[#ff0080]/10 ring-[#ff0080]", hov: "enabled:hover:border-[#ff0080] enabled:hover:bg-[#ff0080]/5" },
+  { num: "text-[#50e3c2]", sel: "border-[#50e3c2] bg-[#50e3c2]/10 ring-[#50e3c2]", hov: "enabled:hover:border-[#50e3c2] enabled:hover:bg-[#50e3c2]/5" },
+  { num: "text-[#f9cb28]", sel: "border-[#f9cb28] bg-[#f9cb28]/10 ring-[#f9cb28]", hov: "enabled:hover:border-[#f9cb28] enabled:hover:bg-[#f9cb28]/5" },
 ];
 
-// ---------- Playing ----------
 export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGuess, onReact, audioRef }) {
   const locked = hasGuessed || spectator;
   const startRef = useRef(() => {});
@@ -32,7 +30,6 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
   const [doubleDownActive, setDoubleDownActive] = useState(false);
   const [shieldActive, setShieldActive] = useState(false);
 
-  // Reset per-round modifiers (keep charge state across rounds in a match)
   useEffect(() => {
     setEliminatedOptions([]);
     setDoubleDownActive(false);
@@ -108,7 +105,7 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
     }).catch(() => setNeedsTap(true));
   };
 
-  // Arcade keys 1-4
+  // Keyboard navigation 1-4
   useEffect(() => {
     if (locked) return;
     const onKey = (e) => {
@@ -124,11 +121,9 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
     return () => window.removeEventListener("keydown", onKey);
   }, [locked, state.options, eliminatedOptions, onGuess]);
 
-  // Handle Power-Up Actions
   const useFiftyFifty = () => {
     if (!powerups.fiftyFifty || locked || state.options.length < 3) return;
     setPowerups((p) => ({ ...p, fiftyFifty: false }));
-    // Eliminate up to 2 options (distractors)
     const countToElim = Math.min(2, state.options.length - 2);
     const shuffled = [...state.options].sort(() => Math.random() - 0.5);
     const toElim = shuffled.slice(0, countToElim);
@@ -155,7 +150,7 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
   const roundSeconds = Math.round((state.roundMs ?? 10000) / 1000);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-rise">
       <div className="flex items-center justify-between">
         <span className={EYEBROW}>
           {isArtist ? "Name the artist" : "Name the track"}
@@ -163,12 +158,12 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
           {doubleDownActive ? " · 🔥 2X DOUBLE" : ""}
           {shieldActive ? " · 🛡️ SHIELD" : ""}
         </span>
-        <span className="font-console text-xs uppercase tracking-[0.18em] text-dim">
-          QV <span className="text-amber font-bold">{questionValue}</span> · Speed ≤{maxSpeedBonus}
+        <span className="font-console text-xs font-semibold uppercase tracking-[0.16em] text-dim">
+          QV <span className="text-[#50e3c2] font-bold">{questionValue}</span> · Speed ≤{maxSpeedBonus}
         </span>
       </div>
 
-      {/* CRT Scoreboard & Animated Spectrum Visualizer */}
+      {/* Bento Scoreboard & Equalizer Visualizer */}
       <div className="space-y-2">
         <TimeCounter
           timeRemainingMs={state.timeRemainingMs}
@@ -182,19 +177,19 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
         <button
           type="button"
           onClick={retryAudio}
-          className="w-full border border-amber px-5 py-3 font-console text-sm uppercase tracking-[0.2em] text-amber transition-colors hover:bg-amber hover:text-black"
+          className="w-full rounded-xl border border-[#f5a623] bg-[#f5a623]/10 px-5 py-3 font-geist text-sm font-semibold uppercase tracking-wider text-[#f5a623] transition-colors hover:bg-[#f5a623] hover:text-black"
         >
-          Audio didn't load — retry
+          Audio didn't load — Retry
         </button>
       )}
 
       {needsTap && (
         <button type="button" onClick={() => startRef.current()} className={`${BTN_GHOST} w-full`}>
-          ▶ Play clip
+          ▶ Tap to Play Audio Clip
         </button>
       )}
 
-      {/* Options Grid */}
+      {/* Bento Options Grid */}
       <div className="grid gap-3">
         {state.options.map((opt, i) => {
           const selected = myGuess === opt;
@@ -210,30 +205,32 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
                 disabled={locked || isEliminated}
                 aria-label={`Option ${i + 1}: ${opt}`}
                 className={[
-                  "flex w-full items-center justify-between border px-4 py-4 text-left font-console text-sm uppercase tracking-wide text-bone",
-                  "transition-[border-color,background-color,opacity,transform] enabled:active:scale-[.96]",
+                  "flex w-full items-center justify-between rounded-xl border px-4 py-4 text-left font-geist text-sm tracking-[-0.2px] text-bone",
+                  "transition-all enabled:active:scale-[.98]",
                   selected
-                    ? `ring-2 ${c.sel} animate-lockin`
+                    ? `ring-2 ${c.sel} bg-white/10 text-white font-semibold animate-lockin`
                     : isEliminated
-                    ? "border-rule/20 bg-void line-through text-dim/30 pointer-events-none"
+                    ? "border-white/5 bg-black/40 line-through text-dim/30 pointer-events-none"
                     : doubleDownActive
-                    ? `border-pink bg-pink/5 hover:bg-pink/15 ${c.hov}`
-                    : `border-rule bg-cabinet ${c.hov}`,
+                    ? `border-[#ff0080]/60 bg-[#ff0080]/5 hover:bg-[#ff0080]/15 ${c.hov}`
+                    : `border-white/10 bg-[#121218]/90 ${c.hov}`,
                   dimmed ? "pointer-events-none opacity-30" : "",
                   "disabled:cursor-not-allowed",
                 ].join(" ")}
               >
-                <span className="flex items-center gap-3 min-w-0">
-                  <span className={`font-console text-xs ${c.num}`}>{i + 1}</span>
+                <span className="flex items-center gap-3.5 min-w-0">
+                  <span className={`grid h-6 w-6 place-items-center rounded-md border border-white/10 bg-black/60 font-console text-xs font-bold ${c.num}`}>
+                    {i + 1}
+                  </span>
                   <span className="min-w-0 truncate">{opt}</span>
                 </span>
                 {isEliminated && (
-                  <span className="font-mono text-[10px] text-bad font-bold uppercase">50:50 OUT</span>
+                  <span className="font-console text-[10px] text-[#ee0000] font-semibold uppercase">50:50 OUT</span>
                 )}
               </button>
               {hasGuessed && selected && (
-                <p className={`mt-1 animate-rise font-console text-xs uppercase tracking-[0.2em] ${c.num}`}>
-                  Locked In {doubleDownActive ? "★ 2X ACTIVE" : ""}
+                <p className={`mt-1 animate-rise font-console text-[11px] font-semibold uppercase tracking-[0.16em] ${c.num}`}>
+                  Locked In {doubleDownActive ? "★ 2X MULTIPLIER" : ""}
                 </p>
               )}
             </div>
@@ -243,17 +240,17 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
 
       {/* Arcade Power-Ups Bar */}
       {!locked && !spectator && (
-        <div className="border border-rule bg-cabinet p-3 space-y-2">
-          <p className="font-coin text-[10px] text-pink tracking-wider">ARCADE POWER-UPS</p>
+        <div className="rounded-xl border border-white/10 bg-[#121218]/80 p-3.5 space-y-2">
+          <p className={EYEBROW}>Match Modifiers</p>
           <div className="grid grid-cols-3 gap-2">
             <button
               type="button"
               onClick={useFiftyFifty}
               disabled={!powerups.fiftyFifty || locked || state.options.length < 3}
-              className={`p-2 border text-center font-console text-xs uppercase transition-all ${
+              className={`p-2.5 rounded-lg border text-center font-geist text-xs font-semibold uppercase transition-all ${
                 powerups.fiftyFifty
-                  ? "border-amber text-amber hover:bg-amber hover:text-black active:scale-95"
-                  : "border-rule/40 text-dim/30 pointer-events-none"
+                  ? "border-[#f5a623]/50 text-[#f5a623] bg-[#f5a623]/5 hover:bg-[#f5a623] hover:text-black active:scale-95 shadow-sm"
+                  : "border-white/5 text-dim/30 pointer-events-none"
               }`}
             >
               💣 50:50 {powerups.fiftyFifty ? "1x" : "USED"}
@@ -262,12 +259,12 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
               type="button"
               onClick={useDoubleDown}
               disabled={!powerups.doubleDown || locked || doubleDownActive}
-              className={`p-2 border text-center font-console text-xs uppercase transition-all ${
+              className={`p-2.5 rounded-lg border text-center font-geist text-xs font-semibold uppercase transition-all ${
                 doubleDownActive
-                  ? "border-pink bg-pink text-black font-bold animate-pulse"
+                  ? "border-[#ff0080] bg-[#ff0080] text-black font-bold animate-pulse"
                   : powerups.doubleDown
-                  ? "border-pink text-pink hover:bg-pink hover:text-black active:scale-95"
-                  : "border-rule/40 text-dim/30 pointer-events-none"
+                  ? "border-[#ff0080]/50 text-[#ff0080] bg-[#ff0080]/5 hover:bg-[#ff0080] hover:text-black active:scale-95 shadow-sm"
+                  : "border-white/5 text-dim/30 pointer-events-none"
               }`}
             >
               ⚡ 2X BET {doubleDownActive ? "ACTIVE" : powerups.doubleDown ? "1x" : "USED"}
@@ -276,12 +273,12 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
               type="button"
               onClick={useShield}
               disabled={!powerups.shield || locked || shieldActive}
-              className={`p-2 border text-center font-console text-xs uppercase transition-all ${
+              className={`p-2.5 rounded-lg border text-center font-geist text-xs font-semibold uppercase transition-all ${
                 shieldActive
-                  ? "border-good bg-good text-black font-bold"
+                  ? "border-[#50e3c2] bg-[#50e3c2] text-black font-bold"
                   : powerups.shield
-                  ? "border-good text-good hover:bg-good hover:text-black active:scale-95"
-                  : "border-rule/40 text-dim/30 pointer-events-none"
+                  ? "border-[#50e3c2]/50 text-[#50e3c2] bg-[#50e3c2]/5 hover:bg-[#50e3c2] hover:text-black active:scale-95 shadow-sm"
+                  : "border-white/5 text-dim/30 pointer-events-none"
               }`}
             >
               🛡️ SHIELD {shieldActive ? "ON" : powerups.shield ? "1x" : "USED"}
@@ -291,11 +288,11 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
       )}
 
       {spectator ? (
-        <p className={`${EYEBROW} text-center text-cyan`}>Spectating. You can react, but not guess.</p>
+        <p className={`${EYEBROW} text-center text-[#00dfd8]`}>Spectating Match. React below.</p>
       ) : (
         !hasGuessed && (
           <p className={`${EYEBROW} text-center`}>
-            {isArtist ? "Pick the artist" : "Pick the track"} — keys 1-{state.options.length}
+            {isArtist ? "Select the artist" : "Select the track"} — keys 1-{state.options.length}
           </p>
         )
       )}
@@ -305,23 +302,23 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
   );
 }
 
-// ---------- Audio Spectrum Visualizer ----------
+// ---------- Spectrum Visualizer ----------
 function SpectrumVisualizer({ active }) {
   const bars = [16, 28, 45, 68, 85, 95, 75, 60, 48, 70, 90, 80, 55, 35, 20, 30, 65, 82, 60, 40];
 
   return (
-    <div className="flex h-7 items-end justify-between gap-1 border border-rule/50 bg-void px-3 py-1">
+    <div className="flex h-8 items-end justify-between gap-1 rounded-lg border border-white/10 bg-black/60 px-3 py-1.5 backdrop-blur-md">
       {bars.map((maxH, idx) => (
         <div
           key={idx}
-          className={`w-full transition-all duration-150 ${
-            active ? "bg-good" : "bg-rule"
+          className={`w-full rounded-sm transition-all duration-150 ${
+            active ? "bg-[#50e3c2]" : "bg-white/10"
           }`}
           style={{
             height: active
               ? `${Math.max(15, Math.floor(Math.random() * (maxH - 10) + 15))}%`
               : "15%",
-            opacity: active ? 0.9 : 0.3,
+            opacity: active ? 0.95 : 0.25,
           }}
         />
       ))}
@@ -329,7 +326,7 @@ function SpectrumVisualizer({ active }) {
   );
 }
 
-// ---------- CRT Scoreboard ----------
+// ---------- Time Counter Scoreboard ----------
 function TimeCounter({ timeRemainingMs, round, total = 10 }) {
   const seconds = useCountdown(timeRemainingMs, round);
   const pct = Math.max(0, Math.min(100, (seconds / total) * 100));
@@ -338,24 +335,24 @@ function TimeCounter({ timeRemainingMs, round, total = 10 }) {
   const ss = String(seconds % 60).padStart(2, "0");
 
   return (
-    <div className="bezel border border-rule bg-cabinet px-4 py-5">
+    <div className="rounded-2xl border border-white/10 bg-[#121218]/90 p-5 backdrop-blur-xl shadow-2xl">
       <div className="flex items-center justify-between">
-        <span className={EYEBROW}>Time</span>
-        <span className={EYEBROW}>{Math.round(pct)}%</span>
+        <span className={EYEBROW}>Remaining Time</span>
+        <span className="font-console text-xs font-semibold text-dim">{Math.round(pct)}%</span>
       </div>
-      <div className={`mt-1 text-center ${low ? "animate-beat" : ""}`}>
+      <div className={`mt-2 text-center ${low ? "animate-beat" : ""}`}>
         <span
-          className={`font-console text-7xl font-bold tabular-nums leading-none ${
-            low ? "phosphor-bad animate-flicker" : "phosphor"
+          className={`font-geist text-7xl font-extrabold tracking-tight tabular-nums leading-none ${
+            low ? "text-[#ee0000] drop-shadow-[0_0_15px_rgba(238,0,0,0.6)]" : "text-white"
           }`}
         >
           {mm}:{ss}
         </span>
       </div>
-      <div className="mt-4 h-1.5 w-full bg-rule">
+      <div className="mt-4 h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
         <div
           className={`h-full transition-[width,background-color] duration-1000 ease-linear ${
-            low ? "bg-bad" : "bg-amber"
+            low ? "bg-[#ee0000]" : "bg-[#50e3c2]"
           }`}
           style={{ width: `${pct}%` }}
         />

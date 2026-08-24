@@ -169,7 +169,7 @@ export function Crosszic({ onBack }) {
 
       {/* Crossword 5x5 Grid */}
       <div className="mx-auto flex justify-center">
-        <div className="grid grid-cols-5 gap-1 border-2 border-rule bg-rule p-1">
+        <div className="grid grid-cols-5 gap-1.5 rounded-2xl border border-white/10 bg-black/60 p-2 shadow-2xl">
           {puzzle.grid.map((row, r) =>
             row.map((cell, c) => {
               const isBlocked = cell === "#";
@@ -181,7 +181,7 @@ export function Crosszic({ onBack }) {
 
               if (isBlocked) {
                 return (
-                  <div key={`${r}-${c}`} className="h-11 w-11 sm:h-12 sm:w-12 bg-black" />
+                  <div key={`${r}-${c}`} className="h-11 w-11 sm:h-12 sm:w-12 rounded-lg bg-black/80 border border-white/5" />
                 );
               }
 
@@ -190,12 +190,12 @@ export function Crosszic({ onBack }) {
                   type="button"
                   key={`${r}-${c}`}
                   onClick={() => handleCellClick(r, c)}
-                  className={`relative flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center font-marquee text-base sm:text-lg font-black uppercase transition-all ${
+                  className={`relative flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-lg font-geist text-base sm:text-lg font-bold uppercase transition-all ${
                     isSelected
-                      ? "bg-pink text-black ring-2 ring-pink z-10 font-black"
+                      ? "bg-[#50e3c2] text-black font-extrabold shadow-[0_0_15px_rgba(80,227,194,0.4)] z-10"
                       : isHighlighted
-                      ? "bg-cabinet text-bone border border-amber/40"
-                      : "bg-cabinet text-bone border border-rule"
+                      ? "bg-white/10 text-white border border-[#50e3c2]/40"
+                      : "bg-[#121218]/90 text-bone border border-white/10 hover:border-white/20"
                   }`}
                 >
                   {val}

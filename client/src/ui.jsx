@@ -1,32 +1,28 @@
-// ui.jsx — shared design tokens, reusable components, and overlays.
-// Extracted from App.jsx; presentation only, no socket/data logic.
+// ui.jsx — Jam & Linear inspired design system tokens and reusable components.
 import { useEffect, useRef, useState } from "react";
 import sound from "./sound";
 
-// ---- Shared class fragments (Vercel Geist System + Arcade Accents) ----
+// ---- Shared class fragments ----
 export const EYEBROW = "font-console text-[11px] uppercase tracking-[0.18em] text-dim font-medium";
-export const PANEL = "geist-card";
+export const PANEL = "bento-card";
 
-// Primary Marketing/Play CTA = High-Contrast Pill with soft glow
+// Mint Green / Neon Jam CTA Pill
 export const BTN_AMBER =
-  "bg-white px-6 py-3.5 font-geist font-semibold text-sm rounded-full text-black " +
-  "shadow-[0_0_24px_rgba(255,255,255,0.18)] transition-all hover:bg-[#ebebeb] hover:scale-[1.01] active:scale-[.97] " +
-  "focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black " +
+  "bg-[#50e3c2] px-6 py-3.5 font-geist font-semibold text-sm rounded-full text-black " +
+  "shadow-[0_0_24px_rgba(80,227,194,0.35)] hover:shadow-[0_0_35px_rgba(80,227,194,0.55)] " +
+  "transition-all hover:bg-[#68eed0] hover:scale-[1.01] active:scale-[.97] " +
+  "focus:outline-none focus:ring-2 focus:ring-[#50e3c2] focus:ring-offset-2 focus:ring-offset-black " +
   "disabled:cursor-not-allowed disabled:bg-rule disabled:text-dim disabled:shadow-none disabled:transform-none";
 
-// In-App/Nav Control = 6px Square Button
+// Dark Glass 8px Rounded Button
 export const BTN_GHOST =
-  "border border-white/10 bg-[#111114] px-4 py-2.5 font-geist font-medium text-sm text-bone rounded-sm " +
-  "transition-all hover:border-white/25 hover:bg-[#18181c] active:scale-[.97] " +
+  "border border-white/10 bg-[#121218]/90 backdrop-blur-md px-4 py-2.5 font-geist font-medium text-sm text-bone rounded-lg " +
+  "transition-all hover:border-white/25 hover:bg-[#181822] active:scale-[.97] " +
   "focus:outline-none focus:ring-2 focus:ring-white/20 disabled:cursor-not-allowed disabled:opacity-40";
 
-// Reaction call-outs (must match the server's REACTIONS whitelist). Typographic,
-// not emoji — keeps the §12 design rule while still being expressive.
+// Reaction call-outs
 const REACTION_TOKENS = ["GG", "WOW", "!!", "??", "★", "♥"];
 
-
-// Animated count-up for score reveals. Eases out over ~600ms; snaps instantly
-// under prefers-reduced-motion. Display-only — never affects real scores.
 export function useCountUp(target, duration = 600) {
   const [val, setVal] = useState(0);
   useEffect(() => {
@@ -39,7 +35,7 @@ export function useCountUp(target, duration = 600) {
     const t0 = performance.now();
     const step = (t) => {
       const k = Math.min(1, (t - t0) / duration);
-      setVal(Math.round(n * (1 - Math.pow(1 - k, 3)))); // ease-out cubic
+      setVal(Math.round(n * (1 - Math.pow(1 - k, 3))));
       if (k < 1) raf = requestAnimationFrame(step);
     };
     raf = requestAnimationFrame(step);
@@ -48,29 +44,45 @@ export function useCountUp(target, duration = 600) {
   return val;
 }
 
-// ---------- Reusable bits ----------
+// ---------- Leaderboard ----------
 export function Leaderboard({ rows, myId, title }) {
   return (
     <div>
       {title && <p className={EYEBROW}>{title}</p>}
-      <ol className={`mt-3 ${PANEL} divide-y divide-rule`}>
+      <ol className={`mt-3 ${PANEL} divide-y divide-white/5 overflow-hidden`}>
         {rows.map((r, i) => {
           const isMe = myId && r.id === myId;
           const top = i === 0;
           return (
             <li
               key={r.id ?? r.name ?? i}
-              className={`flex items-center justify-between px-4 py-3 ${isMe ? "bg-pink/5" : ""}`}
+              className={`flex items-center justify-between px-5 py-3.5 transition-colors ${
+                isMe ? "bg-[#50e3c2]/5" : ""
+              }`}
             >
               <span className="flex items-center gap-3">
-                <span className={`w-6 font-console text-xs ${top ? "text-amber" : "text-dim"}`}>
+                <span
+                  className={`w-6 font-console text-xs font-semibold ${
+                    top ? "text-[#50e3c2]" : "text-dim"
+                  }`}
+                >
                   {String(r.rank ?? i + 1).padStart(2, "0")}
                 </span>
-                <span className={`font-console uppercase tracking-wide ${top ? "text-bone" : "text-dim"}`}>
+                <span
+                  className={`font-geist font-medium text-sm tracking-[-0.2px] ${
+                    top ? "text-white font-semibold" : "text-dim"
+                  }`}
+                >
                   {r.name}
                 </span>
               </span>
-              <span className={`font-console tabular-nums ${top ? "text-amber" : "text-dim"}`}>{r.score}</span>
+              <span
+                className={`font-console text-sm font-semibold tabular-nums ${
+                  top ? "text-[#50e3c2]" : "text-dim"
+                }`}
+              >
+                {r.score}
+              </span>
             </li>
           );
         })}
@@ -79,9 +91,8 @@ export function Leaderboard({ rows, myId, title }) {
   );
 }
 
-// Square arcade-portrait avatar (zero radius, per the design rules). Falls back
-// to the player's initial when there's no Google photo or it fails to load.
-export function Avatar({ name, src, size = 26 }) {
+// Avatar
+export function Avatar({ name, src, size = 28 }) {
   const [broken, setBroken] = useState(false);
   const initial = ((name || "?").trim().charAt(0) || "?").toUpperCase();
   const px = `${size}px`;
@@ -92,7 +103,7 @@ export function Avatar({ name, src, size = 26 }) {
         alt=""
         onError={() => setBroken(true)}
         style={{ width: px, height: px }}
-        className="shrink-0 border border-rule object-cover"
+        className="shrink-0 rounded-full border border-white/10 object-cover"
       />
     );
   }
@@ -100,58 +111,90 @@ export function Avatar({ name, src, size = 26 }) {
     <span
       aria-hidden="true"
       style={{ width: px, height: px }}
-      className="grid shrink-0 place-items-center border border-rule bg-void font-console text-[11px] text-dim"
+      className="grid shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 font-console text-xs text-bone"
     >
       {initial}
     </span>
   );
 }
 
-// Room chat — used in the lobby and on game over. Rate-limited + masked server
-// side; the client just renders.
-export function Chat({ messages, onChat, myId, title = "Chat" }) {
+// In-game reaction bar
+export function ReactionBar({ onReact }) {
+  return (
+    <div
+      role="toolbar"
+      aria-label="Reactions"
+      className="flex flex-wrap items-center justify-center gap-2 pt-2"
+    >
+      {REACTION_TOKENS.map((token) => (
+        <button
+          type="button"
+          key={token}
+          onClick={() => {
+            sound.play("react");
+            onReact(token);
+          }}
+          aria-label={`React ${token}`}
+          className="flex h-9 min-w-[2.5rem] items-center justify-center rounded-full border border-white/10 bg-[#121218]/90 px-3 font-geist text-xs font-semibold uppercase tracking-wider text-bone shadow-sm transition-all hover:border-[#50e3c2] hover:text-[#50e3c2] hover:shadow-[0_0_15px_rgba(80,227,194,0.3)] active:scale-95"
+        >
+          {token}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// Chat Component
+export function Chat({ messages, onChat, myId, title = "Lobby Chat" }) {
   const [text, setText] = useState("");
-  const listRef = useRef(null);
+  const endRef = useRef(null);
+
   useEffect(() => {
-    const el = listRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-  const submit = (e) => {
+
+  const send = (e) => {
     e.preventDefault();
     const t = text.trim();
     if (!t) return;
     onChat(t);
     setText("");
   };
+
   return (
-    <div>
+    <div className="space-y-3">
       <p className={EYEBROW}>{title}</p>
-      <div className={`mt-3 ${PANEL}`}>
-        <div ref={listRef} className="max-h-40 space-y-1.5 overflow-y-auto px-4 py-3" aria-live="polite">
+      <div className={`${PANEL} flex flex-col p-4`}>
+        <div className="max-h-44 space-y-2 overflow-y-auto pr-1">
           {messages.length === 0 ? (
-            <p className="font-console text-xs text-dim">No messages yet. Say hi.</p>
+            <p className="font-geist text-xs text-dim italic">No messages yet...</p>
           ) : (
-            messages.map((m) => (
-              <p key={m.key} className="font-console text-xs leading-snug">
-                <span className={m.id === myId ? "text-pink" : "text-cyan"}>{m.name}</span>
-                <span className="text-dim"> · </span>
-                <span className="break-words text-bone">{m.text}</span>
-              </p>
-            ))
+            messages.map((m, i) => {
+              const isMe = m.playerId === myId;
+              return (
+                <div key={i} className="flex items-start gap-2 font-geist text-xs">
+                  <span className={`font-semibold ${isMe ? "text-[#50e3c2]" : "text-[#7928ca]"}`}>
+                    {m.playerName}:
+                  </span>
+                  <span className="text-bone">{m.text}</span>
+                </div>
+              );
+            })
           )}
+          <div ref={endRef} />
         </div>
-        <form onSubmit={submit} className="flex border-t border-rule">
+        <form onSubmit={send} className="mt-3 flex gap-2 pt-2 border-t border-white/5">
           <input
             value={text}
             onChange={(e) => setText(e.target.value)}
-            maxLength={200}
-            placeholder="Message…"
-            aria-label="Chat message"
-            className="w-full bg-transparent px-4 py-2.5 font-console text-xs text-bone placeholder:text-dim focus:outline-none"
+            maxLength={140}
+            placeholder="Type a message..."
+            className="flex-1 rounded-md border border-white/10 bg-black/60 px-3 py-2 font-geist text-xs text-bone placeholder:text-dim focus:border-[#50e3c2] focus:outline-none"
           />
           <button
             type="submit"
-            className="border-l border-rule px-4 font-console text-xs uppercase tracking-[0.2em] text-dim transition-colors hover:text-pink"
+            disabled={!text.trim()}
+            className="rounded-md bg-[#50e3c2] px-4 py-2 font-geist text-xs font-semibold text-black transition-opacity disabled:opacity-40"
           >
             Send
           </button>
@@ -161,135 +204,74 @@ export function Chat({ messages, onChat, myId, title = "Chat" }) {
   );
 }
 
-// The 6 reaction call-outs. Tapping floats one over everyone's screen.
-export function ReactionBar({ onReact }) {
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-2">
-      {REACTION_TOKENS.map((t) => (
-        <button type="button"
-          key={t}
-          onClick={() => onReact(t)}
-          aria-label={`React ${t}`}
-          className="inline-flex min-h-11 min-w-11 items-center justify-center border border-rule bg-cabinet px-2 py-1.5 font-console text-xs text-dim transition-[transform,color,border-color] hover:border-amber hover:text-amber active:scale-[.96]"
-        >
-          {t}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-// Full-screen, non-interactive layer that floats incoming reactions upward.
+// Reaction Overlays
 export function ReactionOverlay({ reactions }) {
-  if (!reactions || reactions.length === 0) return null;
   return (
-    <div className="pointer-events-none fixed inset-0 z-[55] overflow-hidden">
+    <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
       {reactions.map((r) => (
-        <div
-          key={r.key}
-          className="absolute bottom-24 animate-floatup whitespace-nowrap font-marquee text-3xl font-black text-amber phosphor"
-          style={{ left: `${12 + (r.lane ?? 0) * 18}%` }}
+        <span
+          key={r.id}
+          className="absolute font-geist text-2xl font-bold text-[#50e3c2] drop-shadow-[0_0_12px_rgba(80,227,194,0.6)] animate-floatup"
+          style={{ left: `${r.x}%`, top: `${r.y}%` }}
         >
           {r.token}
-          <span className="ml-1 align-middle font-console text-[11px] uppercase tracking-wide text-dim">
-            {r.name}
-          </span>
-        </div>
+        </span>
       ))}
     </div>
   );
 }
 
-export function Centered({ eyebrow, title }) {
+// Countdown Overlay
+export function CountdownOverlay({ seconds, round, worth, maxPoints }) {
   return (
-    <div className="text-center">
-      <p className={EYEBROW}>{eyebrow}</p>
-      <h2 className="mt-2 font-marquee text-3xl font-black uppercase tracking-tight text-bone">{title}</h2>
-    </div>
-  );
-}
-
-export function ErrorBar({ message }) {
-  return (
-    <div
-      role="alert"
-      className="fixed inset-x-0 top-0 z-50 border-b border-bad bg-void/90 px-5 py-3 text-center font-console text-xs uppercase tracking-[0.2em] text-bad backdrop-blur"
-    >
-      {message}
-    </div>
-  );
-}
-
-// Bottom toast for room notices (player left, new host) — Feature 5.
-export function Toast({ message }) {
-  return (
-    <div
-      role="status"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-rule bg-cabinet px-5 py-3 text-center font-console text-xs uppercase tracking-[0.2em] text-dim"
-    >
-      {message}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md animate-rise">
+      <div className="text-center space-y-3">
+        <p className="font-console text-xs uppercase tracking-[0.25em] text-[#50e3c2]">
+          ROUND {round} STARTING
+        </p>
+        <p className="font-geist text-8xl font-bold tracking-tight text-white animate-digitpop">
+          {seconds}
+        </p>
+        <p className="font-geist text-sm text-dim">
+          Worth up to <span className="text-[#f5a623] font-semibold">{worth + maxPoints}</span> points
+        </p>
+      </div>
     </div>
   );
 }
 
 export function LoadingOverlay({ message }) {
   return (
-    <div
-      role="status"
-      aria-live="polite"
-      aria-label={message ? `Loading: ${message}` : "Loading"}
-      className="crt-scan fixed inset-0 z-40 flex flex-col items-center justify-center gap-3 bg-void/95"
-    >
-      <p className="font-coin text-xs text-pink">LOADING</p>
-      <p className="font-console text-sm uppercase tracking-[0.2em] text-dim">
-        {message} <span className="animate-blink text-pink">▍</span>
-      </p>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md">
+      <div className="text-center space-y-3">
+        <div className="mx-auto h-8 w-8 rounded-full border-2 border-white/20 border-t-[#50e3c2] animate-spin" />
+        <p className="font-geist text-sm text-bone">{message || "Loading..."}</p>
+      </div>
     </div>
   );
 }
 
-// 3-2-1-GO overlay shown before each round's audio (Feature 3). Also shows the
-// round's point worth + max-if-fastest. Server controls the real 3s gap.
-export function CountdownOverlay({ seconds, round, worth, maxPoints }) {
-  const [n, setN] = useState(seconds ?? 3);
-  useEffect(() => {
-    let v = seconds ?? 3;
-    setN(v);
-    sound.play("count");
-    const id = setInterval(() => {
-      v -= 1;
-      setN(v);
-      if (v === 0) sound.play("go");
-      else if (v > 0) sound.play("count");
-      if (v <= -1) clearInterval(id);
-    }, 1000);
-    return () => clearInterval(id);
-  }, [seconds]);
+export function ErrorBar({ message }) {
   return (
-    <div
-      role="status"
-      aria-live="polite"
-      aria-label={`Round ${round ?? 0} starting${n > 0 ? ` in ${n}` : ""}`}
-      className="crt-scan fixed inset-0 z-40 flex flex-col items-center justify-center gap-6 bg-void/95 px-6 text-center"
-    >
-      <p className={EYEBROW}>Round {String(round ?? 0).padStart(2, "0")}</p>
-      {n > 0 ? (
-        <span key={n} className="animate-digitpop font-marquee text-8xl font-black tabular-nums leading-none phosphor">
-          {n}
-        </span>
-      ) : (
-        <span className="animate-digitpop font-coin text-5xl leading-none phosphor-pink">GO</span>
-      )}
-      {worth != null && (
-        <div className="space-y-1">
-          <p className="font-console text-sm uppercase tracking-[0.2em] text-bone">
-            Worth <span className="text-amber">{worth}</span> pts this round
-          </p>
-          <p className="font-console text-xs uppercase tracking-[0.2em] text-amber">
-            Up to {maxPoints} if you answer fastest
-          </p>
-        </div>
-      )}
+    <div className="fixed inset-x-0 top-0 z-50 bg-[#ee0000] px-4 py-2.5 text-center font-geist text-xs font-semibold text-white shadow-lg">
+      {message}
+    </div>
+  );
+}
+
+export function Toast({ message }) {
+  return (
+    <div className="fixed bottom-6 right-6 z-50 rounded-lg border border-white/10 bg-[#121218]/95 px-4 py-3 font-geist text-xs text-bone shadow-2xl backdrop-blur-md animate-rise">
+      {message}
+    </div>
+  );
+}
+
+export function Centered({ eyebrow, title }) {
+  return (
+    <div className="flex flex-1 flex-col items-center justify-center text-center space-y-2 py-16">
+      {eyebrow && <p className={EYEBROW}>{eyebrow}</p>}
+      <h2 className="font-geist text-2xl font-semibold text-white">{title}</h2>
     </div>
   );
 }

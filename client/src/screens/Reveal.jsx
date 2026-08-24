@@ -1,15 +1,14 @@
 // Reveal: round answer, winner card, per-player results, leaderboard.
 import { EYEBROW, PANEL, Avatar, Leaderboard, ReactionBar, useCountUp } from "../ui";
 
-// ---------- Reveal ----------
 export function Reveal({ reveal, myId, onReact, players }) {
   const results = reveal?.results ?? [];
-  const winner = reveal?.roundWinner ?? null; // fastest correct answer, or null
+  const winner = reveal?.roundWinner ?? null;
   const round = reveal?.round ?? 0;
   const avatarOf = {};
   for (const p of players ?? []) avatarOf[p.id] = p.avatar;
   const total = reveal?.totalRounds ?? 10;
-  const track = reveal?.track ?? null; // { trackName, artistName } — always shown
+  const track = reveal?.track ?? null;
   const isArtist = reveal?.mode === "ARTIST";
   const leaderboard =
     reveal?.leaderboard ??
@@ -20,83 +19,91 @@ export function Reveal({ reveal, myId, onReact, players }) {
   const shownPoints = useCountUp(winnerPoints);
 
   return (
-    <div className="space-y-6">
-      <p className={`${EYEBROW} animate-rise`}>
-        Round {String(round).padStart(2, "0")} / {String(total).padStart(2, "0")}
-      </p>
+    <div className="space-y-6 animate-rise">
+      <div className="flex items-center justify-between">
+        <span className={EYEBROW}>
+          Round {String(round).padStart(2, "0")} / {String(total).padStart(2, "0")} Results
+        </span>
+      </div>
 
       {track && (
-        <div className={`${PANEL} animate-rise px-5 py-4`} style={{ animationDelay: "80ms" }}>
-          <p className={EYEBROW}>The answer</p>
-          <p className="mt-2 font-marquee text-lg font-black uppercase tracking-tight text-bone">
-            <span className={isArtist ? "text-amber" : ""}>{track.artistName}</span>
+        <div className={`${PANEL} p-5 space-y-1`} style={{ animationDelay: "80ms" }}>
+          <p className={EYEBROW}>Correct Answer</p>
+          <p className="font-geist text-xl font-bold tracking-tight text-white">
+            <span className={isArtist ? "text-[#50e3c2]" : ""}>{track.artistName}</span>
             <span className="text-dim"> — </span>
-            <span className={isArtist ? "" : "text-amber"}>{track.trackName}</span>
+            <span className={isArtist ? "" : "text-[#50e3c2]"}>{track.trackName}</span>
           </p>
         </div>
       )}
 
-      {/* Winner card: HIGH SCORE, amber left accent, big points */}
+      {/* Winner Spotlight Card */}
       {winner ? (
         <div
-          className="animate-rise border border-amber/40 border-l-4 border-l-amber bg-amber/5 px-5 py-5 shadow-[0_0_30px_-10px_#FFC93C]"
+          className={`${PANEL} p-6 border-[#50e3c2]/40 bg-[#50e3c2]/5 shadow-[0_0_35px_rgba(80,227,194,0.2)]`}
           style={{ animationDelay: "160ms" }}
         >
-          <p className="font-coin text-xs text-amber">HIGH SCORE</p>
+          <div className="flex items-center justify-between">
+            <span className="rounded-full border border-[#50e3c2]/40 bg-[#50e3c2]/10 px-3 py-0.5 font-console text-[10px] font-bold text-[#50e3c2] uppercase">
+              Fastest Correct Answer
+            </span>
+            {winnerStreak > 0 && (
+              <span className="font-console text-xs font-bold text-[#f5a623]">
+                🔥 Streak +{winnerStreak}
+              </span>
+            )}
+          </div>
           <div className="mt-3 flex items-end justify-between gap-4">
             <div className="min-w-0">
-              <p className="truncate font-marquee text-2xl font-black uppercase tracking-tight text-bone">
+              <p className="truncate font-geist text-2xl font-bold text-white">
                 {winner.name}
               </p>
-              <p className="mt-1 font-console text-xs tabular-nums text-dim">{winner.answerTimeSeconds}s</p>
+              <p className="mt-1 font-console text-xs tabular-nums text-dim">{winner.answerTimeSeconds}s response time</p>
             </div>
-            <p className="shrink-0 animate-scoreroll font-marquee text-3xl font-black tabular-nums text-amber">
+            <p className="shrink-0 font-geist text-4xl font-extrabold tabular-nums text-[#50e3c2]">
               +{shownPoints}
             </p>
           </div>
-          {winnerStreak > 0 && (
-            <p className="mt-2 font-console text-[11px] uppercase tracking-[0.2em] text-amber">
-              Streak +{winnerStreak}
-            </p>
-          )}
         </div>
       ) : (
         <div
-          className="animate-rise border border-bad/50 bg-bad/5 px-5 py-6 text-center shadow-[0_0_30px_-10px_#FF4D6D]"
+          className={`${PANEL} p-6 text-center border-[#ee0000]/40 bg-[#ee0000]/5`}
           style={{ animationDelay: "160ms" }}
         >
-          <p className="font-marquee text-2xl font-black uppercase tracking-tight text-bad">No one got it</p>
+          <p className="font-geist text-xl font-bold text-[#ee0000]">No Correct Answers</p>
         </div>
       )}
 
-      {/* Per-player results: name | answer time | correct/wrong | points */}
-      <div className="animate-rise" style={{ animationDelay: "260ms" }}>
-        <p className={EYEBROW}>This round</p>
-        <ul className={`mt-3 ${PANEL} divide-y divide-rule`}>
+      {/* Per-player results */}
+      <div className="space-y-2" style={{ animationDelay: "260ms" }}>
+        <p className={EYEBROW}>Round Breakdown</p>
+        <ul className={`${PANEL} divide-y divide-white/5 overflow-hidden`}>
           {results.map((r, ri) => {
             const answered = r.answerTimeSeconds != null;
             const isMe = myId && r.id === myId;
             return (
               <li
                 key={r.id ?? r.name}
-                className={`flex animate-rise items-center justify-between gap-3 px-4 py-3 ${
-                  r.correct ? "bg-good/5" : isMe ? "bg-pink/5" : ""
+                className={`flex items-center justify-between gap-3 px-4 py-3 ${
+                  r.correct ? "bg-[#3df07a]/5" : isMe ? "bg-white/5" : ""
                 }`}
                 style={{ animationDelay: `${300 + ri * 50}ms` }}
               >
                 <span className="flex min-w-0 items-center gap-3">
                   <StatusDot correct={r.correct} answered={answered} delay={300 + ri * 50 + 140} />
-                  <Avatar name={r.name} src={avatarOf[r.id]} size={22} />
-                  <span className="truncate font-console uppercase tracking-wide text-bone font-bold">{r.name}</span>
+                  <Avatar name={r.name} src={avatarOf[r.id]} size={24} />
+                  <span className="truncate font-geist text-sm font-medium text-white">{r.name}</span>
                   {r.currentStreak > 1 && (
-                    <span className="shrink-0 border border-amber/50 bg-amber/10 px-1.5 py-0.5 font-console text-[10px] uppercase font-bold tracking-wider text-amber shadow-[0_0_10px_-2px_#FFC93C]">
+                    <span className="rounded-full border border-[#f5a623]/40 bg-[#f5a623]/10 px-2 py-0.5 font-console text-[10px] font-bold text-[#f5a623]">
                       🔥 x{r.currentStreak}
                     </span>
                   )}
                 </span>
-                <span className="flex items-center gap-4 font-console text-sm tabular-nums">
+                <span className="flex items-center gap-4 font-console text-xs tabular-nums">
                   <span className="text-dim">{answered ? `${r.answerTimeSeconds}s` : "—"}</span>
-                  <span className={r.correct ? "text-good" : "text-dim"}>+{r.pointsEarned}</span>
+                  <span className={r.correct ? "text-[#3df07a] font-semibold" : "text-dim"}>
+                    +{r.pointsEarned}
+                  </span>
                 </span>
               </li>
             );
@@ -104,8 +111,8 @@ export function Reveal({ reveal, myId, onReact, players }) {
         </ul>
       </div>
 
-      <div className="animate-rise" style={{ animationDelay: "380ms" }}>
-        <Leaderboard rows={leaderboard} myId={myId} title="Leaderboard" />
+      <div style={{ animationDelay: "380ms" }}>
+        <Leaderboard rows={leaderboard} myId={myId} title="Match Leaderboard" />
       </div>
 
       <ReactionBar onReact={onReact} />
@@ -113,18 +120,16 @@ export function Reveal({ reveal, myId, onReact, players }) {
   );
 }
 
-// Correct / wrong / no-answer marker for the reveal list. `delay` syncs the
-// pop with the row's own stagger so the mark lands just after the row shows.
 function StatusDot({ correct, answered, delay = 0 }) {
-  const cls = !answered ? "text-dim" : correct ? "text-good" : "text-bad";
+  const cls = !answered ? "text-dim" : correct ? "text-[#3df07a]" : "text-[#ee0000]";
   const mark = !answered ? "○" : correct ? "✓" : "✗";
-  const label = !answered ? "No answer" : correct ? "Correct" : "Incorrect";
   return (
-    <span className={`w-4 text-center font-console text-sm ${cls}`}>
-      <span className="sr-only">{label}</span>
-      <span aria-hidden="true" className="inline-block animate-popin" style={{ animationDelay: `${delay}ms` }}>
+    <span className={`w-4 text-center font-geist font-bold text-sm ${cls}`}>
+      <span className="inline-block animate-popin" style={{ animationDelay: `${delay}ms` }}>
         {mark}
       </span>
     </span>
   );
 }
+
+export default Reveal;

@@ -107,19 +107,19 @@ export function Harmonies({ onBack }) {
         {solvedGroups.map((g) => (
           <div
             key={g.theme}
-            className={`p-3 text-center transition-all ${g.color} animate-rise`}
+            className={`p-4 text-center rounded-xl transition-all ${g.color} animate-rise shadow-md`}
           >
-            <p className="font-console text-xs font-black uppercase tracking-wider">
+            <p className="font-geist text-sm font-bold uppercase tracking-wider">
               {g.theme}
             </p>
-            <p className="font-console text-xs opacity-90">{g.items.join(", ")}</p>
+            <p className="font-geist text-xs opacity-90 mt-0.5">{g.items.join(", ")}</p>
           </div>
         ))}
       </div>
 
       {/* Grid of Unsolved Tiles */}
       {!isWon && !isGameOver && (
-        <div className={`grid grid-cols-2 gap-2 sm:grid-cols-4 ${shaking ? "animate-pulse" : ""}`}>
+        <div className={`grid grid-cols-2 gap-2.5 sm:grid-cols-4 ${shaking ? "animate-pulse" : ""}`}>
           {tiles.map((tile) => {
             const isSel = selected.includes(tile.text);
             return (
@@ -128,10 +128,10 @@ export function Harmonies({ onBack }) {
                 key={tile.text}
                 onClick={() => toggleSelect(tile.text)}
                 aria-pressed={isSel}
-                className={`flex min-h-[4.5rem] items-center justify-center p-2 text-center font-console text-xs uppercase tracking-wide transition-[border-color,background-color,transform] active:scale-[.96] ${
+                className={`flex min-h-[4.75rem] items-center justify-center p-3 text-center rounded-xl font-geist text-xs font-semibold uppercase tracking-wide transition-all active:scale-95 ${
                   isSel
-                    ? "bg-pink text-black font-bold border border-pink"
-                    : "border border-rule bg-cabinet text-bone hover:border-amber"
+                    ? "bg-[#50e3c2] text-black font-bold border border-[#50e3c2] shadow-[0_0_15px_rgba(80,227,194,0.4)]"
+                    : "border border-white/10 bg-[#121218]/90 text-bone hover:border-white/25 hover:bg-[#181822]"
                 }`}
               >
                 {tile.text}

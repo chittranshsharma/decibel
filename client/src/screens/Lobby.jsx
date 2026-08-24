@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { EYEBROW, PANEL, BTN_AMBER, BTN_GHOST, Avatar, Chat } from "../ui";
 
-// Accurately categorized 11 curated genres + Custom Spotify Playlist
 export const GENRES = [
   { label: "HIP-HOP", value: "hip-hop" },
   { label: "OLD SCHOOL RAP", value: "oldschool-hiphop" },
@@ -57,7 +56,6 @@ const CLIP_OPTS = [
   { label: "Intro", value: "INTRO" },
 ];
 
-// ---------- Lobby ----------
 export function Lobby({
   players,
   myId,
@@ -121,52 +119,68 @@ export function Lobby({
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-rise">
+      {/* Room Access Code Card */}
+      <div className={`${PANEL} p-5 space-y-2`}>
+        <div className="flex items-center justify-between">
+          <span className={EYEBROW}>Room Access Code</span>
+          <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 font-console text-[10px] text-dim uppercase">
+            Share Link
+          </span>
+        </div>
+        <div className="flex items-center justify-between gap-3 pt-1">
+          <span className="font-geist text-4xl font-extrabold tracking-[0.2em] text-white">
+            {code}
+          </span>
+          <button type="button" onClick={copy} className={BTN_GHOST}>
+            {copied ? "✓ Copied!" : "Copy Link"}
+          </button>
+        </div>
+      </div>
+
+      {/* Players List */}
       <div>
-        <p className={EYEBROW}>Players {String(players.length).padStart(2, "0")} / 08</p>
-        <ul className={`mt-3 ${PANEL} divide-y divide-rule`}>
+        <div className="flex items-center justify-between pb-2">
+          <p className={EYEBROW}>Connected Players</p>
+          <span className="font-console text-xs text-[#50e3c2] font-semibold">
+            {players.length} / 08 Active
+          </span>
+        </div>
+        <ul className={`${PANEL} divide-y divide-white/5 overflow-hidden`}>
           {players.map((p, i) => (
             <li
               key={p.id}
-              className={`flex items-center justify-between px-4 py-3 ${i % 2 ? "bg-void/40" : ""}`}
+              className={`flex items-center justify-between px-4 py-3 ${
+                i % 2 ? "bg-white/[0.02]" : ""
+              }`}
             >
               <span className="flex min-w-0 items-center gap-3">
                 <Avatar name={p.name} src={p.avatar} />
-                <span className="font-console text-xs text-cyan">{i + 1}UP</span>
-                <span className="truncate font-console uppercase tracking-wide text-bone">{p.name}</span>
+                <span className="truncate font-geist text-sm font-medium text-white">{p.name}</span>
                 {p.google && (
-                  <span className="shrink-0 text-good" title="Google verified" role="img" aria-label="Google verified">
+                  <span className="text-[#50e3c2] text-xs font-bold" title="Google verified">
                     ✓
                   </span>
                 )}
               </span>
-              <span className="flex items-center gap-3 font-console text-[11px] uppercase tracking-[0.2em]">
-                {p.id === myId && <span className="text-dim">· You</span>}
-                {i === 0 && <span className="text-amber">[Host]</span>}
+              <span className="font-console text-xs text-dim">
+                {p.isHost ? (
+                  <span className="rounded-full border border-[#f5a623]/30 bg-[#f5a623]/10 px-2 py-0.5 font-bold text-[#f5a623]">
+                    HOST
+                  </span>
+                ) : (
+                  "Ready"
+                )}
               </span>
             </li>
           ))}
         </ul>
       </div>
 
-      <div className={`${PANEL} p-4 border border-rule/80`}>
-        <p className={EYEBROW}>Room Access Code</p>
-        <div className="mt-2 flex items-center justify-between gap-3">
-          <span className="font-marquee text-4xl font-black tracking-[0.25em] phosphor">{code}</span>
-          <button type="button" onClick={copy} className={BTN_GHOST}>
-            {copied ? "✓ Copied" : "Copy Link"}
-          </button>
-          <span className="sr-only" role="status">
-            {copied ? "Join link copied to clipboard" : ""}
-          </span>
-        </div>
-        <p className="mt-2 font-console text-xs text-dim">Share this code or direct link with friends to join.</p>
-      </div>
-
       {isHost ? (
-        <div className="space-y-5">
+        <div className="space-y-6">
           <div>
-            <p className={EYEBROW}>Genre & Source</p>
+            <p className={EYEBROW}>Select Genre / Source</p>
             <div className="mt-3 flex flex-wrap gap-2">
               {GENRES.map((g) => {
                 const active = g.value === genre;
@@ -177,14 +191,14 @@ export function Lobby({
                     key={g.value}
                     onClick={() => handleGenreChange(g.value)}
                     aria-pressed={active}
-                    className={`min-h-11 px-3.5 py-2 font-console text-xs uppercase tracking-[0.16em] transition-all active:scale-[.96] ${
+                    className={`rounded-full px-4 py-2 font-geist text-xs font-semibold uppercase tracking-wider transition-all active:scale-95 ${
                       active
                         ? isSpotify
-                          ? "bg-good text-black font-bold shadow-[0_0_20px_-3px_#3DF07A]"
-                          : "bg-pink text-black font-bold shadow-[0_0_20px_-3px_#FF3D7F]"
+                          ? "bg-[#50e3c2] text-black shadow-[0_0_20px_rgba(80,227,194,0.4)]"
+                          : "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]"
                         : isSpotify
-                        ? "border border-good/50 bg-cabinet/80 text-good hover:border-good hover:shadow-[0_0_15px_-4px_#3DF07A]"
-                        : "border border-rule/80 bg-cabinet/80 text-dim hover:border-pink hover:text-pink"
+                        ? "border border-[#50e3c2]/40 bg-[#50e3c2]/5 text-[#50e3c2] hover:border-[#50e3c2]"
+                        : "border border-white/10 bg-white/5 text-dim hover:text-white hover:border-white/20"
                     }`}
                   >
                     {g.label}
@@ -196,93 +210,101 @@ export function Lobby({
 
           {/* Spotify Playlist URL Input */}
           {genre === "spotify" && (
-            <div className="space-y-3 rounded-none border border-good/40 bg-cabinet p-4">
-              <p className={EYEBROW}>Spotify Playlist Link</p>
+            <div className={`${PANEL} p-5 space-y-3 border-[#50e3c2]/30`}>
+              <p className={EYEBROW}>Spotify Playlist URL</p>
               <form onSubmit={handleLoadPlaylist} className="flex gap-2">
                 <input
                   type="text"
                   placeholder="https://open.spotify.com/playlist/..."
                   value={spotifyUrl}
                   onChange={(e) => setSpotifyUrl(e.target.value)}
-                  className="w-full border border-rule bg-void px-3 py-2 font-console text-xs text-bone placeholder:text-dim focus:border-good focus:outline-none"
+                  className="w-full rounded-lg border border-white/10 bg-black/60 px-3 py-2.5 font-geist text-xs text-bone placeholder:text-dim focus:border-[#50e3c2] focus:outline-none"
                 />
                 <button
                   type="submit"
                   disabled={playlistStatus?.loading || !spotifyUrl.trim()}
-                  className="border border-good bg-good px-4 py-2 font-console text-xs uppercase tracking-wider text-black transition-opacity disabled:opacity-50"
+                  className="rounded-lg bg-[#50e3c2] px-4 py-2 font-geist text-xs font-semibold text-black transition-opacity disabled:opacity-50"
                 >
                   {playlistStatus?.loading ? "Loading…" : "Load"}
                 </button>
               </form>
               {playlistStatus?.loading && (
-                <p className="font-console text-xs uppercase tracking-wider text-amber animate-pulse">
+                <p className="font-console text-xs uppercase tracking-wider text-[#f5a623] animate-pulse">
                   Extracting tracks & finding audio snippets…
                 </p>
               )}
               {playlistStatus?.error && (
-                <p className="font-console text-xs text-bad">{playlistStatus.error}</p>
+                <p className="font-console text-xs text-[#ee0000]">{playlistStatus.error}</p>
               )}
               {playlistStatus?.tracksCount && (
-                <p className="font-console text-xs text-good">
+                <p className="font-console text-xs text-[#50e3c2]">
                   ✓ Ready: "{playlistStatus.name}" ({playlistStatus.tracksCount} playable songs)
                 </p>
               )}
             </div>
           )}
 
-          {/* Vibe Selector: Mainstream / Underground / All */}
-          {genre !== "spotify" && (
-            <SettingRow label="Vibe" options={VIBE_OPTS} value={settings.vibe} onChange={setField("vibe")} />
-          )}
-
-          <SettingRow label="Mode" options={MODE_OPTS} value={settings.mode} onChange={setField("mode")} />
-          <SettingRow label="Clip" options={CLIP_OPTS} value={settings.clip} onChange={setField("clip")} />
-          <SettingRow label="Rounds" options={ROUND_OPTS} value={settings.rounds} onChange={setField("rounds")} />
-          <SettingRow label="Timer" options={TIMER_OPTS} value={settings.roundMs} onChange={setField("roundMs")} />
-          <SettingRow label="Answers" options={OPTION_OPTS} value={settings.optionsCount} onChange={setField("optionsCount")} />
-          {genre !== "spotify" && (
-            <SettingRow label="Era" options={availableDecades} value={settings.decade} onChange={setField("decade")} />
-          )}
+          {/* Settings Matrix */}
+          <div className="space-y-4">
+            {genre !== "spotify" && (
+              <SettingRow label="Vibe" options={VIBE_OPTS} value={settings.vibe} onChange={setField("vibe")} />
+            )}
+            <SettingRow label="Mode" options={MODE_OPTS} value={settings.mode} onChange={setField("mode")} />
+            <SettingRow label="Clip" options={CLIP_OPTS} value={settings.clip} onChange={setField("clip")} />
+            <SettingRow label="Rounds" options={ROUND_OPTS} value={settings.rounds} onChange={setField("rounds")} />
+            <SettingRow label="Timer" options={TIMER_OPTS} value={settings.roundMs} onChange={setField("roundMs")} />
+            <SettingRow label="Answers" options={OPTION_OPTS} value={settings.optionsCount} onChange={setField("optionsCount")} />
+            {genre !== "spotify" && (
+              <SettingRow label="Era" options={availableDecades} value={settings.decade} onChange={setField("decade")} />
+            )}
+          </div>
 
           <button type="button" onClick={handleStart} className={`${BTN_AMBER} w-full`}>
-            <span aria-hidden="true">▶ </span>Start Game
+            Start Game ▶
           </button>
         </div>
       ) : (
-        <p className={`${EYEBROW} text-center`}>
-          <span className="animate-blink text-amber">▍</span> Waiting for host
-        </p>
+        <div className={`${PANEL} p-5 text-center space-y-2`}>
+          <p className="font-geist text-sm text-bone font-medium">Waiting for Host to start match…</p>
+          <p className="font-console text-xs text-dim">Get ready to listen and answer fast.</p>
+        </div>
       )}
 
-      <button type="button" onClick={onLeave} className={`${BTN_GHOST} w-full`}>
-        <span aria-hidden="true">✕ </span>Leave Room
-      </button>
+      <Chat messages={messages} onChat={onChat} myId={myId} />
 
-      <Chat messages={messages} onChat={onChat} myId={myId} title="Lobby chat" />
+      <div className="pt-2">
+        <button
+          type="button"
+          onClick={onLeave}
+          className={`${BTN_GHOST} w-full text-center text-dim hover:text-[#ee0000] hover:border-[#ee0000]/40`}
+        >
+          Leave Lobby
+        </button>
+      </div>
     </div>
   );
 }
 
 function SettingRow({ label, options, value, onChange }) {
   return (
-    <div className="flex items-center justify-between gap-3">
+    <div>
       <p className={EYEBROW}>{label}</p>
-      <div className="flex flex-wrap justify-end gap-1.5">
-        {options.map((o) => {
-          const active = o.value === value;
+      <div className="mt-2 flex flex-wrap gap-2">
+        {options.map((opt) => {
+          const active = opt.value === value;
           return (
             <button
               type="button"
-              key={String(o.value)}
-              onClick={() => onChange(o.value)}
+              key={String(opt.value)}
+              onClick={() => onChange(opt.value)}
               aria-pressed={active}
-              className={`min-h-11 min-w-[2.75rem] px-2.5 py-1.5 font-console text-xs uppercase tracking-[0.12em] transition-[color,border-color,background-color,transform] active:scale-[.96] ${
+              className={`rounded-lg px-3.5 py-1.5 font-geist text-xs font-medium transition-all active:scale-95 ${
                 active
-                  ? "bg-pink text-black"
-                  : "border border-rule text-dim hover:border-pink hover:text-pink"
+                  ? "bg-white text-black font-semibold shadow-md"
+                  : "border border-white/10 bg-white/5 text-dim hover:text-white hover:border-white/20"
               }`}
             >
-              {o.label}
+              {opt.label}
             </button>
           );
         })}
