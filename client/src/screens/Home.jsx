@@ -50,7 +50,7 @@ export function Home({ games, stats, onOpen, onProfile }) {
         </div>
       </div>
 
-      <WhySnippet />
+      <WhyDecibel />
       <Faq />
       <SiteFooter />
     </div>
@@ -95,10 +95,10 @@ const WHY_ITEMS = [
   { t: "Completely free", d: "No downloads, no account needed. Just open and play." },
 ];
 
-function WhySnippet() {
+function WhyDecibel() {
   return (
     <div>
-      <p className={EYEBROW}>Why Snippet</p>
+      <p className={EYEBROW}>Why Decibel</p>
       <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {WHY_ITEMS.map((i) => (
           <div key={i.t} className={`${PANEL} px-4 py-3`}>
@@ -114,7 +114,7 @@ function WhySnippet() {
 const FAQ_ITEMS = [
   {
     q: "What makes a good guess-the-song game?",
-    a: "A big music library, fair audio, and fast speed-scored rounds. Snippet adds private rooms, host settings, and reconnect so a dropped player keeps their score.",
+    a: "A big music library, fair audio, and fast speed-scored rounds. Decibel adds private rooms, host settings, and reconnect so a dropped player keeps their score.",
   },
   {
     q: "Can I play with friends online?",
@@ -164,7 +164,7 @@ function SiteFooter() {
   return (
     <footer className="border-t border-rule pt-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="font-marquee text-lg font-black uppercase tracking-tight text-bone">Snippet</span>
+        <span className="font-marquee text-lg font-black uppercase tracking-tight text-bone">Decibel</span>
         <span className={EYEBROW}>Free music guessing games</span>
       </div>
       <p className="mt-3 font-console text-xs leading-relaxed text-dim">
@@ -277,7 +277,7 @@ export function SideMenu({ games, onClose, onHome, onOpen, onProfile }) {
         className="animate-rise w-72 max-w-[80vw] overflow-y-auto border-r border-rule bg-cabinet px-5 py-6"
       >
         <div className="flex items-center justify-between">
-          <span className="font-marquee text-xl font-black uppercase tracking-tight text-bone">Snippet</span>
+          <span className="font-marquee text-xl font-black uppercase tracking-tight text-bone">Decibel</span>
           <button type="button"
             onClick={onClose}
             aria-label="Close menu"

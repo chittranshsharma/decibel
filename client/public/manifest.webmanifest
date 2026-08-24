@@ -1,7 +1,7 @@
 {
-  "name": "Snippet — Music Guessing Game",
-  "short_name": "Snippet",
-  "description": "Real-time multiplayer music guessing game. Hear a snippet, name the track.",
+  "name": "Decibel — Music Guessing Game",
+  "short_name": "Decibel",
+  "description": "Real-time multiplayer music guessing game. Hear a track, guess fast.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

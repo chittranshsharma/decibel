@@ -363,7 +363,7 @@ function Masthead({ phase, round, total, onMenu, onBrand }) {
             disabled={!onBrand}
             className="flex min-h-11 items-center disabled:cursor-default"
           >
-            Snippet
+            Decibel
             <span className="ml-1.5 inline-block h-[0.7em] w-[0.32em] animate-blink bg-pink" aria-hidden="true" />
           </button>
         </h1>
