@@ -4,6 +4,7 @@ import {
   WORDZIC_WORDS,
   LYRICLES_PUZZLES,
   CROSSZIC_PUZZLES,
+  evaluateWordleGuess,
 } from "../client/src/puzzleData.js";
 
 describe("Harmonies Puzzles", () => {
@@ -20,8 +21,6 @@ describe("Harmonies Puzzles", () => {
     }
   });
 });
-
-import { evaluateWordleGuess } from "../client/src/screens/Wordzic.jsx";
 
 describe("Wordzic Words", () => {
   it("validates that all Wordzic words are 5-letter uppercase strings", () => {

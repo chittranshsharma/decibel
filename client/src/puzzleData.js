@@ -245,3 +245,36 @@ export const CROSSZIC_PUZZLES = [
     ],
   },
 ];
+
+export function evaluateWordleGuess(guess, target) {
+  if (!guess || !target || guess.length !== 5 || target.length !== 5) {
+    return Array(5).fill("absent");
+  }
+  const res = Array(5).fill("absent");
+  const letterCounts = {};
+
+  for (let i = 0; i < 5; i++) {
+    const char = target[i];
+    letterCounts[char] = (letterCounts[char] || 0) + 1;
+  }
+
+  // Pass 1: exact matches
+  for (let i = 0; i < 5; i++) {
+    if (guess[i] === target[i]) {
+      res[i] = "correct";
+      letterCounts[guess[i]]--;
+    }
+  }
+
+  // Pass 2: misplaced matches up to remaining letter frequency
+  for (let i = 0; i < 5; i++) {
+    if (res[i] === "correct") continue;
+    const char = guess[i];
+    if (letterCounts[char] && letterCounts[char] > 0) {
+      res[i] = "present";
+      letterCounts[char]--;
+    }
+  }
+
+  return res;
+}

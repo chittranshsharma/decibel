@@ -1,15 +1,11 @@
 // Wordzic — Music Wordle Game Screen
 import { useState, useEffect, useCallback } from "react";
 import { EYEBROW, PANEL, BTN_AMBER, BTN_GHOST } from "../ui";
-import { WORDZIC_WORDS } from "../puzzleData";
+import { WORDZIC_WORDS, evaluateWordleGuess } from "../puzzleData";
+
+export { evaluateWordleGuess };
 
 const KEYBOARD_ROWS = [
-  ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
-  ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
-  ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "⌫"],
-];
-
-export function evaluateWordleGuess(guess, target) {
   if (!guess || !target || guess.length !== 5 || target.length !== 5) {
     return Array(5).fill("absent");
   }
