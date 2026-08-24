@@ -5,68 +5,68 @@ export const GENRE_WALL_ITEMS = [
   {
     genreKey: 'hip-hop',
     title: 'Modern Hip-Hop',
-    tag: 'Kendrick · Carti · MF DOOM',
-    image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80' // Graffiti & street hip hop
+    tag: 'Kendrick · Drake · Cole',
+    image: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&auto=format&fit=crop&q=80' // Concert stage microphone
   },
   {
     genreKey: 'hyperpop',
     title: 'Hyperpop & Digicore',
-    tag: 'Charli XCX · SOPHIE · Bladee',
-    image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=600&auto=format&fit=crop&q=80' // Glitch / cyberpunk neon chrome
+    tag: 'Charli XCX · SOPHIE · 100 gecs',
+    image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=600&auto=format&fit=crop&q=80' // Glitch cyberpunk neon chrome
   },
   {
     genreKey: 'trap',
     title: 'Trap & Rage',
-    tag: 'Future · Yeat · Ken Carson',
-    image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&auto=format&fit=crop&q=80' // Neon rage moshpit / strobe lights
+    tag: 'Future · Travis Scott · Yeat',
+    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80' // Club strobe laser rage
   },
   {
     genreKey: 'rock',
     title: 'Rock & Alt',
-    tag: 'Radiohead · Deftones · Nirvana',
-    image: 'https://images.unsplash.com/photo-1464375117522-1311d6a5b81f?w=600&auto=format&fit=crop&q=80' // Electric guitar stack amplifier
+    tag: 'Nirvana · Queen · Arctic Monkeys',
+    image: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=600&auto=format&fit=crop&q=80' // Electric guitar on rock stage
   },
   {
     genreKey: 'desi-hip-hop',
     title: 'Desi Hip Hop',
-    tag: 'Seedhe Maut · KR$NA · Dhanji',
-    image: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&auto=format&fit=crop&q=80' // Underground rap cypher stage
+    tag: 'Seedhe Maut · KR$NA · Stan',
+    image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&auto=format&fit=crop&q=80' // Underground rap stage lights
   },
   {
     genreKey: 'indie',
     title: 'Indie & Alt',
-    tag: 'The Strokes · Mac DeMarco · Tame Impala',
-    image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?w=600&auto=format&fit=crop&q=80' // Vintage vinyl turntable
+    tag: 'Tame Impala · Phoebe · Strokes',
+    image: 'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?w=600&auto=format&fit=crop&q=80' // Classic vinyl record player
   },
   {
     genreKey: 'bedroom-pop',
     title: 'Bedroom Pop',
-    tag: 'Clairo · beabadoobee · Boy Pablo',
-    image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&auto=format&fit=crop&q=80' // Cozy bedroom studio & synths
+    tag: 'Clairo · Rex Orange · Cavetown',
+    image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&auto=format&fit=crop&q=80' // Cozy lo-fi bedroom synth workstation
   },
   {
     genreKey: 'rnb',
     title: 'R&B & Soul',
     tag: 'Frank Ocean · SZA · The Weeknd',
-    image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80' // Moody warm studio mic
+    image: 'https://images.unsplash.com/photo-1520523839898-50712192e8a7?w=600&auto=format&fit=crop&q=80' // Velvet purple soul studio piano
   },
   {
     genreKey: 'oldschool-hiphop',
     title: 'Old School Rap',
     tag: '2Pac · Biggie · Nas · Wu-Tang',
-    image: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=600&auto=format&fit=crop&q=80' // Classic 90s cassette mixtape
+    image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80' // 90s boombox cassette mixtape
   },
   {
     genreKey: 'pop',
     title: 'Pop & Dance',
-    tag: 'Dua Lipa · Billie Eilish · Olivia Rodrigo',
-    image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&auto=format&fit=crop&q=80' // Stadium pop concert confetti & lasers
+    tag: 'Taylor Swift · Dua Lipa · Billie',
+    image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&auto=format&fit=crop&q=80' // Stadium pop concert confetti & lasers
   },
   {
     genreKey: 'desi-indie',
     title: 'Desi Indie',
-    tag: 'Prateek Kuhad · Anuv Jain · Lifafa',
-    image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&auto=format&fit=crop&q=80' // Acoustic guitar warm coffee vibe
+    tag: 'Prateek Kuhad · Anuv Jain',
+    image: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=600&auto=format&fit=crop&q=80' // Sunset acoustic guitar cafe vibe
   },
 ];
 
@@ -294,7 +294,7 @@ export const DriftWall = ({
           <span className="font-geist text-xs font-bold text-white tracking-tight leading-tight line-clamp-1">
             {item.title}
           </span>
-          <span className="font-console text-[9px] text-[#50e3c2] tracking-wider truncate mt-0.5">
+          <span className="font-console text-[9px] text-amber-400 font-semibold tracking-wider truncate mt-0.5">
             {item.tag || "Scene Catalog"}
           </span>
         </span>
