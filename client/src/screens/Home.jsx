@@ -24,8 +24,13 @@ export function Home({ games, stats, onOpen, onProfile }) {
       {/* Hero Section */}
       <div className="relative z-10 space-y-6 pt-4 text-center sm:text-left">
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
-          <span className="inline-flex items-center gap-2 font-console text-xs tracking-wider text-[#50e3c2]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#50e3c2] animate-ping" />
+          <span className="inline-flex items-center gap-2.5 font-console text-xs tracking-wider text-[#50e3c2]">
+            <span className="flex items-end gap-0.5 h-3.5">
+              <span className="w-0.5 bg-[#50e3c2] animate-bounce" style={{ height: "60%", animationDuration: "0.8s" }} />
+              <span className="w-0.5 bg-[#50e3c2] animate-bounce" style={{ height: "100%", animationDuration: "1.1s" }} />
+              <span className="w-0.5 bg-[#50e3c2] animate-bounce" style={{ height: "45%", animationDuration: "0.7s" }} />
+              <span className="w-0.5 bg-[#50e3c2] animate-bounce" style={{ height: "85%", animationDuration: "0.9s" }} />
+            </span>
             78,890 TRACKS LIVE
           </span>
           <span className="text-white/20">·</span>
