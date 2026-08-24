@@ -6,37 +6,10 @@ import { WORDZIC_WORDS, evaluateWordleGuess } from "../puzzleData";
 export { evaluateWordleGuess };
 
 const KEYBOARD_ROWS = [
-  if (!guess || !target || guess.length !== 5 || target.length !== 5) {
-    return Array(5).fill("absent");
-  }
-  const res = Array(5).fill("absent");
-  const letterCounts = {};
-
-  for (let i = 0; i < 5; i++) {
-    const char = target[i];
-    letterCounts[char] = (letterCounts[char] || 0) + 1;
-  }
-
-  // Pass 1: exact matches
-  for (let i = 0; i < 5; i++) {
-    if (guess[i] === target[i]) {
-      res[i] = "correct";
-      letterCounts[guess[i]]--;
-    }
-  }
-
-  // Pass 2: misplaced matches up to remaining letter frequency
-  for (let i = 0; i < 5; i++) {
-    if (res[i] === "correct") continue;
-    const char = guess[i];
-    if (letterCounts[char] && letterCounts[char] > 0) {
-      res[i] = "present";
-      letterCounts[char]--;
-    }
-  }
-
-  return res;
-}
+  ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+  ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+  ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "⌫"],
+];
 
 export function Wordzic({ onBack }) {
   const [targetIndex, setTargetIndex] = useState(0);
