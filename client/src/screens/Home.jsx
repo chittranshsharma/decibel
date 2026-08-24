@@ -1,6 +1,7 @@
 // Home hub, profile, and side menu — Jam & Linear Bento Aesthetic.
 import { useEffect, useRef, useState } from "react";
 import { EYEBROW, PANEL, BTN_AMBER } from "../ui";
+import DriftWall from "../components/DriftWall";
 
 export const GAMES = [
   { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM", gradient: "from-[#ff0080] to-[#7928ca]" },
@@ -79,6 +80,29 @@ export function Home({ games, stats, onOpen, onProfile }) {
           {stats.games} MATCHES · {stats.wins} WINS · BEST {stats.bestScore}
         </span>
       </button>
+
+      {/* 3D Drifting Music Crate Wall */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <p className={EYEBROW}>3D Sound & Crate Wall</p>
+          <span className="font-console text-[10px] text-dim uppercase">Interactive Parallax</span>
+        </div>
+        <div className="relative h-[220px] sm:h-[260px] w-full overflow-hidden rounded-2xl border border-white/10 bg-black/80 shadow-2xl">
+          <DriftWall
+            columns={5}
+            tileWidth={140}
+            tileHeight={90}
+            gap={12}
+            tilt={14}
+            turn={-12}
+            depth={90}
+            speed={32}
+            parallax={0.5}
+            lift={42}
+            overlayColor="#07070a"
+          />
+        </div>
+      </div>
 
       {/* Bento Grid: Game Modes Matrix */}
       <div>
