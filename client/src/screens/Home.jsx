@@ -47,9 +47,6 @@ export const GAMES = [
 export function Home({ games, stats, onOpen, onProfile, googleUser, onGoogleSignIn, onGoogleSignOut }) {
   return (
     <div className="relative animate-rise space-y-12">
-      {/* Subtle Hero Acoustic Backdrop */}
-      <div className="hero-backdrop" />
-
       {/* Hero Section */}
       <div className="relative z-10 space-y-6 pt-4 text-center sm:text-left">
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">

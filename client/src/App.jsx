@@ -23,7 +23,7 @@ import { Reveal } from "./screens/Reveal";
 import { GameOver } from "./screens/GameOver";
 import FloatingDockNav from "./components/FloatingDockNav";
 import { NoiseTexture } from "./components/ui/noise-texture";
-import { BackgroundGradientAnimation } from "./components/ui/background-gradient-animation";
+import DecibelWavefield from "./components/DecibelWavefield";
 
 // Performance: Code-split heavy solo puzzle mini-games
 const Harmonies = lazy(() => import("./screens/Harmonies").then((m) => ({ default: m.Harmonies })));
@@ -241,19 +241,8 @@ export default function App() {
 
   return (
     <div className="crt-scan min-h-screen bg-void font-console text-bone antialiased selection:bg-amber selection:text-black">
-      <BackgroundGradientAnimation
-        gradientBackgroundStart="rgb(8, 6, 14)"
-        gradientBackgroundEnd="rgb(3, 2, 8)"
-        firstColor="255, 0, 128"
-        secondColor="121, 40, 202"
-        thirdColor="0, 223, 216"
-        fourthColor="245, 166, 35"
-        fifthColor="61, 240, 122"
-        pointerColor="180, 80, 255"
-        containerClassName="fixed inset-0 z-0 pointer-events-none opacity-40"
-        interactive={true}
-      />
-      <NoiseTexture noiseOpacity={0.35} className="opacity-20 fixed inset-0 z-0 pointer-events-none" />
+      <DecibelWavefield />
+      <NoiseTexture noiseOpacity={0.30} className="opacity-20 fixed inset-0 z-0 pointer-events-none" />
       {error && <ErrorBar message={error} />}
       {loading && <LoadingOverlay message={loading.message} />}
       {countdown && view === "play" && joined && state && phase !== "LOBBY" && phase !== "GAME_OVER" && (
