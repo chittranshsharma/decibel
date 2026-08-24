@@ -1,0 +1,107 @@
+# Deploying Snippet
+
+Snippet has **two deployable parts** that must go to **two different kinds of host**:
+
+| Part | What it is | Where it goes |
+| --- | --- | --- |
+| `client/` | Static Vite/React SPA | **Vercel** (static) |
+| repo root (`server.js`, …) | Long-running, stateful Socket.IO game server (in-memory rooms + timers + WebSockets) | **A persistent host** — Railway / Render / Fly / a VM |
+
+> **Why not all on Vercel?** The game server holds every room's state in memory and
+> keeps WebSocket connections open for the life of a match. Vercel Functions are
+> ephemeral and stateless and don't host a persistent Socket.IO server, so the
+> backend cannot run there. Vercel hosts only the static client. (This is finding
+> **C1** from the audit.)
+
+---
+
+## 1. Backend → Railway / Render / Fly
+
+1. Create a service from this repo (root directory = repo root).
+2. Start command: `npm start` (runs `node server.js`).
+3. Set environment variables (see `.env.example`):
+   - `NODE_ENV=production`
+   - `CLIENT_ORIGIN=https://<your-vercel-domain>` — **required**; without it, in
+     production the server blocks all cross-origin clients (fail closed, finding H3).
+   - `GOOGLE_CLIENT_ID=<your OAuth web client id>` — enables verified sign-in.
+   - Optional: `MAX_ROOMS`, `MAX_CONN_PER_IP`, `DATABASE_URL` (+ `npm install pg`),
+     `REDIS_URL`, `SENTRY_DSN`, `LOG_FORMAT=json`.
+4. **Song catalog**: on boot the server starts a background ingest that builds a
+   large local song pool from Apple's public chart feeds + per-genre artist
+   seeds (see `catalog/`). No key needed. With `DATABASE_URL` set the catalog
+   persists in Postgres; without it, it lives in a JSON snapshot on disk
+   (`CATALOG_FILE`) and simply re-ingests after a redeploy wipes the disk.
+   Until the first ingest finishes, matches are served by the live iTunes
+   fallback, so nothing blocks. Check progress at `GET /catalog`.
+   Manual runs: `npm run ingest` (full), `npm run ingest:charts` (refresh).
+
+   **Refreshing a deployed catalog on demand.** The server already refreshes
+   itself (a chart sweep at every boot, then every 24h), but to force one
+   without waiting, set `ADMIN_TOKEN` to a random secret and POST:
+
+   ```
+   curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
+     "https://<backend>/catalog/refresh?mode=charts"
+   ```
+
+   `mode` is `charts` (fast, ~1 min), `full` (charts + every artist seed,
+   ~5 min), or `artists`. Responds `202 {"started":true}` and runs detached —
+   watch `GET /catalog` for the totals to move. A second call while one is in
+   flight gets `409 already_running`. **With `ADMIN_TOKEN` unset the route does
+   not exist**, so an unconfigured deploy exposes no admin surface.
+
+   **Persisting it on Render** (optional but recommended — otherwise every
+   deploy and every free-tier spin-down re-ingests from scratch):
+   1. Render dashboard → **New → Postgres**, any name, same region as the
+      backend service.
+   2. Open the database → copy its **Internal Database URL**.
+   3. Backend service → **Environment** → add `DATABASE_URL` = that URL → save.
+      Render redeploys; the `catalog_tracks` table is created automatically on
+      boot and the first ingest fills it (a few minutes, in the background).
+   No other change is needed: `pg` is already a dependency and `npm start` is
+   plain `node server.js`, so nothing about the start command or Node version
+   has to change. Render's free Postgres is deleted after its trial window — if
+   that happens the server logs a warning and falls back to the JSON snapshot,
+   it does not go down.
+4. Note the public URL, e.g. `https://snippet-server.up.railway.app`.
+
+## 2. Client → Vercel
+
+1. Import the repo in Vercel.
+2. **Set the project Root Directory to `client`** (Vercel → Settings → General →
+   Root Directory). This is what keeps Vercel from trying to build/run the backend.
+3. Framework preset: **Vite**. Build: `npm run build`. Output: `dist`.
+4. Environment variables (see `client/.env.example`):
+   - `VITE_SOCKET_URL=https://<your-backend-host>` (from step 1.4).
+   - `VITE_GOOGLE_CLIENT_ID=<same OAuth web client id as the backend>`.
+5. Deploy. `client/vercel.json` already ships the SPA rewrite + security headers (CSP).
+
+## 3. Google OAuth (finding H1)
+
+The OAuth client currently authorizes only `http://localhost:5173`, so sign-in
+will fail on the deployed domain until you add it:
+
+1. Google Cloud Console → APIs & Services → Credentials → your OAuth client.
+2. **Authorized JavaScript origins** → add your Vercel production URL (and any
+   preview URL you use), e.g. `https://your-app.vercel.app`.
+3. No redirect URI is needed (Google Identity Services uses the popup flow).
+
+## 4. Verify
+
+- Open the Vercel URL → the "Sign in with Google" button renders (means
+  `VITE_GOOGLE_CLIENT_ID` reached the build).
+- Create a room → another browser joins with the code → a round plays. This
+  confirms `VITE_SOCKET_URL` and `CLIENT_ORIGIN` line up.
+- Backend health check: `GET https://<backend>/` returns `{ "ok": true }`.
+
+## Environment variable summary
+
+| Variable | Where | Required | Purpose |
+| --- | --- | --- | --- |
+| `CLIENT_ORIGIN` | backend | prod: yes | CORS/origin allowlist (fail closed in prod) |
+| `GOOGLE_CLIENT_ID` | backend | for sign-in | server-side ID-token verification |
+| `NODE_ENV` | backend | prod: yes | enables fail-closed CORS |
+| `MAX_ROOMS` / `MAX_CONN_PER_IP` | backend | no | abuse caps (defaults 500 / 30) |
+| `ADMIN_TOKEN` | backend | no | enables `POST /catalog/refresh`; unset disables the route |
+| `VITE_SOCKET_URL` | client | prod: yes | backend URL the SPA connects to |
+| `VITE_GOOGLE_CLIENT_ID` | client | for sign-in | renders the Google button |

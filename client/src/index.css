@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  /* Indigo canvas + a faint dot grid for arcade-cabinet depth. */
+  background-color: #13131e;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 22px 22px;
+  font-family: "Space Mono", ui-monospace, monospace;
+}
+
+/* ----- CRT signature ----- */
+.crt-scan::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  background: repeating-linear-gradient(
+    rgba(0, 0, 0, 0) 0 2px,
+    rgba(0, 0, 0, 0.14) 2px 3px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* Phosphor bloom — gold scoreboard, pink GO, red low-time. */
+.phosphor {
+  color: #ffc93c;
+  text-shadow: 0 0 2px rgba(255, 201, 60, 0.7), 0 0 12px rgba(255, 201, 60, 0.45);
+}
+.phosphor-pink {
+  color: #ff3d7f;
+  text-shadow: 0 0 2px rgba(255, 61, 127, 0.7), 0 0 14px rgba(255, 61, 127, 0.5);
+}
+.phosphor-bad {
+  color: #ff4d6d;
+  text-shadow: 0 0 2px rgba(255, 77, 109, 0.7), 0 0 12px rgba(255, 77, 109, 0.45);
+}
+
+/* Barrel vignette on the play frame. */
+.bezel {
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.45);
+}
+
+/* Respect reduced-motion: kill scanlines + all animation/transition. */
+@media (prefers-reduced-motion: reduce) {
+  .crt-scan::after {
+    background: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
