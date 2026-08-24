@@ -116,6 +116,9 @@ export default function AudioBackground() {
         }}
       />
 
+      {/* Tactile Analog Noise Grain Texture */}
+      <div className="noise-overlay" />
+
       {/* Subtle Top Hardware Spotlight */}
       <div 
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] pointer-events-none"
