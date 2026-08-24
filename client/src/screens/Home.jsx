@@ -1,38 +1,41 @@
-// Home hub, profile, and side menu — landing surfaces outside a room.
+// Home hub, profile, and side menu — Vercel Geist Design System + Arcade Accents.
 import { useEffect, useRef, useState } from "react";
 import { EYEBROW, PANEL } from "../ui";
 
 export const GAMES = [
-  { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM", color: "text-pink border-pink/40" },
-  { key: "heardle", glyph: "▶", title: "Heardle", sub: "Guess the song from its intro", status: "play", clip: "INTRO", color: "text-good border-good/40" },
-  { key: "create", glyph: "+", title: "Create Room", sub: "Private room — challenge your friends", status: "play", clip: "RANDOM", color: "text-amber border-amber/40" },
-  { key: "harmonies", glyph: "⌘", title: "Harmonies", sub: "Music connections 4x4 puzzle", status: "play", color: "text-cyan border-cyan/40" },
-  { key: "wordzic", glyph: "▦", title: "Wordzic", sub: "Guess the 5-letter music word", status: "play", color: "text-yellow border-yellow/40" },
-  { key: "lyricles", glyph: "❝", title: "Lyricles", sub: "Guess the song from its lyrics", status: "play", color: "text-purple border-purple/40" },
-  { key: "crosszic", glyph: "✚", title: "Crosszic", sub: "Interactive 5x5 music crossword", status: "play", color: "text-good border-good/40" },
+  { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM", accent: "text-[#ff0080]" },
+  { key: "heardle", glyph: "▶", title: "Heardle", sub: "Guess the song from its intro", status: "play", clip: "INTRO", accent: "text-[#3df07a]" },
+  { key: "create", glyph: "+", title: "Create Room", sub: "Private multiplayer room for friends", status: "play", clip: "RANDOM", accent: "text-[#0070f3]" },
+  { key: "harmonies", glyph: "⌘", title: "Harmonies", sub: "Music connections 4x4 puzzle", status: "play", accent: "text-[#00dfd8]" },
+  { key: "wordzic", glyph: "▦", title: "Wordzic", sub: "Guess the 5-letter music term", status: "play", accent: "text-[#f9cb28]" },
+  { key: "lyricles", glyph: "❝", title: "Lyricles", sub: "Guess the song from its lyrics", status: "play", accent: "text-[#7928ca]" },
+  { key: "crosszic", glyph: "✚", title: "Crosszic", sub: "Interactive 5x5 music crossword", status: "play", accent: "text-[#3df07a]" },
 ];
 
 // ---------- Home hub (landing) ----------
 export function Home({ games, stats, onOpen, onProfile }) {
   return (
-    <div className="animate-rise space-y-10">
+    <div className="relative animate-rise space-y-12">
+      {/* Vercel Multi-Stop Hero Mesh Gradient */}
+      <div className="vercel-mesh-bg" />
+
       {/* Hero Section */}
-      <div className="relative space-y-4">
+      <div className="relative z-10 space-y-5 pt-4 text-left">
         <div className="flex items-center gap-2">
-          <span className="font-coin text-xs tracking-widest text-pink animate-pulse">● INSERT COIN</span>
-          <span className="border border-good/40 bg-good/10 px-2 py-0.5 font-console text-[10px] uppercase tracking-widest text-good">
-            LIVE // 78,890 SONGS
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 font-console text-[11px] font-medium tracking-[0.14em] text-dim backdrop-blur-md">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#00dfd8] animate-pulse" />
+            LIVE // 78,890 TRACKS
           </span>
         </div>
-        
-        <h2 className="font-marquee text-4xl font-black uppercase leading-[1.05] tracking-tight text-bone sm:text-5xl">
-          GUESS THE TRACK.
+
+        <h1 className="font-geist text-5xl font-semibold tracking-[-2.4px] text-white leading-[1.04] sm:text-6xl">
+          Guess the track.
           <br />
-          <span className="phosphor-pink">BEAT YOUR SQUAD.</span>
-        </h2>
-        
-        <p className="font-console text-xs leading-relaxed text-dim sm:text-sm">
-          High-frequency real-time multiplayer music engine. 11 curated genres, custom Spotify playlists, and daily music puzzles.
+          <span className="text-gradient-full">Beat your squad.</span>
+        </h1>
+
+        <p className="max-w-lg font-geist text-base font-normal leading-relaxed text-[#888888]">
+          The zero-latency, server-authoritative multiplayer audio engine. 11 curated genres, custom Spotify playlists, and daily music puzzles.
         </p>
       </div>
 
@@ -40,13 +43,13 @@ export function Home({ games, stats, onOpen, onProfile }) {
       <button
         type="button"
         onClick={onProfile}
-        className={`${PANEL} glass-panel-hover flex w-full items-center justify-between px-5 py-4 text-left border border-rule/90`}
+        className={`${PANEL} flex w-full items-center justify-between px-5 py-4 text-left`}
       >
-        <span className="flex items-center gap-2.5">
-          <span className="h-2 w-2 rounded-full bg-amber animate-ping" />
+        <span className="flex items-center gap-3">
+          <span className="h-2 w-2 rounded-full bg-[#f5a623]" />
           <span className={EYEBROW}>Player Profile</span>
         </span>
-        <span className="font-console text-xs tabular-nums text-amber font-bold">
+        <span className="font-console text-xs font-semibold tabular-nums text-bone">
           {stats.games} MATCHES · {stats.wins} WINS · BEST {stats.bestScore}
         </span>
       </button>
@@ -55,7 +58,7 @@ export function Home({ games, stats, onOpen, onProfile }) {
       <div>
         <div className="flex items-center justify-between pb-3">
           <p className={EYEBROW}>Select Game Mode</p>
-          <span className="font-console text-[10px] uppercase text-dim tracking-wider">7 Modes Active</span>
+          <span className="font-console text-[11px] text-dim uppercase">7 Modes Ready</span>
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {games.map((g) => (
@@ -78,27 +81,27 @@ function GameCard({ game, onOpen }) {
       type="button"
       onClick={() => playable && onOpen(game)}
       disabled={!playable}
-      className={`${PANEL} glass-panel-hover flex items-start gap-4 p-4 text-left border border-rule/90 transition-all ${
-        playable ? "hover:border-pink enabled:active:scale-[.97]" : "opacity-60"
+      className={`${PANEL} flex items-start gap-4 p-4 text-left transition-all ${
+        playable ? "hover:border-white/20 active:scale-[.98]" : "opacity-50"
       }`}
     >
       <span
-        className={`grid h-10 w-10 shrink-0 place-items-center border bg-void font-marquee text-xl font-bold shadow-inner ${
-          game.color || "text-pink border-pink/40"
+        className={`grid h-10 w-10 shrink-0 place-items-center rounded-md border border-white/10 bg-black font-geist text-lg font-semibold ${
+          game.accent || "text-white"
         }`}
       >
         {game.glyph}
       </span>
       <span className="min-w-0 flex-1">
         <span className="flex items-center justify-between">
-          <span className="font-console text-sm uppercase font-bold tracking-wide text-bone">
+          <span className="font-geist text-base font-medium tracking-[-0.4px] text-white">
             {game.title}
           </span>
-          <span className="font-console text-[10px] text-pink uppercase tracking-widest font-bold">
-            ▶ Play
+          <span className="font-console text-[11px] uppercase tracking-wider text-dim hover:text-white">
+            Play →
           </span>
         </span>
-        <span className="mt-1 block font-console text-xs leading-relaxed text-dim">
+        <span className="mt-1 block font-geist text-xs leading-relaxed text-[#888888]">
           {game.sub}
         </span>
       </span>
@@ -107,21 +110,21 @@ function GameCard({ game, onOpen }) {
 }
 
 const WHY_ITEMS = [
-  { t: "Massive 78k+ Song Store", d: "Deep catalogs across 11 genres, updated live via Apple & Supabase." },
-  { t: "Zero-Latency Real-Time", d: "Sub-2ms indexed database queries, high-frequency WebSockets." },
-  { t: "Custom Spotify Import", d: "Paste any Spotify playlist link and play rounds from it instantly." },
-  { t: "Mainstream & Underground", d: "Toggle between global chart-toppers and niche crate deep cuts." },
+  { t: "Massive 78k+ Catalog", d: "11 meticulously curated genres, updated live via Apple Search CDN & Supabase PostgreSQL." },
+  { t: "Sub-2ms Database Queries", d: "GIN array containment indexes & B-Tree point lookups for instantaneous sampling." },
+  { t: "Keyless Spotify Import", d: "Extract public Spotify playlists and stream high-bitrate preview snippets in real-time." },
+  { t: "Vibe Tier Selector", d: "Toggle between mainstream billboard anthems and deep underground crate cuts." },
 ];
 
 function WhyDecibel() {
   return (
     <div className="space-y-3">
-      <p className={EYEBROW}>Why Decibel</p>
+      <p className={EYEBROW}>System Architecture</p>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {WHY_ITEMS.map((i) => (
-          <div key={i.t} className={`${PANEL} p-4 glass-panel-hover border border-rule/80`}>
-            <p className="font-console text-xs font-bold uppercase tracking-wider text-amber">{i.t}</p>
-            <p className="mt-1 font-console text-xs leading-relaxed text-dim">{i.d}</p>
+          <div key={i.t} className={`${PANEL} p-5`}>
+            <p className="font-geist text-sm font-semibold tracking-[-0.3px] text-white">{i.t}</p>
+            <p className="mt-1.5 font-geist text-xs leading-relaxed text-[#888888]">{i.d}</p>
           </div>
         ))}
       </div>
@@ -131,20 +134,20 @@ function WhyDecibel() {
 
 const FAQ_ITEMS = [
   {
-    q: "How does Spotify playlist import work?",
-    a: "Paste any public Spotify playlist URL into the lobby. Decibel extracts the song metadata and matches each track with a high-bitrate 30-second playable audio preview.",
+    q: "How does the Spotify playlist scraper work?",
+    a: "Decibel uses a zero-dependency headless resolver to extract public Spotify embed payloads and match tracks against high-quality 30-second audio stream CDN endpoints.",
   },
   {
-    q: "What genres and eras are supported?",
-    a: "11 genres including Modern Hip-Hop, Old School Rap, Trap, Hyperpop, Desi Hip Hop, Rock, Indie, Bedroom Pop, R&B, Pop, and Desi Indie, with decades spanning back to the 1980s.",
+    q: "What music genres are included in the engine?",
+    a: "11 scene rosters: Modern Hip-Hop, Old School Rap, Trap, Hyperpop, Desi Hip Hop, Rock & Alt, Indie, Bedroom Pop, R&B & Soul, Pop & Dance, and Desi Indie.",
   },
   {
-    q: "Can I play solo or with friends?",
-    a: "Both! Play single-player puzzles (Harmonies, Wordzic, Lyricles, Crosszic, Heardle) or create private multiplayer rooms for up to 8 players with live scoring and speed bonuses.",
+    q: "How does scoring and velocity calculation work?",
+    a: "Scores scale with round depth (300 to 2550+ pts), speed velocity bonus (up to +350 pts based on millisecond latency), and consecutive answer streak multipliers.",
   },
   {
-    q: "Is an account required?",
-    a: "No downloads or accounts needed. It runs instantly in your browser as a responsive PWA.",
+    q: "Are accounts or downloads required?",
+    a: "No downloads or authentication barriers. Play directly in any modern desktop or mobile browser as a progressive web app.",
   },
 ];
 
@@ -152,25 +155,25 @@ function Faq() {
   const [open, setOpen] = useState(-1);
   return (
     <div className="space-y-3">
-      <p className={EYEBROW}>Popular Questions</p>
+      <p className={EYEBROW}>Frequently Asked Questions</p>
       <div className="space-y-2">
         {FAQ_ITEMS.map((f, i) => {
           const isOpen = open === i;
           return (
-            <div key={f.q} className={`${PANEL} overflow-hidden border border-rule/80 transition-all`}>
+            <div key={f.q} className={`${PANEL} overflow-hidden`}>
               <button
                 type="button"
                 onClick={() => setOpen(isOpen ? -1 : i)}
                 aria-expanded={isOpen}
-                className="flex w-full items-center justify-between p-4 text-left font-console text-xs uppercase tracking-wide text-bone transition-colors hover:text-amber"
+                className="flex w-full items-center justify-between p-4 text-left font-geist text-sm font-medium tracking-[-0.2px] text-bone transition-colors hover:text-white"
               >
                 <span>{f.q}</span>
-                <span className="shrink-0 font-console text-amber font-bold" aria-hidden="true">
+                <span className="shrink-0 font-console text-xs text-dim" aria-hidden="true">
                   {isOpen ? "−" : "+"}
                 </span>
               </button>
               {isOpen && (
-                <p className="border-t border-rule/80 bg-void/50 p-4 font-console text-xs leading-relaxed text-dim">
+                <p className="border-t border-white/10 bg-black/40 p-4 font-geist text-xs leading-relaxed text-[#888888]">
                   {f.a}
                 </p>
               )}
@@ -184,52 +187,52 @@ function Faq() {
 
 function SiteFooter() {
   return (
-    <footer className="border-t border-rule/80 pt-6 space-y-3">
+    <footer className="border-t border-white/10 pt-8 space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="font-marquee text-xl font-black uppercase tracking-tight text-bone">
-          DECIBEL<span className="text-pink">.</span>
+        <span className="font-geist text-lg font-semibold tracking-[-0.5px] text-white">
+          DECIBEL<span className="text-[#00dfd8]">.</span>
         </span>
-        <span className={EYEBROW}>HIGH-FREQUENCY AUDIO TRIVIA ENGINE</span>
+        <span className={EYEBROW}>High-Frequency Real-Time Music Engine</span>
       </div>
-      <p className="font-console text-xs leading-relaxed text-dim">
-        Multiplayer audio engine powered by Supabase PostgreSQL and Apple Search CDN.
+      <p className="font-geist text-xs leading-relaxed text-dim">
+        Engineered with React 18, Vite, Socket.IO, and Supabase PostgreSQL 17.
       </p>
     </footer>
   );
 }
 
-// ---------- My profile (local stats) ----------
+// ---------- Profile Screen ----------
 export function Profile({ stats, onBack }) {
   const acc = stats.rounds > 0 ? Math.round((stats.correct / stats.rounds) * 100) : 0;
   const winRate = stats.games > 0 ? Math.round((stats.wins / stats.games) * 100) : 0;
   const rows = [
-    { k: "Games played", v: stats.games },
-    { k: "Wins", v: `${stats.wins} · ${winRate}%` },
-    { k: "Best score", v: stats.bestScore },
-    { k: "Correct", v: `${stats.correct} / ${stats.rounds} · ${acc}%` },
+    { k: "Matches Played", v: stats.games },
+    { k: "Victories", v: `${stats.wins} (${winRate}%)` },
+    { k: "High Score", v: stats.bestScore },
+    { k: "Accuracy", v: `${stats.correct} / ${stats.rounds} (${acc}%)` },
   ];
   return (
     <div className="animate-rise space-y-6">
       <button
         type="button"
         onClick={onBack}
-        className={`${EYEBROW} inline-flex min-h-11 items-center hover:text-amber`}
+        className={`${EYEBROW} inline-flex min-h-11 items-center text-dim hover:text-white`}
       >
         ‹ Home
       </button>
 
-      <div className="flex items-center justify-between border-b border-rule pb-3">
-        <h2 className="font-marquee text-3xl font-black uppercase tracking-tight text-bone">
+      <div className="flex items-center justify-between border-b border-white/10 pb-3">
+        <h2 className="font-geist text-3xl font-semibold tracking-[-1px] text-white">
           Player Profile
         </h2>
-        <span className="font-coin text-xs text-amber">RECORD</span>
+        <span className="font-console text-xs text-dim uppercase">Stats Overview</span>
       </div>
 
-      <div className={`${PANEL} p-5 space-y-4 border border-rule/90`}>
+      <div className={`${PANEL} p-5 space-y-4`}>
         {rows.map((r) => (
-          <div key={r.k} className="flex items-center justify-between border-b border-rule/40 pb-2 last:border-0 last:pb-0">
+          <div key={r.k} className="flex items-center justify-between border-b border-white/5 pb-2 last:border-0 last:pb-0">
             <span className={EYEBROW}>{r.k}</span>
-            <span className="font-console text-sm text-bone font-bold tabular-nums">{r.v}</span>
+            <span className="font-console text-sm text-bone font-semibold tabular-nums">{r.v}</span>
           </div>
         ))}
       </div>
@@ -237,7 +240,7 @@ export function Profile({ stats, onBack }) {
   );
 }
 
-// ---------- Side menu ----------
+// ---------- Side Menu ----------
 export function SideMenu({ games, onClose, onHome, onOpen, onProfile }) {
   const panelRef = useRef(null);
   const playable = games.filter((g) => g.status === "play");
@@ -252,20 +255,20 @@ export function SideMenu({ games, onClose, onHome, onOpen, onProfile }) {
 
   return (
     <div className="fixed inset-0 z-[70] flex" role="dialog" aria-modal="true" aria-label="Menu">
-      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onClick={onClose} />
       <nav
         ref={panelRef}
-        className="animate-rise relative z-10 w-72 max-w-[80vw] overflow-y-auto border-r border-rule bg-cabinet/95 p-6 backdrop-blur-md"
+        className="animate-rise relative z-10 w-72 max-w-[80vw] overflow-y-auto border-r border-white/10 bg-[#0d0d10]/95 p-6 backdrop-blur-md"
       >
-        <div className="flex items-center justify-between border-b border-rule pb-4">
-          <span className="font-marquee text-xl font-black uppercase tracking-tight text-bone">
-            DECIBEL<span className="text-pink">.</span>
+        <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <span className="font-geist text-lg font-semibold tracking-[-0.5px] text-white">
+            DECIBEL<span className="text-[#00dfd8]">.</span>
           </span>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close menu"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center font-console text-xl text-dim transition-colors hover:text-pink"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center font-geist text-xl text-dim transition-colors hover:text-white"
           >
             ✕
           </button>
@@ -278,9 +281,9 @@ export function SideMenu({ games, onClose, onHome, onOpen, onProfile }) {
               <button
                 type="button"
                 onClick={() => onOpen(g)}
-                className="flex min-h-11 w-full items-center gap-3 px-2 py-2 text-left font-console text-xs uppercase tracking-wider text-bone transition-all hover:bg-void/60 hover:text-pink"
+                className="flex min-h-11 w-full items-center gap-3 px-3 py-2 text-left font-geist text-sm text-bone transition-all hover:bg-white/5 hover:text-white rounded-md"
               >
-                <span className={`w-5 text-center font-bold ${g.color?.split(" ")[0] || "text-pink"}`}>
+                <span className={`w-5 text-center font-bold ${g.accent || "text-white"}`}>
                   {g.glyph}
                 </span>
                 {g.title}
@@ -289,20 +292,20 @@ export function SideMenu({ games, onClose, onHome, onOpen, onProfile }) {
           ))}
         </ul>
 
-        <div className="mt-8 border-t border-rule pt-4 space-y-2">
+        <div className="mt-8 border-t border-white/10 pt-4 space-y-2">
           <button
             type="button"
             onClick={onHome}
-            className="flex min-h-11 w-full items-center gap-3 px-2 py-2 text-left font-console text-xs uppercase tracking-wider text-dim hover:text-bone"
+            className="flex min-h-11 w-full items-center gap-3 px-3 py-2 text-left font-geist text-sm text-dim hover:text-white rounded-md"
           >
             ⌂ Home Hub
           </button>
           <button
             type="button"
             onClick={onProfile}
-            className="flex min-h-11 w-full items-center gap-3 px-2 py-2 text-left font-console text-xs uppercase tracking-wider text-dim hover:text-amber"
+            className="flex min-h-11 w-full items-center gap-3 px-3 py-2 text-left font-geist text-sm text-dim hover:text-white rounded-md"
           >
-            ★ My Stats
+            ★ Player Profile
           </button>
         </div>
       </nav>

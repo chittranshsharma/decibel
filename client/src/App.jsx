@@ -357,30 +357,31 @@ export default function App() {
 function Masthead({ phase, round, total, onMenu, onBrand }) {
   const label =
     phase === "ROUND_PLAYING" || phase === "ROUND_REVEAL"
-      ? `Track ${String(round).padStart(2, "0")} / ${String(total ?? 10).padStart(2, "0")}`
+      ? `TRACK ${String(round).padStart(2, "0")} / ${String(total ?? 10).padStart(2, "0")}`
       : phase === "GAME_OVER"
-      ? "Side B · Final"
-      : "Side A · Lobby";
+      ? "FINAL RESULTS"
+      : "LOBBY";
   return (
-    <header className="flex items-center justify-between gap-3 border-b border-rule pb-4">
+    <header className="flex items-center justify-between gap-3 border-b border-white/10 pb-4">
       <div className="flex items-center gap-3">
         {onMenu && (
-          <button type="button"
+          <button
+            type="button"
             onClick={onMenu}
             aria-label="Open menu"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center font-console text-2xl leading-none text-dim transition-colors hover:text-amber"
+            className="inline-flex h-9 w-9 items-center justify-center font-geist text-lg leading-none text-dim transition-colors hover:text-white rounded-sm border border-white/10 bg-[#111114]"
           >
             ≡
           </button>
         )}
-        <h1 className="flex items-center font-marquee text-2xl font-black uppercase leading-none tracking-tight text-bone sm:text-3xl">
-          <button type="button"
+        <h1 className="flex items-center font-geist text-2xl font-semibold uppercase leading-none tracking-[-0.8px] text-white">
+          <button
+            type="button"
             onClick={onBrand || undefined}
             disabled={!onBrand}
             className="flex min-h-11 items-center disabled:cursor-default"
           >
-            Decibel
-            <span className="ml-1.5 inline-block h-[0.7em] w-[0.32em] animate-blink bg-pink" aria-hidden="true" />
+            DECIBEL<span className="text-[#00dfd8]">.</span>
           </button>
         </h1>
       </div>

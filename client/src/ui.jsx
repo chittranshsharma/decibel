@@ -3,21 +3,22 @@
 import { useEffect, useRef, useState } from "react";
 import sound from "./sound";
 
-// ---- Shared class fragments (drive the look across every screen) ----
-export const EYEBROW = "font-console text-[11px] uppercase tracking-[0.22em] text-dim font-bold";
-export const PANEL = "glass-panel border border-rule/90 shadow-2xl";
+// ---- Shared class fragments (Vercel Geist System + Arcade Accents) ----
+export const EYEBROW = "font-console text-[11px] uppercase tracking-[0.18em] text-dim font-medium";
+export const PANEL = "geist-card";
 
-// Primary CTA = pink with high-intensity neon glow & micro-lift
+// Primary Marketing/Play CTA = High-Contrast Pill with soft glow
 export const BTN_AMBER =
-  "bg-pink px-6 py-4 font-console text-sm uppercase font-bold tracking-[0.22em] text-black " +
-  "shadow-[0_0_28px_-4px_#FF3D7F] hover:shadow-[0_0_38px_0px_#FF3D7F] transition-all hover:bg-[#ff5e96] hover:scale-[1.01] active:scale-[.97] " +
-  "focus:outline-none focus:ring-2 focus:ring-pink focus:ring-offset-2 focus:ring-offset-void " +
+  "bg-white px-6 py-3.5 font-geist font-semibold text-sm rounded-full text-black " +
+  "shadow-[0_0_24px_rgba(255,255,255,0.18)] transition-all hover:bg-[#ebebeb] hover:scale-[1.01] active:scale-[.97] " +
+  "focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black " +
   "disabled:cursor-not-allowed disabled:bg-rule disabled:text-dim disabled:shadow-none disabled:transform-none";
 
+// In-App/Nav Control = 6px Square Button
 export const BTN_GHOST =
-  "border border-rule/80 bg-cabinet/80 backdrop-blur-sm px-5 py-3 font-console text-sm uppercase tracking-[0.2em] text-bone " +
-  "transition-all hover:border-amber hover:text-amber hover:shadow-[0_0_22px_-6px_rgba(255,201,60,0.4)] active:scale-[.97] " +
-  "focus:outline-none focus:ring-2 focus:ring-amber disabled:cursor-not-allowed disabled:opacity-50";
+  "border border-white/10 bg-[#111114] px-4 py-2.5 font-geist font-medium text-sm text-bone rounded-sm " +
+  "transition-all hover:border-white/25 hover:bg-[#18181c] active:scale-[.97] " +
+  "focus:outline-none focus:ring-2 focus:ring-white/20 disabled:cursor-not-allowed disabled:opacity-40";
 
 // Reaction call-outs (must match the server's REACTIONS whitelist). Typographic,
 // not emoji — keeps the §12 design rule while still being expressive.

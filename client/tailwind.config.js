@@ -4,24 +4,46 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Vibrant-arcade palette: dark indigo canvas + a structured neon set.
-        void: "#13131E", // app background (indigo, not flat black)
-        cabinet: "#1B1B2A", // panels / cards / option fills
-        rule: "#2E2E44", // hairline borders
-        bone: "#EDEDF2", // primary text
-        dim: "#8A8AA0", // secondary text
-        amber: "#FFC93C", // gold — scoreboard / hi-score / host
-        pink: "#FF3D7F", // primary CTA / brand accent
-        cyan: "#36D8FF", // secondary accent / option 1
-        purple: "#B14BFF", // sparing accent
-        yellow: "#FFD23F", // option 4 / highlight
-        good: "#3DF07A", // correct (green) — reveal + option 3
-        bad: "#FF4D6D", // wrong / error (red)
+        // Vercel Geist + Cyberpunk Audiophile Palette
+        void: "#000000", // Stark Vercel black canvas
+        surface: "#0a0a0c", // Deep surface
+        cabinet: "#111114", // Elevated card surface
+        "cabinet-hover": "#17171c",
+        rule: "#23232a", // 1px hairline border
+        "rule-light": "#33333f",
+        bone: "#ededed", // Pure Geist high-emphasis ink/text
+        dim: "#888888", // Geist body/mute
+        faint: "#555555",
+        
+        // Vercel Accent Trio & Multi-Stop Mesh Colors
+        "vercel-blue": "#0070f3",
+        "vercel-cyan": "#50e3c2",
+        "vercel-violet": "#7928ca",
+        "vercel-pink": "#ff0080",
+        "vercel-amber": "#f5a623",
+        
+        // Game Highlights
+        amber: "#f5a623",
+        pink: "#ff0080",
+        cyan: "#00dfd8",
+        purple: "#7928ca",
+        yellow: "#f9cb28",
+        good: "#3df07a", // Correct reveal / success
+        bad: "#ee0000", // Error / wrong guess
       },
       fontFamily: {
-        marquee: ["Archivo", "system-ui", "sans-serif"],
-        console: ['"Space Mono"', "ui-monospace", "monospace"],
+        geist: ["Geist", "sans-serif"],
+        geistmono: ['"Geist Mono"', "monospace"],
+        marquee: ["Geist", "Archivo", "system-ui", "sans-serif"],
+        console: ['"Geist Mono"', '"Space Mono"', "ui-monospace", "monospace"],
         coin: ['"Press Start 2P"', "ui-monospace", "monospace"],
+      },
+      borderRadius: {
+        sm: "6px",
+        md: "12px",
+        lg: "16px",
+        "pill-cat": "64px",
+        pill: "100px",
       },
       keyframes: {
         blink: { "50%": { opacity: "0" } },
@@ -43,23 +65,19 @@ export default {
           "15%": { transform: "translateY(-10px) scale(1)", opacity: "1" },
           "100%": { transform: "translateY(-120px) scale(1)", opacity: "0" },
         },
-        // Icon/marker pop: scale .25→1, blur 4→0 (make-interfaces spec values).
         popin: {
           from: { transform: "scale(.25)", opacity: "0", filter: "blur(4px)" },
           to: { transform: "scale(1)", opacity: "1", filter: "blur(0px)" },
         },
-        // Quick press-and-settle punch when an answer locks in.
         lockin: {
           "0%": { transform: "scale(1)" },
           "35%": { transform: "scale(.97)" },
           "100%": { transform: "scale(1)" },
         },
-        // Big countdown digit: lands from slightly oversized each tick.
         digitpop: {
           from: { transform: "scale(1.25)", opacity: "0" },
           to: { transform: "scale(1)", opacity: "1" },
         },
-        // Low-time heartbeat: subtle scale pulse, once per second.
         beat: {
           "0%, 100%": { transform: "scale(1)" },
           "50%": { transform: "scale(1.04)" },
