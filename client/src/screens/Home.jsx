@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { EYEBROW, PANEL, BTN_AMBER } from "../ui";
 import DriftWall from "../components/DriftWall";
+import Counter from "../components/Counter";
 
 export const GAMES = [
   { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM", gradient: "from-[#ff0080] to-[#7928ca]" },
@@ -25,7 +26,8 @@ export function Home({ games, stats, onOpen, onProfile }) {
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1 font-console text-[11px] font-semibold tracking-[0.14em] text-bone backdrop-blur-md shadow-sm">
             <span className="h-2 w-2 rounded-full bg-[#50e3c2] animate-ping" />
-            78,890 TRACKS LIVE
+            <Counter value={78890} fontSize={11} fontWeight={700} textColor="#50e3c2" gap={1} />
+            <span>TRACKS LIVE</span>
           </span>
           <span className="rounded-full border border-[#7928ca]/30 bg-[#7928ca]/10 px-3 py-1 font-console text-[11px] font-semibold text-[#aaffec] uppercase tracking-wider">
             11 SCENE ROSTERS
@@ -76,8 +78,10 @@ export function Home({ games, stats, onOpen, onProfile }) {
             <p className="font-console text-xs text-dim">Local device performance</p>
           </div>
         </span>
-        <span className="font-console text-xs font-semibold tabular-nums text-[#50e3c2]">
-          {stats.games} MATCHES · {stats.wins} WINS · BEST {stats.bestScore}
+        <span className="font-console text-xs font-semibold tabular-nums text-[#50e3c2] flex flex-wrap items-center gap-1.5">
+          <Counter value={stats.games} fontSize={12} textColor="#50e3c2" /> MATCHES ·{" "}
+          <Counter value={stats.wins} fontSize={12} textColor="#50e3c2" /> WINS · BEST{" "}
+          <Counter value={stats.bestScore} fontSize={12} textColor="#50e3c2" />
         </span>
       </button>
 
