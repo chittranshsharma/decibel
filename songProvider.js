@@ -44,6 +44,9 @@ export async function fetchVibeTracks(searchQueries = [], count = 20, opts = {})
   return samplePlaylistTracks(merged, count);
 }
 
+const JUNK_TRACK_REGEX =
+  /\b(instrumental|karaoke|tribute|cover|acoustic|type beat|slowed|sped up|nightcore|reverb|orchestral|synthesizer|piano version|guitar cover)\b|\((instrumental|karaoke|tribute|cover)\)|\[(instrumental|karaoke|tribute|cover)\]/i;
+
 /**
  * Directly fetch tracks for the exact curated artists registered in genres.js.
  * Guarantees all tracks in the game pool come strictly from the configured artists.
@@ -57,6 +60,9 @@ export async function fetchCuratedGenrePool(genre, count = 20, opts = {}) {
   // Pick up to 16 random artists from the curated roster
   const selectedArtists = shuffle(artists).slice(0, Math.min(16, artists.length));
 
+  const isDesi = genre === "desi-hip-hop" || genre === "desi-indie";
+  const countryParam = isDesi ? "&country=IN" : "";
+
   const trackPromises = selectedArtists.map(async (artist) => {
     try {
       const aLower = artist.toLowerCase();
@@ -68,17 +74,18 @@ export async function fetchCuratedGenrePool(genre, count = 20, opts = {}) {
         query = `${artist} band`;
       }
 
-      const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=8`;
+      const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=10${countryParam}`;
       const res = await fetch(url);
       if (!res.ok) return [];
       const data = await res.json();
       const results = (data.results || []).filter((r) => {
         if (!r || !r.previewUrl || !r.trackName || !r.artistName) return false;
         if (Number(r.trackTimeMillis) <= 20000) return false;
+        if (JUNK_TRACK_REGEX.test(r.trackName)) return false; // Filter instrumentals & karaoke
+
         const rLower = r.artistName.toLowerCase();
         
         // Split collaboration string into individual artist segments:
-        // "Badshah, KR$NA & Prajina" -> ["badshah", "kr$na", "prajina"]
         const segments = rLower
           .split(/[,;&/]+|\bfeat\.?\b|\bft\.?\b|\bwith\b|\bx\b/i)
           .map((s) => s.trim())

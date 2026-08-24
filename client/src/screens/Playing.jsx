@@ -312,23 +312,49 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
   );
 }
 
-// ---------- Spectrum Visualizer ----------
+// ---------- Spectrum Visualizer (60fps Real-Time Animated Wave) ----------
 function SpectrumVisualizer({ active }) {
-  const bars = [16, 28, 45, 68, 85, 95, 75, 60, 48, 70, 90, 80, 55, 35, 20, 30, 65, 82, 60, 40];
+  const [heights, setHeights] = useState(() => Array(24).fill(15));
+
+  useEffect(() => {
+    if (!active) {
+      setHeights(Array(24).fill(15));
+      return;
+    }
+    let animId;
+    let phase = 0;
+    const baseProfile = [20, 35, 55, 75, 90, 100, 85, 70, 60, 80, 95, 90, 75, 60, 45, 65, 85, 70, 50, 35, 25, 40, 30, 20];
+
+    const loop = () => {
+      phase += 0.12;
+      setHeights(
+        baseProfile.map((maxH, idx) => {
+          const wave1 = Math.sin(phase + idx * 0.45);
+          const wave2 = Math.cos(phase * 1.3 - idx * 0.3);
+          const factor = Math.max(0.18, (wave1 + wave2 + 2) / 4);
+          return Math.max(12, Math.round(maxH * factor));
+        })
+      );
+      animId = requestAnimationFrame(loop);
+    };
+
+    animId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animId);
+  }, [active]);
 
   return (
-    <div className="flex h-8 items-end justify-between gap-1 rounded-lg border border-white/10 bg-black/60 px-3 py-1.5 backdrop-blur-md">
-      {bars.map((maxH, idx) => (
+    <div className="flex h-10 items-end justify-between gap-1 rounded-xl border border-white/10 bg-[#0d0d14]/80 px-4 py-2 backdrop-blur-md shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]">
+      {heights.map((h, idx) => (
         <div
           key={idx}
-          className={`w-full rounded-sm transition-all duration-150 ${
-            active ? "bg-[#50e3c2]" : "bg-white/10"
+          className={`w-full rounded-sm transition-[height] duration-75 ${
+            active
+              ? "bg-gradient-to-t from-[#50e3c2] to-[#00dfd8] shadow-[0_0_8px_rgba(80,227,194,0.4)]"
+              : "bg-white/10"
           }`}
           style={{
-            height: active
-              ? `${Math.max(15, Math.floor(Math.random() * (maxH - 10) + 15))}%`
-              : "15%",
-            opacity: active ? 0.95 : 0.25,
+            height: `${h}%`,
+            opacity: active ? 0.95 : 0.2,
           }}
         />
       ))}

@@ -211,13 +211,17 @@ export function ReactionOverlay({ reactions }) {
   return (
     <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
       {reactions.map((r) => (
-        <span
-          key={r.id}
-          className="absolute font-geist text-2xl font-bold text-[#50e3c2] drop-shadow-[0_0_12px_rgba(80,227,194,0.6)] animate-floatup"
-          style={{ left: `${r.x}%`, top: `${r.y}%` }}
+        <div
+          key={r.key ?? `${r.id}-${r.ts}`}
+          className="absolute transform -translate-x-1/2 -translate-y-1/2 animate-floatup"
+          style={{ left: `${r.x ?? 50}%`, top: `${r.y ?? 50}%` }}
         >
-          {r.token}
-        </span>
+          <div className="rounded-2xl border border-[#50e3c2]/40 bg-[#0d0d14]/90 px-4 py-2 shadow-[0_0_24px_rgba(80,227,194,0.4)] backdrop-blur-md">
+            <span className="font-geist text-2xl font-black tracking-tight text-[#50e3c2] drop-shadow-[0_0_8px_rgba(80,227,194,0.8)]">
+              {r.token}
+            </span>
+          </div>
+        </div>
       ))}
     </div>
   );

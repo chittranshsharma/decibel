@@ -76,6 +76,9 @@ function sample(pool, n) {
 // Filters: must have previewUrl, must be longer than 20s. Dedupes by trackId
 // (iTunes can return the same track from multiple albums) to avoid repeats.
 // releaseYear is kept so callers can filter by decade.
+const JUNK_TRACK_REGEX =
+  /\b(instrumental|karaoke|tribute|cover|acoustic|type beat|slowed|sped up|nightcore|reverb|orchestral|synthesizer|piano version|guitar cover)\b|\((instrumental|karaoke|tribute|cover)\)|\[(instrumental|karaoke|tribute|cover)\]/i;
+
 function normalize(results) {
   const list = Array.isArray(results) ? results : [];
   const seen = new Set();
@@ -83,6 +86,7 @@ function normalize(results) {
   for (const r of list) {
     if (!r || !r.previewUrl) continue;                       // need a playable preview
     if (!(Number(r.trackTimeMillis) > MIN_DURATION_MS)) continue; // duration > 20s
+    if (r.trackName && JUNK_TRACK_REGEX.test(r.trackName)) continue; // skip instrumentals/karaoke
     if (seen.has(r.trackId)) continue;                       // dedupe -> avoid repeats
     seen.add(r.trackId);
     out.push({
