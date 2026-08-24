@@ -1,6 +1,7 @@
 // Game over: champion podium card, high scores, round history, chat, restart.
 import { useState } from "react";
 import { EYEBROW, PANEL, BTN_AMBER, Avatar, Chat, Leaderboard, useCountUp } from "../ui";
+import BorderGlow from "../components/BorderGlow";
 
 export function GameOver({ gameOver, players, myId, onRestart, messages, onChat }) {
   const rows =
@@ -25,21 +26,26 @@ export function GameOver({ gameOver, players, myId, onRestart, messages, onChat 
       </div>
 
       {champ && (
-        <div
-          className={`${PANEL} p-6 text-center border-[#50e3c2]/40 bg-gradient-to-b from-[#50e3c2]/10 to-transparent shadow-[0_0_40px_rgba(80,227,194,0.25)] space-y-3`}
-          style={{ animationDelay: "120ms" }}
+        <BorderGlow
+          animated={true}
+          borderRadius={24}
+          glowColor="168 76 60"
+          backgroundColor="rgba(14, 14, 20, 0.9)"
+          colors={['#50e3c2', '#ff0080', '#00dfd8']}
         >
-          <p className="font-console text-xs font-bold text-[#50e3c2] uppercase tracking-widest">
-            👑 Match Champion
-          </p>
-          <div className="flex items-center justify-center gap-3">
-            <Avatar name={champ.name} src={avatarOf[champ.id]} size={36} />
-            <p className="font-geist text-2xl font-bold text-white">{champ.name}</p>
+          <div className="p-6 text-center space-y-3">
+            <p className="font-console text-xs font-bold text-[#50e3c2] uppercase tracking-widest">
+              👑 Match Champion
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <Avatar name={champ.name} src={avatarOf[champ.id]} size={36} />
+              <p className="font-geist text-2xl font-bold text-white">{champ.name}</p>
+            </div>
+            <p className="font-geist text-5xl font-extrabold tabular-nums text-white">
+              {shownScore} <span className="text-sm font-normal text-dim">PTS</span>
+            </p>
           </div>
-          <p className="font-geist text-5xl font-extrabold tabular-nums text-white">
-            {shownScore} <span className="text-sm font-normal text-dim">PTS</span>
-          </p>
-        </div>
+        </BorderGlow>
       )}
 
       {rest.length > 0 && (

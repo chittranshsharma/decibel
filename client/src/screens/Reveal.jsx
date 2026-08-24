@@ -1,5 +1,6 @@
 // Reveal: round answer, winner card, per-player results, leaderboard.
 import { EYEBROW, PANEL, Avatar, Leaderboard, ReactionBar, useCountUp } from "../ui";
+import BorderGlow from "../components/BorderGlow";
 
 export function Reveal({ reveal, myId, onReact, players }) {
   const results = reveal?.results ?? [];
@@ -39,32 +40,37 @@ export function Reveal({ reveal, myId, onReact, players }) {
 
       {/* Winner Spotlight Card */}
       {winner ? (
-        <div
-          className={`${PANEL} p-6 border-[#50e3c2]/40 bg-[#50e3c2]/5 shadow-[0_0_35px_rgba(80,227,194,0.2)]`}
-          style={{ animationDelay: "160ms" }}
+        <BorderGlow
+          animated={true}
+          borderRadius={20}
+          glowColor="168 76 60"
+          backgroundColor="rgba(80, 227, 194, 0.06)"
+          colors={['#50e3c2', '#00dfd8', '#7928ca']}
         >
-          <div className="flex items-center justify-between">
-            <span className="rounded-full border border-[#50e3c2]/40 bg-[#50e3c2]/10 px-3 py-0.5 font-console text-[10px] font-bold text-[#50e3c2] uppercase">
-              Fastest Correct Answer
-            </span>
-            {winnerStreak > 0 && (
-              <span className="font-console text-xs font-bold text-[#f5a623]">
-                🔥 Streak +{winnerStreak}
+          <div className="p-6">
+            <div className="flex items-center justify-between">
+              <span className="rounded-full border border-[#50e3c2]/40 bg-[#50e3c2]/10 px-3 py-0.5 font-console text-[10px] font-bold text-[#50e3c2] uppercase">
+                Fastest Correct Answer
               </span>
-            )}
-          </div>
-          <div className="mt-3 flex items-end justify-between gap-4">
-            <div className="min-w-0">
-              <p className="truncate font-geist text-2xl font-bold text-white">
-                {winner.name}
-              </p>
-              <p className="mt-1 font-console text-xs tabular-nums text-dim">{winner.answerTimeSeconds}s response time</p>
+              {winnerStreak > 0 && (
+                <span className="font-console text-xs font-bold text-[#f5a623]">
+                  🔥 Streak +{winnerStreak}
+                </span>
+              )}
             </div>
-            <p className="shrink-0 font-geist text-4xl font-extrabold tabular-nums text-[#50e3c2]">
-              +{shownPoints}
-            </p>
+            <div className="mt-3 flex items-end justify-between gap-4">
+              <div className="min-w-0">
+                <p className="truncate font-geist text-2xl font-bold text-white">
+                  {winner.name}
+                </p>
+                <p className="mt-1 font-console text-xs tabular-nums text-dim">{winner.answerTimeSeconds}s response time</p>
+              </div>
+              <p className="shrink-0 font-geist text-4xl font-extrabold tabular-nums text-[#50e3c2]">
+                +{shownPoints}
+              </p>
+            </div>
           </div>
-        </div>
+        </BorderGlow>
       ) : (
         <div
           className={`${PANEL} p-6 text-center border-[#ee0000]/40 bg-[#ee0000]/5`}

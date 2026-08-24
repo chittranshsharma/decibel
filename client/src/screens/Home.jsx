@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { EYEBROW, PANEL, BTN_AMBER } from "../ui";
 import DriftWall from "../components/DriftWall";
+import BorderGlow from "../components/BorderGlow";
 
 export const GAMES = [
   { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM", gradient: "from-[#ff0080] to-[#7928ca]" },
@@ -61,25 +62,33 @@ export function Home({ games, stats, onOpen, onProfile }) {
         </div>
       </div>
 
-      {/* Player Profile Spotlight Card */}
-      <button
-        type="button"
-        onClick={onProfile}
-        className={`${PANEL} flex w-full items-center justify-between p-5 text-left transition-all hover:border-[#50e3c2]/40 group`}
+      {/* Player Profile Spotlight Card with BorderGlow */}
+      <BorderGlow
+        animated={true}
+        borderRadius={18}
+        glowColor="168 76 60"
+        backgroundColor="rgba(14, 14, 20, 0.85)"
+        colors={['#50e3c2', '#7928ca', '#00dfd8']}
       >
-        <span className="flex items-center gap-3">
-          <span className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-lg group-hover:scale-105 transition-transform">
-            ★
+        <button
+          type="button"
+          onClick={onProfile}
+          className="flex w-full items-center justify-between p-5 text-left transition-all group cursor-pointer"
+        >
+          <span className="flex items-center gap-3">
+            <span className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-lg group-hover:scale-105 transition-transform">
+              ★
+            </span>
+            <div>
+              <p className="font-geist text-sm font-semibold text-white">Player Profile & Records</p>
+              <p className="font-console text-xs text-dim">Local device performance</p>
+            </div>
           </span>
-          <div>
-            <p className="font-geist text-sm font-semibold text-white">Player Profile & Records</p>
-            <p className="font-console text-xs text-dim">Local device performance</p>
-          </div>
-        </span>
-        <span className="font-console text-xs font-semibold tabular-nums text-[#50e3c2]">
-          {stats.games} MATCHES · {stats.wins} WINS · BEST {stats.bestScore}
-        </span>
-      </button>
+          <span className="font-console text-xs font-semibold tabular-nums text-[#50e3c2]">
+            {stats.games} MATCHES · {stats.wins} WINS · BEST {stats.bestScore}
+          </span>
+        </button>
+      </BorderGlow>
 
       {/* 3D Drifting Music Crate Wall */}
       <div className="space-y-3">
@@ -141,34 +150,41 @@ export function Home({ games, stats, onOpen, onProfile }) {
 function GameBentoCard({ game, onOpen }) {
   const playable = game.status === "play";
   return (
-    <button
-      type="button"
-      onClick={() => playable && onOpen(game)}
-      disabled={!playable}
-      className={`${PANEL} flex flex-col justify-between p-5 text-left group`}
+    <BorderGlow
+      borderRadius={18}
+      glowColor="168 76 60"
+      backgroundColor="rgba(14, 14, 20, 0.85)"
+      colors={['#50e3c2', '#7928ca', '#ff0080']}
     >
-      <div className="flex items-start justify-between gap-3">
-        <span
-          className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${
-            game.gradient || "from-white/10 to-white/5"
-          } font-geist text-xl font-bold text-white shadow-md group-hover:scale-105 transition-transform`}
-        >
-          {game.glyph}
-        </span>
-        <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1 font-console text-[10px] font-semibold uppercase tracking-wider text-dim group-hover:text-white group-hover:border-white/30 transition-colors">
-          Play →
-        </span>
-      </div>
+      <button
+        type="button"
+        onClick={() => playable && onOpen(game)}
+        disabled={!playable}
+        className="flex h-full w-full flex-col justify-between p-5 text-left group cursor-pointer"
+      >
+        <div className="flex items-start justify-between gap-3">
+          <span
+            className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${
+              game.gradient || "from-white/10 to-white/5"
+            } font-geist text-xl font-bold text-white shadow-md group-hover:scale-105 transition-transform`}
+          >
+            {game.glyph}
+          </span>
+          <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1 font-console text-[10px] font-semibold uppercase tracking-wider text-dim group-hover:text-white group-hover:border-white/30 transition-colors">
+            Play →
+          </span>
+        </div>
 
-      <div className="mt-4 space-y-1">
-        <h3 className="font-geist text-base font-semibold tracking-[-0.3px] text-white group-hover:text-[#50e3c2] transition-colors">
-          {game.title}
-        </h3>
-        <p className="font-geist text-xs leading-relaxed text-[#8f8f8f]">
-          {game.sub}
-        </p>
-      </div>
-    </button>
+        <div className="mt-4 space-y-1">
+          <h3 className="font-geist text-base font-semibold tracking-[-0.3px] text-white group-hover:text-[#50e3c2] transition-colors">
+            {game.title}
+          </h3>
+          <p className="font-geist text-xs leading-relaxed text-[#8f8f8f]">
+            {game.sub}
+          </p>
+        </div>
+      </button>
+    </BorderGlow>
   );
 }
 
