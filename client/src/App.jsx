@@ -312,7 +312,7 @@ export default function App() {
             </Suspense>
           ) : !joined ? (
             !connected ? (
-              <Centered eyebrow="Status" title="Connecting to server…" />
+              <Centered eyebrow="Live Multiplayer Server" title="Connecting to backend…" subtitle="Render backend waking up (may take 10-20 seconds on cold start)" />
             ) : (
               <EntryScreen
                 onCreate={handleCreate}
@@ -320,6 +320,7 @@ export default function App() {
                 onQuick={handleQuick}
                 onHome={() => setView("home")}
                 clipPref={clipPref}
+                googleUser={googleUser}
               />
             )
           ) : phase === "LOBBY" ? (

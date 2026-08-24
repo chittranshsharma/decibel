@@ -2,18 +2,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { EYEBROW, PANEL, BTN_AMBER, BTN_GHOST } from "../ui";
 
-export function EntryScreen({ onCreate, onJoin, onQuick, onHome }) {
+export function EntryScreen({ onCreate, onJoin, onQuick, onHome, googleUser }) {
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
-  const [name, setName] = useState("");
+  const [name, setName] = useState(() => googleUser?.name || "");
   const [code, setCode] = useState(() => {
     if (typeof window === "undefined") return "";
     return (new URLSearchParams(window.location.search).get("room") || "").toUpperCase().slice(0, 4);
   });
-  const [googleCred, setGoogleCred] = useState(null);
+  const [googleCred, setGoogleCred] = useState(() => googleUser ? { name: googleUser.name, idToken: googleUser.idToken } : null);
   const onSignIn = useCallback((c) => setGoogleCred(c), []);
 
-  const identityName = googleCred ? googleCred.name : name.trim();
-  const idToken = googleCred ? googleCred.idToken : undefined;
+  const identityName = googleCred ? googleCred.name : (name.trim() || googleUser?.name || "");
+  const idToken = googleCred ? googleCred.idToken : googleUser?.idToken;
   const canPlay = identityName.length > 0;
 
   return (

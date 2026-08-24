@@ -286,11 +286,13 @@ export function Toast({ message }) {
   );
 }
 
-export function Centered({ eyebrow, title }) {
+export function Centered({ eyebrow, title, subtitle }) {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center text-center space-y-2 py-16">
-      {eyebrow && <p className={EYEBROW}>{eyebrow}</p>}
-      <h2 className="font-geist text-2xl font-semibold text-white">{title}</h2>
+    <div className="flex flex-1 flex-col items-center justify-center text-center space-y-4 py-20">
+      <div className="mx-auto h-10 w-10 rounded-full border-2 border-white/10 border-t-[#50e3c2] animate-spin" />
+      {eyebrow && <p className={`${EYEBROW} text-[#50e3c2]`}>{eyebrow}</p>}
+      <h2 className="font-geist text-2xl font-bold tracking-tight text-white">{title}</h2>
+      {subtitle && <p className="font-geist text-xs text-slate-400 max-w-xs">{subtitle}</p>}
     </div>
   );
 }
