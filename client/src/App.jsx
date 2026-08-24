@@ -258,7 +258,7 @@ export default function App() {
         </div>
       )}
 
-      <div className="mx-auto flex min-h-screen max-w-xl flex-col px-5 pt-6 pb-8">
+      <div className={`mx-auto flex min-h-screen flex-col px-4 sm:px-8 pt-6 pb-12 transition-all duration-300 ${!joined && view === "home" ? "max-w-4xl" : "max-w-xl"}`}>
         <Masthead
           phase={phase}
           round={round}

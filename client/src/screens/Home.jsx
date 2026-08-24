@@ -84,22 +84,30 @@ export function Home({ games, stats, onOpen, onProfile }) {
       {/* 3D Drifting Music Crate Wall */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <p className={EYEBROW}>3D Sound & Crate Wall</p>
-          <span className="font-console text-[10px] text-dim uppercase">Interactive Parallax</span>
+          <div>
+            <p className={EYEBROW}>11 Curated Scene Rosters</p>
+            <h3 className="font-geist text-lg font-bold text-white tracking-[-0.4px]">Interactive 3D Music Crate</h3>
+          </div>
+          <span className="rounded-full border border-[#50e3c2]/30 bg-[#50e3c2]/10 px-3 py-0.5 font-console text-[10px] font-semibold text-[#50e3c2] uppercase">
+            Click Scene to Play
+          </span>
         </div>
-        <div className="relative h-[220px] sm:h-[260px] w-full overflow-hidden rounded-2xl border border-white/10 bg-black/80 shadow-2xl">
+        <div className="relative h-[240px] sm:h-[300px] w-full overflow-hidden rounded-2xl border border-white/10 bg-black/90 shadow-2xl">
           <DriftWall
             columns={5}
-            tileWidth={140}
-            tileHeight={90}
-            gap={12}
+            tileWidth={170}
+            tileHeight={105}
+            gap={14}
             tilt={14}
             turn={-12}
             depth={90}
-            speed={32}
+            speed={30}
             parallax={0.5}
-            lift={42}
+            lift={48}
             overlayColor="#07070a"
+            onSelectGenre={(genreKey) => {
+              onOpen(games.find((g) => g.key === "musicquiz"));
+            }}
           />
         </div>
       </div>
