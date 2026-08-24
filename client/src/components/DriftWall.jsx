@@ -6,61 +6,61 @@ export const GENRE_WALL_ITEMS = [
     genreKey: 'hip-hop',
     title: 'Modern Hip-Hop',
     tag: 'Kendrick · Drake · Cole',
-    image: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&auto=format&fit=crop&q=80' // Concert stage microphone
+    image: 'https://images.unsplash.com/photo-1546707012-c46675f12716?w=600&auto=format&fit=crop&q=80' // Concert stage live rapper
   },
   {
     genreKey: 'hyperpop',
     title: 'Hyperpop & Digicore',
     tag: 'Charli XCX · SOPHIE · 100 gecs',
-    image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=600&auto=format&fit=crop&q=80' // Glitch cyberpunk neon chrome
+    image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=600&auto=format&fit=crop&q=80' // Iridescent cyberpunk 3D chrome
   },
   {
     genreKey: 'trap',
     title: 'Trap & Rage',
     tag: 'Future · Travis Scott · Yeat',
-    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80' // Club strobe laser rage
+    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80' // Nightclub laser rage
   },
   {
     genreKey: 'rock',
     title: 'Rock & Alt',
     tag: 'Nirvana · Queen · Arctic Monkeys',
-    image: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=600&auto=format&fit=crop&q=80' // Electric guitar on rock stage
+    image: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=600&auto=format&fit=crop&q=80' // Rock concert electric guitar on stage
   },
   {
     genreKey: 'desi-hip-hop',
     title: 'Desi Hip Hop',
     tag: 'Seedhe Maut · KR$NA · Stan',
-    image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&auto=format&fit=crop&q=80' // Underground rap stage lights
+    image: 'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=600&auto=format&fit=crop&q=80' // Live concert crowd
   },
   {
     genreKey: 'indie',
     title: 'Indie & Alt',
     tag: 'Tame Impala · Phoebe · Strokes',
-    image: 'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?w=600&auto=format&fit=crop&q=80' // Classic vinyl record player
+    image: 'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?w=600&auto=format&fit=crop&q=80' // Spinning vinyl record
   },
   {
     genreKey: 'bedroom-pop',
     title: 'Bedroom Pop',
     tag: 'Clairo · Rex Orange · Cavetown',
-    image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&auto=format&fit=crop&q=80' // Cozy lo-fi bedroom synth workstation
+    image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&auto=format&fit=crop&q=80' // Cozy lo-fi bedroom synth studio
   },
   {
     genreKey: 'rnb',
     title: 'R&B & Soul',
     tag: 'Frank Ocean · SZA · The Weeknd',
-    image: 'https://images.unsplash.com/photo-1520523839898-50712192e8a7?w=600&auto=format&fit=crop&q=80' // Velvet purple soul studio piano
+    image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80' // Moody purple velvet studio mic
   },
   {
     genreKey: 'oldschool-hiphop',
     title: 'Old School Rap',
     tag: '2Pac · Biggie · Nas · Wu-Tang',
-    image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80' // 90s boombox cassette mixtape
+    image: 'https://images.unsplash.com/photo-1487180144351-b8472da7d491?w=600&auto=format&fit=crop&q=80' // Retro vintage cassette mixtape
   },
   {
     genreKey: 'pop',
     title: 'Pop & Dance',
     tag: 'Taylor Swift · Dua Lipa · Billie',
-    image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&auto=format&fit=crop&q=80' // Stadium pop concert confetti & lasers
+    image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&auto=format&fit=crop&q=80' // Stadium pop concert lasers & confetti
   },
   {
     genreKey: 'desi-indie',
@@ -294,6 +294,7 @@ export const DriftWall = ({
           loading="eager"
           decoding="async"
           draggable={false}
+          onError={(e) => { e.currentTarget.style.display = 'none'; }}
           className="drift-img-kenburns"
         />
         <span className="drift-wall__overlay" aria-hidden="true" />

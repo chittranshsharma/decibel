@@ -7,13 +7,13 @@ export const GENRES = [
     label: "HIP-HOP",
     value: "hip-hop",
     sub: "Kendrick · Drake · Cole",
-    image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1546707012-c46675f12716?auto=format&fit=crop&w=400&q=80",
   },
   {
     label: "OLD SCHOOL RAP",
     value: "oldschool-hiphop",
     sub: "2Pac · Biggie · Nas",
-    image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1487180144351-b8472da7d491?auto=format&fit=crop&w=400&q=80",
   },
   {
     label: "TRAP & RAGE",
@@ -31,7 +31,7 @@ export const GENRES = [
     label: "DESI HIP HOP",
     value: "desi-hip-hop",
     sub: "Seedhe Maut · KR$NA · Stan",
-    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=400&q=80",
   },
   {
     label: "ROCK & ALT",
@@ -49,13 +49,13 @@ export const GENRES = [
     label: "BEDROOM POP",
     value: "bedroom-pop",
     sub: "Clairo · Rex Orange · Cavetown",
-    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=400&q=80",
   },
   {
     label: "R&B & SOUL",
     value: "rnb",
     sub: "Frank Ocean · SZA · Weeknd",
-    image: "https://images.unsplash.com/photo-1520523839898-50712192e8a7?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80",
   },
   {
     label: "POP",
@@ -73,7 +73,7 @@ export const GENRES = [
     label: "SPOTIFY PLAYLIST",
     value: "spotify",
     sub: "Import Any Public URL",
-    image: "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=400&q=80",
   },
   {
     label: "🪄 AI VIBE CRATE",
