@@ -125,6 +125,20 @@ export default function App() {
   const [clipPref, setClipPref] = useState("RANDOM"); // preset by the Heardle card
   const [stats, setStats] = useState(() => getStats());
 
+  // Google identity — persisted in sessionStorage so page-refreshes keep login.
+  const [googleUser, setGoogleUser] = useState(() => {
+    try { return JSON.parse(sessionStorage.getItem("decibel_google_user") || "null"); } catch { return null; }
+  });
+  const handleGoogleSignIn = (user) => {
+    setGoogleUser(user);
+    try { sessionStorage.setItem("decibel_google_user", JSON.stringify(user)); } catch { /* ignore */ }
+  };
+  const handleGoogleSignOut = () => {
+    setGoogleUser(null);
+    try { sessionStorage.removeItem("decibel_google_user"); } catch { /* ignore */ }
+    try { window.google?.accounts?.id?.disableAutoSelect(); } catch { /* ignore */ }
+  };
+
   // Count my correct answers across the game so the profile can track accuracy.
   const myCorrectRef = useRef(0);
   useEffect(() => {
@@ -277,7 +291,7 @@ export default function App() {
 
         <main className="flex flex-1 flex-col justify-start py-8">
           {!joined && view === "home" ? (
-            <Home games={GAMES} stats={stats} onOpen={openGame} onProfile={() => setView("profile")} />
+            <Home games={GAMES} stats={stats} onOpen={openGame} onProfile={() => setView("profile")} googleUser={googleUser} onGoogleSignIn={handleGoogleSignIn} onGoogleSignOut={handleGoogleSignOut} />
           ) : !joined && view === "profile" ? (
             <Profile stats={stats} onBack={() => setView("home")} />
           ) : !joined && view === "harmonies" ? (
@@ -372,7 +386,7 @@ export default function App() {
 
       {/* Floating Bottom Quick Navigation Dock */}
       {(!joined || phase === "GAME_OVER") && (
-        <FloatingDockNav onNavigate={handleNavigate} onOpenGame={openGame} />
+        <FloatingDockNav onNavigate={handleNavigate} onOpenGame={openGame} onMenu={() => setMenuOpen(true)} />
       )}
 
       {/* Single persistent, primed audio element reused across all rounds. */}

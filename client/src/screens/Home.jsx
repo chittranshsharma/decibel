@@ -1,8 +1,37 @@
 // Home hub, profile, and side menu — Jam & Linear Bento Aesthetic.
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { EYEBROW, PANEL, BTN_AMBER, BTN_GHOST } from "../ui";
 import DriftWall from "../components/DriftWall";
 import BorderGlow from "../components/BorderGlow";
+
+// Renders the Google Identity Services button. Harmless if clientId is absent.
+function GoogleSignInButton({ onSignIn }) {
+  const divRef = useRef(null);
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
+  const onSignInRef = useRef(onSignIn);
+  useEffect(() => { onSignInRef.current = onSignIn; }, [onSignIn]);
+
+  useEffect(() => {
+    if (!clientId || !divRef.current) return;
+    const g = window.google;
+    if (!g?.accounts?.id) return;
+    g.accounts.id.initialize({
+      client_id: clientId,
+      callback: (res) => {
+        try {
+          const payload = JSON.parse(atob(res.credential.split(".")[1]));
+          onSignInRef.current({ name: payload.name || "Player", picture: payload.picture || null, email: payload.email || null, idToken: res.credential });
+        } catch { /* ignore */ }
+      },
+    });
+    g.accounts.id.renderButton(divRef.current, {
+      theme: "filled_black", size: "large", shape: "pill", width: 220,
+    });
+  }, [clientId]);
+
+  if (!clientId) return null;
+  return <div ref={divRef} />;
+}
 
 export const GAMES = [
   { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM", gradient: "from-[#ff0080] to-[#7928ca]" },
@@ -15,7 +44,7 @@ export const GAMES = [
 ];
 
 // ---------- Home hub (landing) ----------
-export function Home({ games, stats, onOpen, onProfile }) {
+export function Home({ games, stats, onOpen, onProfile, googleUser, onGoogleSignIn, onGoogleSignOut }) {
   return (
     <div className="relative animate-rise space-y-12">
       {/* Subtle Hero Acoustic Backdrop */}
@@ -65,6 +94,27 @@ export function Home({ games, stats, onOpen, onProfile }) {
           >
             Create Private Room
           </button>
+        </div>
+
+        {/* Google Sign-In / user pill */}
+        <div className="flex items-center justify-center sm:justify-start gap-3 pt-1">
+          {googleUser ? (
+            <div className="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2">
+              {googleUser.picture && (
+                <img src={googleUser.picture} alt="" className="h-6 w-6 rounded-full" />
+              )}
+              <span className="font-geist text-sm text-white font-medium truncate max-w-[140px]">{googleUser.name}</span>
+              <button
+                type="button"
+                onClick={onGoogleSignOut}
+                className="font-console text-[10px] uppercase tracking-wider text-dim hover:text-white transition-colors"
+              >
+                Sign out
+              </button>
+            </div>
+          ) : (
+            <GoogleSignInButton onSignIn={onGoogleSignIn} />
+          )}
         </div>
       </div>
 

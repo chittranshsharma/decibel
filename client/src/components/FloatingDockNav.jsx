@@ -8,10 +8,10 @@ import {
   IconMicrophone,
   IconTable,
   IconUser,
-  IconBrandGithub,
+  IconMenu2,
 } from "@tabler/icons-react";
 
-export default function FloatingDockNav({ onNavigate, onOpenGame }) {
+export default function FloatingDockNav({ onNavigate, onOpenGame, onMenu }) {
   const items = [
     {
       title: "Home",
@@ -54,9 +54,9 @@ export default function FloatingDockNav({ onNavigate, onOpenGame }) {
       onClick: () => onNavigate("profile"),
     },
     {
-      title: "GitHub",
-      icon: <IconBrandGithub className="h-full w-full text-dim hover:text-white" />,
-      href: "https://github.com/chittranshsharma/decibel",
+      title: "Menu",
+      icon: <IconMenu2 className="h-full w-full text-dim" />,
+      onClick: () => onMenu && onMenu(),
     },
   ];
 
