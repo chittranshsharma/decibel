@@ -26,6 +26,7 @@ import { Wordzic } from "./screens/Wordzic";
 import { Lyricles } from "./screens/Lyricles";
 import { Crosszic } from "./screens/Crosszic";
 import FloatingDockNav from "./components/FloatingDockNav";
+import AudioBackground from "./components/AudioBackground";
 
 export default function App() {
   const {
@@ -222,6 +223,7 @@ export default function App() {
 
   return (
     <div className="crt-scan min-h-screen bg-void font-console text-bone antialiased selection:bg-amber selection:text-black">
+      <AudioBackground />
       {error && <ErrorBar message={error} />}
       {loading && <LoadingOverlay message={loading.message} />}
       {countdown && (

@@ -18,9 +18,6 @@ export const GAMES = [
 export function Home({ games, stats, onOpen, onProfile }) {
   return (
     <div className="relative animate-rise space-y-12">
-      {/* Background Multi-Point Aurora Spotlight */}
-      <div className="jam-aurora" />
-
       {/* Hero Section */}
       <div className="relative z-10 space-y-6 pt-4 text-center sm:text-left">
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
