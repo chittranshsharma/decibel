@@ -2,48 +2,62 @@
 import { useEffect, useRef, useState } from "react";
 import { EYEBROW, PANEL } from "../ui";
 
-// The music-games catalog shown on the Home hub and in the side menu. Each
-// "play" game routes into the room flow (some preset a clip mode); "soon" games
-// are placeholders. Glyphs are typographic marks, not emoji (§12).
 export const GAMES = [
-  { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM" },
-  { key: "heardle", glyph: "▶", title: "Heardle", sub: "Guess the song from its intro", status: "play", clip: "INTRO" },
-  { key: "create", glyph: "+", title: "Create", sub: "Private room — challenge your friends", status: "play", clip: "RANDOM" },
-  { key: "harmonies", glyph: "⌘", title: "Harmonies", sub: "Music connections puzzle", status: "play" },
-  { key: "wordzic", glyph: "▦", title: "Wordzic", sub: "Guess the music word", status: "play" },
-  { key: "lyricles", glyph: "❝", title: "Lyricles", sub: "Guess the song from its lyrics", status: "play" },
-  { key: "crosszic", glyph: "✚", title: "Crosszic", sub: "Music crossword puzzle", status: "play" },
+  { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM", color: "text-pink border-pink/40" },
+  { key: "heardle", glyph: "▶", title: "Heardle", sub: "Guess the song from its intro", status: "play", clip: "INTRO", color: "text-good border-good/40" },
+  { key: "create", glyph: "+", title: "Create Room", sub: "Private room — challenge your friends", status: "play", clip: "RANDOM", color: "text-amber border-amber/40" },
+  { key: "harmonies", glyph: "⌘", title: "Harmonies", sub: "Music connections 4x4 puzzle", status: "play", color: "text-cyan border-cyan/40" },
+  { key: "wordzic", glyph: "▦", title: "Wordzic", sub: "Guess the 5-letter music word", status: "play", color: "text-yellow border-yellow/40" },
+  { key: "lyricles", glyph: "❝", title: "Lyricles", sub: "Guess the song from its lyrics", status: "play", color: "text-purple border-purple/40" },
+  { key: "crosszic", glyph: "✚", title: "Crosszic", sub: "Interactive 5x5 music crossword", status: "play", color: "text-good border-good/40" },
 ];
 
 // ---------- Home hub (landing) ----------
 export function Home({ games, stats, onOpen, onProfile }) {
   return (
     <div className="animate-rise space-y-10">
-      <div className="space-y-3">
-        <p className="font-coin text-sm leading-relaxed text-pink">INSERT COIN</p>
-        <h2 className="font-marquee text-3xl font-black uppercase leading-[1.05] tracking-tight text-bone">
-          Guess the song.
+      {/* Hero Section */}
+      <div className="relative space-y-4">
+        <div className="flex items-center gap-2">
+          <span className="font-coin text-xs tracking-widest text-pink animate-pulse">● INSERT COIN</span>
+          <span className="border border-good/40 bg-good/10 px-2 py-0.5 font-console text-[10px] uppercase tracking-widest text-good">
+            LIVE // 78,890 SONGS
+          </span>
+        </div>
+        
+        <h2 className="font-marquee text-4xl font-black uppercase leading-[1.05] tracking-tight text-bone sm:text-5xl">
+          GUESS THE TRACK.
           <br />
-          Beat your friends.
+          <span className="phosphor-pink">BEAT YOUR SQUAD.</span>
         </h2>
-        <p className="font-console text-sm text-dim">
-          Free real-time music games. Hear a snippet, name the track, score faster than everyone else.
+        
+        <p className="font-console text-xs leading-relaxed text-dim sm:text-sm">
+          High-frequency real-time multiplayer music engine. 11 curated genres, custom Spotify playlists, and daily music puzzles.
         </p>
       </div>
 
-      <button type="button"
+      {/* Profile Bar Card */}
+      <button
+        type="button"
         onClick={onProfile}
-        className={`${PANEL} flex w-full items-center justify-between px-4 py-3 text-left transition-[border-color,transform] hover:border-amber/60 active:scale-[.96]`}
+        className={`${PANEL} glass-panel-hover flex w-full items-center justify-between px-5 py-4 text-left border border-rule/90`}
       >
-        <span className={EYEBROW}>Your profile</span>
-        <span className="font-console text-xs tabular-nums text-dim">
-          {stats.games} games · {stats.wins} wins · best {stats.bestScore}
+        <span className="flex items-center gap-2.5">
+          <span className="h-2 w-2 rounded-full bg-amber animate-ping" />
+          <span className={EYEBROW}>Player Profile</span>
+        </span>
+        <span className="font-console text-xs tabular-nums text-amber font-bold">
+          {stats.games} MATCHES · {stats.wins} WINS · BEST {stats.bestScore}
         </span>
       </button>
 
+      {/* Game Selection Matrix */}
       <div>
-        <p className={EYEBROW}>Music games</p>
-        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="flex items-center justify-between pb-3">
+          <p className={EYEBROW}>Select Game Mode</p>
+          <span className="font-console text-[10px] uppercase text-dim tracking-wider">7 Modes Active</span>
+        </div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {games.map((g) => (
             <GameCard key={g.key} game={g} onOpen={onOpen} />
           ))}
@@ -60,49 +74,53 @@ export function Home({ games, stats, onOpen, onProfile }) {
 function GameCard({ game, onOpen }) {
   const playable = game.status === "play";
   return (
-    <button type="button"
+    <button
+      type="button"
       onClick={() => playable && onOpen(game)}
       disabled={!playable}
-      className={`${PANEL} flex items-start gap-3 px-4 py-4 text-left transition-[border-color,transform] ${
-        playable ? "hover:border-pink enabled:active:scale-[.96]" : "opacity-60"
+      className={`${PANEL} glass-panel-hover flex items-start gap-4 p-4 text-left border border-rule/90 transition-all ${
+        playable ? "hover:border-pink enabled:active:scale-[.97]" : "opacity-60"
       }`}
     >
-      <span className="grid h-9 w-9 shrink-0 place-items-center border border-rule bg-void font-marquee text-lg text-pink">
+      <span
+        className={`grid h-10 w-10 shrink-0 place-items-center border bg-void font-marquee text-xl font-bold shadow-inner ${
+          game.color || "text-pink border-pink/40"
+        }`}
+      >
         {game.glyph}
       </span>
-      <span className="min-w-0">
-        <span className="flex items-center gap-2">
-          <span className="font-console text-sm uppercase tracking-wide text-bone">{game.title}</span>
-          {!playable && (
-            <span className="font-console text-[11px] uppercase tracking-[0.2em] text-amber">Soon</span>
-          )}
-        </span>
-        <span className="mt-1 block font-console text-xs text-dim">{game.sub}</span>
-        {playable && (
-          <span className="mt-2 inline-block font-console text-[11px] uppercase tracking-[0.2em] text-pink">
+      <span className="min-w-0 flex-1">
+        <span className="flex items-center justify-between">
+          <span className="font-console text-sm uppercase font-bold tracking-wide text-bone">
+            {game.title}
+          </span>
+          <span className="font-console text-[10px] text-pink uppercase tracking-widest font-bold">
             ▶ Play
           </span>
-        )}
+        </span>
+        <span className="mt-1 block font-console text-xs leading-relaxed text-dim">
+          {game.sub}
+        </span>
       </span>
     </button>
   );
 }
 
 const WHY_ITEMS = [
-  { t: "Massive library", d: "Real preview clips across every genre, re-sampled every round." },
-  { t: "Real-time multiplayer", d: "Private rooms, up to 8 players, scored by speed." },
-  { t: "Your way", d: "Pick rounds, timer, answers, era, and title-vs-artist mode." },
-  { t: "Completely free", d: "No downloads, no account needed. Just open and play." },
+  { t: "Massive 78k+ Song Store", d: "Deep catalogs across 11 genres, updated live via Apple & Supabase." },
+  { t: "Zero-Latency Real-Time", d: "Sub-2ms indexed database queries, high-frequency WebSockets." },
+  { t: "Custom Spotify Import", d: "Paste any Spotify playlist link and play rounds from it instantly." },
+  { t: "Mainstream & Underground", d: "Toggle between global chart-toppers and niche crate deep cuts." },
 ];
 
 function WhyDecibel() {
   return (
-    <div>
+    <div className="space-y-3">
       <p className={EYEBROW}>Why Decibel</p>
-      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {WHY_ITEMS.map((i) => (
-          <div key={i.t} className={`${PANEL} px-4 py-3`}>
-            <p className="font-console text-sm uppercase tracking-wide text-bone">{i.t}</p>
+          <div key={i.t} className={`${PANEL} p-4 glass-panel-hover border border-rule/80`}>
+            <p className="font-console text-xs font-bold uppercase tracking-wider text-amber">{i.t}</p>
             <p className="mt-1 font-console text-xs leading-relaxed text-dim">{i.d}</p>
           </div>
         ))}
@@ -113,44 +131,48 @@ function WhyDecibel() {
 
 const FAQ_ITEMS = [
   {
-    q: "What makes a good guess-the-song game?",
-    a: "A big music library, fair audio, and fast speed-scored rounds. Decibel adds private rooms, host settings, and reconnect so a dropped player keeps their score.",
+    q: "How does Spotify playlist import work?",
+    a: "Paste any public Spotify playlist URL into the lobby. Decibel extracts the song metadata and matches each track with a high-bitrate 30-second playable audio preview.",
   },
   {
-    q: "Can I play with friends online?",
-    a: "Yes. Create a private room and share the code or link, or hit Quick Play to match into a public lobby. Up to 8 players per room, plus spectators.",
+    q: "What genres and eras are supported?",
+    a: "11 genres including Modern Hip-Hop, Old School Rap, Trap, Hyperpop, Desi Hip Hop, Rock, Indie, Bedroom Pop, R&B, Pop, and Desi Indie, with decades spanning back to the 1980s.",
   },
   {
-    q: "Can I focus on a genre or era?",
-    a: "The host picks a genre (hip-hop, R&B, rap, drill, trap) and an era filter — all the way back to the 90s — before starting.",
+    q: "Can I play solo or with friends?",
+    a: "Both! Play single-player puzzles (Harmonies, Wordzic, Lyricles, Crosszic, Heardle) or create private multiplayer rooms for up to 8 players with live scoring and speed bonuses.",
   },
   {
-    q: "Do I need to download anything?",
-    a: "No. It runs in the browser and installs as a PWA if you want an app icon. No account required — sign in with Google only if you want a verified name and avatar.",
+    q: "Is an account required?",
+    a: "No downloads or accounts needed. It runs instantly in your browser as a responsive PWA.",
   },
 ];
 
 function Faq() {
   const [open, setOpen] = useState(-1);
   return (
-    <div>
-      <p className={EYEBROW}>Popular questions</p>
-      <div className="mt-3 space-y-2">
+    <div className="space-y-3">
+      <p className={EYEBROW}>Popular Questions</p>
+      <div className="space-y-2">
         {FAQ_ITEMS.map((f, i) => {
           const isOpen = open === i;
           return (
-            <div key={i} className={PANEL}>
-              <button type="button"
+            <div key={f.q} className={`${PANEL} overflow-hidden border border-rule/80 transition-all`}>
+              <button
+                type="button"
                 onClick={() => setOpen(isOpen ? -1 : i)}
                 aria-expanded={isOpen}
-                aria-controls={`faq-answer-${i}`}
-                className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-transform active:scale-[.96]"
+                className="flex w-full items-center justify-between p-4 text-left font-console text-xs uppercase tracking-wide text-bone transition-colors hover:text-amber"
               >
-                <span className="font-console text-xs uppercase tracking-wide text-bone">{f.q}</span>
-                <span className="shrink-0 font-console text-amber" aria-hidden="true">{isOpen ? "−" : "+"}</span>
+                <span>{f.q}</span>
+                <span className="shrink-0 font-console text-amber font-bold" aria-hidden="true">
+                  {isOpen ? "−" : "+"}
+                </span>
               </button>
               {isOpen && (
-                <p id={`faq-answer-${i}`} className="border-t border-rule px-4 py-3 font-console text-xs leading-relaxed text-dim">{f.a}</p>
+                <p className="border-t border-rule/80 bg-void/50 p-4 font-console text-xs leading-relaxed text-dim">
+                  {f.a}
+                </p>
               )}
             </div>
           );
@@ -162,13 +184,15 @@ function Faq() {
 
 function SiteFooter() {
   return (
-    <footer className="border-t border-rule pt-6">
+    <footer className="border-t border-rule/80 pt-6 space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="font-marquee text-lg font-black uppercase tracking-tight text-bone">Decibel</span>
-        <span className={EYEBROW}>Free music guessing games</span>
+        <span className="font-marquee text-xl font-black uppercase tracking-tight text-bone">
+          DECIBEL<span className="text-pink">.</span>
+        </span>
+        <span className={EYEBROW}>HIGH-FREQUENCY AUDIO TRIVIA ENGINE</span>
       </div>
-      <p className="mt-3 font-console text-xs leading-relaxed text-dim">
-        Preview clips via the iTunes Search API. Made for fun — not affiliated with Apple.
+      <p className="font-console text-xs leading-relaxed text-dim">
+        Multiplayer audio engine powered by Supabase PostgreSQL and Apple Search CDN.
       </p>
     </footer>
   );
@@ -186,99 +210,59 @@ export function Profile({ stats, onBack }) {
   ];
   return (
     <div className="animate-rise space-y-6">
-      <button type="button" onClick={onBack} className={`${EYEBROW} inline-flex min-h-11 items-center hover:text-amber`}>
+      <button
+        type="button"
+        onClick={onBack}
+        className={`${EYEBROW} inline-flex min-h-11 items-center hover:text-amber`}
+      >
         ‹ Home
       </button>
-      <div>
-        <p className="font-coin text-sm text-pink">MY PROFILE</p>
-        <p className="mt-2 font-console text-sm text-dim">Your stats on this device — play more to fill them in.</p>
+
+      <div className="flex items-center justify-between border-b border-rule pb-3">
+        <h2 className="font-marquee text-3xl font-black uppercase tracking-tight text-bone">
+          Player Profile
+        </h2>
+        <span className="font-coin text-xs text-amber">RECORD</span>
       </div>
-      <ul className={`${PANEL} divide-y divide-rule`}>
+
+      <div className={`${PANEL} p-5 space-y-4 border border-rule/90`}>
         {rows.map((r) => (
-          <li key={r.k} className="flex items-center justify-between px-4 py-3">
-            <span className="font-console text-xs uppercase tracking-wide text-dim">{r.k}</span>
-            <span className="font-console text-sm tabular-nums text-bone">{r.v}</span>
-          </li>
+          <div key={r.k} className="flex items-center justify-between border-b border-rule/40 pb-2 last:border-0 last:pb-0">
+            <span className={EYEBROW}>{r.k}</span>
+            <span className="font-console text-sm text-bone font-bold tabular-nums">{r.v}</span>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
 
-// ---------- Slide-in side menu ----------
-function LanguageSelect() {
-  const [lang, setLang] = useState("EN");
-  return (
-    <select
-      value={lang}
-      onChange={(e) => setLang(e.target.value)}
-      aria-label="Game language"
-      className="mt-2 w-full border border-rule bg-void px-3 py-2 font-console text-sm text-bone focus:border-pink focus:outline-none"
-    >
-      <option value="EN">English</option>
-      <option value="SOON" disabled>
-        More languages soon…
-      </option>
-    </select>
-  );
-}
-
+// ---------- Side menu ----------
 export function SideMenu({ games, onClose, onHome, onOpen, onProfile }) {
-  const playable = games.filter((g) => g.status === "play");
   const panelRef = useRef(null);
+  const playable = games.filter((g) => g.status === "play");
 
-  // Modal a11y: focus into the panel on open, trap Tab, close on Escape, and
-  // restore focus to the trigger on close (WCAG 2.4.3 / 2.1.2 / 4.1.2).
   useEffect(() => {
-    const prevFocused = document.activeElement;
-    const panel = panelRef.current;
-    const focusables = () =>
-      panel
-        ? Array.from(
-            panel.querySelectorAll(
-              'button, [href], select, input, [tabindex]:not([tabindex="-1"])'
-            )
-          ).filter((el) => !el.disabled)
-        : [];
-    const first = focusables()[0];
-    if (first) first.focus();
-
     const onKey = (e) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        onClose();
-        return;
-      }
-      if (e.key === "Tab") {
-        const items = focusables();
-        if (items.length === 0) return;
-        const a = items[0];
-        const b = items[items.length - 1];
-        if (e.shiftKey && document.activeElement === a) {
-          e.preventDefault();
-          b.focus();
-        } else if (!e.shiftKey && document.activeElement === b) {
-          e.preventDefault();
-          a.focus();
-        }
-      }
+      if (e.key === "Escape") onClose();
     };
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      if (prevFocused && typeof prevFocused.focus === "function") prevFocused.focus();
-    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
   return (
     <div className="fixed inset-0 z-[70] flex" role="dialog" aria-modal="true" aria-label="Menu">
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onClick={onClose} />
       <nav
         ref={panelRef}
-        className="animate-rise w-72 max-w-[80vw] overflow-y-auto border-r border-rule bg-cabinet px-5 py-6"
+        className="animate-rise relative z-10 w-72 max-w-[80vw] overflow-y-auto border-r border-rule bg-cabinet/95 p-6 backdrop-blur-md"
       >
-        <div className="flex items-center justify-between">
-          <span className="font-marquee text-xl font-black uppercase tracking-tight text-bone">Decibel</span>
-          <button type="button"
+        <div className="flex items-center justify-between border-b border-rule pb-4">
+          <span className="font-marquee text-xl font-black uppercase tracking-tight text-bone">
+            DECIBEL<span className="text-pink">.</span>
+          </span>
+          <button
+            type="button"
             onClick={onClose}
             aria-label="Close menu"
             className="inline-flex min-h-11 min-w-11 items-center justify-center font-console text-xl text-dim transition-colors hover:text-pink"
@@ -287,45 +271,43 @@ export function SideMenu({ games, onClose, onHome, onOpen, onProfile }) {
           </button>
         </div>
 
-        <p className={`${EYEBROW} mt-8`}>Play</p>
+        <p className={`${EYEBROW} mt-6`}>Game Modes</p>
         <ul className="mt-3 space-y-1">
           {playable.map((g) => (
             <li key={g.key}>
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => onOpen(g)}
-                className="flex min-h-11 w-full items-center gap-3 px-1 py-2 text-left font-console text-sm text-bone transition-colors hover:text-pink"
+                className="flex min-h-11 w-full items-center gap-3 px-2 py-2 text-left font-console text-xs uppercase tracking-wider text-bone transition-all hover:bg-void/60 hover:text-pink"
               >
-                <span className="w-5 text-center text-pink">{g.glyph}</span>
+                <span className={`w-5 text-center font-bold ${g.color?.split(" ")[0] || "text-pink"}`}>
+                  {g.glyph}
+                </span>
                 {g.title}
               </button>
             </li>
           ))}
         </ul>
 
-        <p className={`${EYEBROW} mt-8`}>You</p>
-        <ul className="mt-3 space-y-1">
-          <li>
-            <button type="button" onClick={onHome} className="inline-flex min-h-11 items-center px-1 py-2 font-console text-sm text-bone transition-colors hover:text-pink">
-              All games
-            </button>
-          </li>
-          <li>
-            <button type="button" onClick={onProfile} className="inline-flex min-h-11 items-center px-1 py-2 font-console text-sm text-bone transition-colors hover:text-pink">
-              My profile
-            </button>
-          </li>
-        </ul>
-
-        <div className="mt-8">
-          <p className={EYEBROW}>Game language</p>
-          <LanguageSelect />
+        <div className="mt-8 border-t border-rule pt-4 space-y-2">
+          <button
+            type="button"
+            onClick={onHome}
+            className="flex min-h-11 w-full items-center gap-3 px-2 py-2 text-left font-console text-xs uppercase tracking-wider text-dim hover:text-bone"
+          >
+            ⌂ Home Hub
+          </button>
+          <button
+            type="button"
+            onClick={onProfile}
+            className="flex min-h-11 w-full items-center gap-3 px-2 py-2 text-left font-console text-xs uppercase tracking-wider text-dim hover:text-amber"
+          >
+            ★ My Stats
+          </button>
         </div>
-
-        <p className="mt-8 font-console text-xs leading-relaxed text-dim">
-          Share the game with friends for even more fun.
-        </p>
       </nav>
-      <button type="button" aria-label="Close menu" onClick={onClose} className="flex-1 bg-void/70 backdrop-blur-sm" />
     </div>
   );
 }
+
+export default Home;

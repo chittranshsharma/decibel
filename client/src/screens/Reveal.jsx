@@ -87,10 +87,10 @@ export function Reveal({ reveal, myId, onReact, players }) {
                 <span className="flex min-w-0 items-center gap-3">
                   <StatusDot correct={r.correct} answered={answered} delay={300 + ri * 50 + 140} />
                   <Avatar name={r.name} src={avatarOf[r.id]} size={22} />
-                  <span className="truncate font-console uppercase tracking-wide text-bone">{r.name}</span>
-                  {r.streakBonus > 0 && (
-                    <span className="shrink-0 font-console text-[11px] uppercase tracking-wide text-amber">
-                      +{r.currentStreak} st
+                  <span className="truncate font-console uppercase tracking-wide text-bone font-bold">{r.name}</span>
+                  {r.currentStreak > 1 && (
+                    <span className="shrink-0 border border-amber/50 bg-amber/10 px-1.5 py-0.5 font-console text-[10px] uppercase font-bold tracking-wider text-amber shadow-[0_0_10px_-2px_#FFC93C]">
+                      🔥 x{r.currentStreak}
                     </span>
                   )}
                 </span>

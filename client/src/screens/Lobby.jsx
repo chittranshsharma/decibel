@@ -149,18 +149,18 @@ export function Lobby({
         </ul>
       </div>
 
-      <div>
-        <p className={EYEBROW}>Room code</p>
-        <div className="mt-3 flex items-center justify-between gap-3">
-          <span className="font-marquee text-4xl font-black tracking-[0.25em] text-amber">{code}</span>
+      <div className={`${PANEL} p-4 border border-rule/80`}>
+        <p className={EYEBROW}>Room Access Code</p>
+        <div className="mt-2 flex items-center justify-between gap-3">
+          <span className="font-marquee text-4xl font-black tracking-[0.25em] phosphor">{code}</span>
           <button type="button" onClick={copy} className={BTN_GHOST}>
-            {copied ? "Link copied" : "Copy link"}
+            {copied ? "✓ Copied" : "Copy Link"}
           </button>
           <span className="sr-only" role="status">
             {copied ? "Join link copied to clipboard" : ""}
           </span>
         </div>
-        <p className="mt-2 font-console text-xs text-dim">Friends join with this code, or your copied link.</p>
+        <p className="mt-2 font-console text-xs text-dim">Share this code or direct link with friends to join.</p>
       </div>
 
       {isHost ? (
@@ -177,14 +177,14 @@ export function Lobby({
                     key={g.value}
                     onClick={() => handleGenreChange(g.value)}
                     aria-pressed={active}
-                    className={`min-h-11 px-3 py-2 font-console text-xs uppercase tracking-[0.2em] transition-[color,border-color,background-color,transform] active:scale-[.96] ${
+                    className={`min-h-11 px-3.5 py-2 font-console text-xs uppercase tracking-[0.16em] transition-all active:scale-[.96] ${
                       active
                         ? isSpotify
-                          ? "bg-good text-black font-bold"
-                          : "bg-pink text-black"
+                          ? "bg-good text-black font-bold shadow-[0_0_20px_-3px_#3DF07A]"
+                          : "bg-pink text-black font-bold shadow-[0_0_20px_-3px_#FF3D7F]"
                         : isSpotify
-                        ? "border border-good/40 text-good hover:border-good"
-                        : "border border-rule text-dim hover:border-pink hover:text-pink"
+                        ? "border border-good/50 bg-cabinet/80 text-good hover:border-good hover:shadow-[0_0_15px_-4px_#3DF07A]"
+                        : "border border-rule/80 bg-cabinet/80 text-dim hover:border-pink hover:text-pink"
                     }`}
                   >
                     {g.label}

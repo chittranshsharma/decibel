@@ -4,17 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import sound from "./sound";
 
 // ---- Shared class fragments (drive the look across every screen) ----
-export const EYEBROW = "font-console text-[11px] uppercase tracking-[0.2em] text-dim";
-export const PANEL = "border border-rule bg-cabinet";
-// Primary CTA = pink with a soft neon glow.
+export const EYEBROW = "font-console text-[11px] uppercase tracking-[0.22em] text-dim font-bold";
+export const PANEL = "glass-panel border border-rule/90 shadow-2xl";
+
+// Primary CTA = pink with high-intensity neon glow & micro-lift
 export const BTN_AMBER =
-  "bg-pink px-5 py-4 font-console text-sm uppercase tracking-[0.2em] text-black " +
-  "shadow-[0_0_24px_-6px_#FF3D7F] transition-[transform,background-color] hover:bg-[#ff5e96] active:scale-[.96] " +
+  "bg-pink px-6 py-4 font-console text-sm uppercase font-bold tracking-[0.22em] text-black " +
+  "shadow-[0_0_28px_-4px_#FF3D7F] hover:shadow-[0_0_38px_0px_#FF3D7F] transition-all hover:bg-[#ff5e96] hover:scale-[1.01] active:scale-[.97] " +
   "focus:outline-none focus:ring-2 focus:ring-pink focus:ring-offset-2 focus:ring-offset-void " +
-  "disabled:cursor-not-allowed disabled:bg-rule disabled:text-dim disabled:shadow-none";
+  "disabled:cursor-not-allowed disabled:bg-rule disabled:text-dim disabled:shadow-none disabled:transform-none";
+
 export const BTN_GHOST =
-  "border border-rule bg-cabinet px-5 py-3 font-console text-sm uppercase tracking-[0.2em] text-bone " +
-  "transition-colors hover:border-amber hover:text-amber active:scale-[.96] " +
+  "border border-rule/80 bg-cabinet/80 backdrop-blur-sm px-5 py-3 font-console text-sm uppercase tracking-[0.2em] text-bone " +
+  "transition-all hover:border-amber hover:text-amber hover:shadow-[0_0_22px_-6px_rgba(255,201,60,0.4)] active:scale-[.97] " +
   "focus:outline-none focus:ring-2 focus:ring-amber disabled:cursor-not-allowed disabled:opacity-50";
 
 // Reaction call-outs (must match the server's REACTIONS whitelist). Typographic,
