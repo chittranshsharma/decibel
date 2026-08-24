@@ -2,17 +2,72 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import './DriftWall.css';
 
 export const GENRE_WALL_ITEMS = [
-  { genreKey: 'hip-hop', title: 'Modern Hip-Hop', tag: 'Kendrick · Carti · MF DOOM', image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80' },
-  { genreKey: 'hyperpop', title: 'Hyperpop & Digicore', tag: 'Charli XCX · SOPHIE · Bladee', image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80' },
-  { genreKey: 'trap', title: 'Trap & Rage', tag: 'Future · Yeat · Ken Carson', image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&auto=format&fit=crop&q=80' },
-  { genreKey: 'rock', title: 'Rock & Alt', tag: 'Radiohead · Deftones · Nirvana', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80' },
-  { genreKey: 'desi-hip-hop', title: 'Desi Hip Hop', tag: 'Seedhe Maut · KR$NA · Dhanji', image: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&auto=format&fit=crop&q=80' },
-  { genreKey: 'indie', title: 'Indie & Alt', tag: 'The Strokes · Mac DeMarco · Tame Impala', image: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=600&auto=format&fit=crop&q=80' },
-  { genreKey: 'bedroom-pop', title: 'Bedroom Pop', tag: 'Clairo · beabadoobee · Boy Pablo', image: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=600&auto=format&fit=crop&q=80' },
-  { genreKey: 'rnb', title: 'R&B & Soul', tag: 'Frank Ocean · SZA · The Weeknd', image: 'https://images.unsplash.com/photo-1487180144351-b8472da7d491?w=600&auto=format&fit=crop&q=80' },
-  { genreKey: 'oldschool-hiphop', title: 'Old School Rap', tag: '2Pac · Biggie · Nas · Wu-Tang', image: 'https://images.unsplash.com/photo-1446057032654-9d8885db76c6?w=600&auto=format&fit=crop&q=80' },
-  { genreKey: 'pop', title: 'Pop & Dance', tag: 'Dua Lipa · Billie Eilish · Olivia Rodrigo', image: 'https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?w=600&auto=format&fit=crop&q=80' },
-  { genreKey: 'desi-indie', title: 'Desi Indie', tag: 'Prateek Kuhad · Anuv Jain · Lifafa', image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&auto=format&fit=crop&q=80' },
+  {
+    genreKey: 'hip-hop',
+    title: 'Modern Hip-Hop',
+    tag: 'Kendrick · Carti · MF DOOM',
+    image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80' // Graffiti & street hip hop
+  },
+  {
+    genreKey: 'hyperpop',
+    title: 'Hyperpop & Digicore',
+    tag: 'Charli XCX · SOPHIE · Bladee',
+    image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=600&auto=format&fit=crop&q=80' // Glitch / cyberpunk neon chrome
+  },
+  {
+    genreKey: 'trap',
+    title: 'Trap & Rage',
+    tag: 'Future · Yeat · Ken Carson',
+    image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&auto=format&fit=crop&q=80' // Neon rage moshpit / strobe lights
+  },
+  {
+    genreKey: 'rock',
+    title: 'Rock & Alt',
+    tag: 'Radiohead · Deftones · Nirvana',
+    image: 'https://images.unsplash.com/photo-1464375117522-1311d6a5b81f?w=600&auto=format&fit=crop&q=80' // Electric guitar stack amplifier
+  },
+  {
+    genreKey: 'desi-hip-hop',
+    title: 'Desi Hip Hop',
+    tag: 'Seedhe Maut · KR$NA · Dhanji',
+    image: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&auto=format&fit=crop&q=80' // Underground rap cypher stage
+  },
+  {
+    genreKey: 'indie',
+    title: 'Indie & Alt',
+    tag: 'The Strokes · Mac DeMarco · Tame Impala',
+    image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?w=600&auto=format&fit=crop&q=80' // Vintage vinyl turntable
+  },
+  {
+    genreKey: 'bedroom-pop',
+    title: 'Bedroom Pop',
+    tag: 'Clairo · beabadoobee · Boy Pablo',
+    image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&auto=format&fit=crop&q=80' // Cozy bedroom studio & synths
+  },
+  {
+    genreKey: 'rnb',
+    title: 'R&B & Soul',
+    tag: 'Frank Ocean · SZA · The Weeknd',
+    image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80' // Moody warm studio mic
+  },
+  {
+    genreKey: 'oldschool-hiphop',
+    title: 'Old School Rap',
+    tag: '2Pac · Biggie · Nas · Wu-Tang',
+    image: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=600&auto=format&fit=crop&q=80' // Classic 90s cassette mixtape
+  },
+  {
+    genreKey: 'pop',
+    title: 'Pop & Dance',
+    tag: 'Dua Lipa · Billie Eilish · Olivia Rodrigo',
+    image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&auto=format&fit=crop&q=80' // Stadium pop concert confetti & lasers
+  },
+  {
+    genreKey: 'desi-indie',
+    title: 'Desi Indie',
+    tag: 'Prateek Kuhad · Anuv Jain · Lifafa',
+    image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&auto=format&fit=crop&q=80' // Acoustic guitar warm coffee vibe
+  },
 ];
 
 const prefersReducedMotion = () =>
