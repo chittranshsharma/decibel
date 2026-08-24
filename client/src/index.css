@@ -88,21 +88,29 @@ body {
   box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.8);
 }
 
-/* Custom Scrollbars */
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+/* High-Performance GPU Compositing & Layout Containment */
+.animate-digitpop {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform, opacity;
 }
-::-webkit-scrollbar-track {
-  background: #07070a;
+
+.animate-rise {
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
-::-webkit-scrollbar-thumb {
-  background: #23232c;
-  border-radius: 4px;
+
+.animate-beat {
+  will-change: transform;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #50e3c2;
+
+/* Hardware accelerated noise overlay */
+.noise-overlay {
+  transform: translateZ(0);
+  contain: strict;
 }
+
 
 /* Phosphor and Glow text */
 .phosphor {

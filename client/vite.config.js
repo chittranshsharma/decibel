@@ -27,5 +27,21 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    target: "esnext",
+    minify: "esbuild",
+    cssCodeSplit: true,
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom"],
+          socket: ["socket.io-client"],
+          icons: ["@tabler/icons-react"],
+          ui: ["clsx", "tailwind-merge"],
+        },
+      },
+    },
+  },
 });
 

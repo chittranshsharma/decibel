@@ -8,7 +8,7 @@
 // prop, event, and server field is wired exactly as before. Screens live in
 // ./screens/*, shared tokens + reusable bits in ./ui.jsx.
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { useGameSocket } from "./useGameSocket";
 import sound from "./sound";
 import { getStats, recordGame } from "./stats";
@@ -21,12 +21,14 @@ import { Lobby } from "./screens/Lobby";
 import { Playing } from "./screens/Playing";
 import { Reveal } from "./screens/Reveal";
 import { GameOver } from "./screens/GameOver";
-import { Harmonies } from "./screens/Harmonies";
-import { Wordzic } from "./screens/Wordzic";
-import { Lyricles } from "./screens/Lyricles";
-import { Crosszic } from "./screens/Crosszic";
 import FloatingDockNav from "./components/FloatingDockNav";
 import AudioBackground from "./components/AudioBackground";
+
+// Performance: Code-split heavy solo puzzle mini-games
+const Harmonies = lazy(() => import("./screens/Harmonies").then((m) => ({ default: m.Harmonies })));
+const Wordzic = lazy(() => import("./screens/Wordzic").then((m) => ({ default: m.Wordzic })));
+const Lyricles = lazy(() => import("./screens/Lyricles").then((m) => ({ default: m.Lyricles })));
+const Crosszic = lazy(() => import("./screens/Crosszic").then((m) => ({ default: m.Crosszic })));
 
 export default function App() {
   const {
@@ -279,13 +281,21 @@ export default function App() {
           ) : !joined && view === "profile" ? (
             <Profile stats={stats} onBack={() => setView("home")} />
           ) : !joined && view === "harmonies" ? (
-            <Harmonies onBack={() => setView("home")} />
+            <Suspense fallback={<LoadingOverlay message="Loading Harmonies..." />}>
+              <Harmonies onBack={() => setView("home")} />
+            </Suspense>
           ) : !joined && view === "wordzic" ? (
-            <Wordzic onBack={() => setView("home")} />
+            <Suspense fallback={<LoadingOverlay message="Loading Wordzic..." />}>
+              <Wordzic onBack={() => setView("home")} />
+            </Suspense>
           ) : !joined && view === "lyricles" ? (
-            <Lyricles onBack={() => setView("home")} />
+            <Suspense fallback={<LoadingOverlay message="Loading Lyricles..." />}>
+              <Lyricles onBack={() => setView("home")} />
+            </Suspense>
           ) : !joined && view === "crosszic" ? (
-            <Crosszic onBack={() => setView("home")} />
+            <Suspense fallback={<LoadingOverlay message="Loading Crosszic..." />}>
+              <Crosszic onBack={() => setView("home")} />
+            </Suspense>
           ) : !joined ? (
             !connected ? (
               <Centered eyebrow="Status" title="Connecting to server…" />
