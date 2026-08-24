@@ -269,6 +269,8 @@ export default function App() {
           total={state?.totalRounds}
           onMenu={() => setMenuOpen(true)}
           onBrand={handleLeave}
+          joined={joined}
+          onLeave={handleLeave}
         />
 
         <main className="flex flex-1 flex-col justify-start py-8">
@@ -370,13 +372,16 @@ export default function App() {
 }
 
 // ---------- Masthead ----------
-function Masthead({ phase, round, total, onMenu, onBrand }) {
+function Masthead({ phase, round, total, onMenu, onBrand, joined, onLeave }) {
   const label =
     phase === "ROUND_PLAYING" || phase === "ROUND_REVEAL"
       ? `TRACK ${String(round).padStart(2, "0")} / ${String(total ?? 10).padStart(2, "0")}`
       : phase === "GAME_OVER"
       ? "FINAL RESULTS"
       : "LOBBY";
+
+  const showLeave = joined && (phase === "ROUND_PLAYING" || phase === "ROUND_REVEAL");
+
   return (
     <header className="flex items-center justify-between gap-3 border-b border-white/10 pb-4">
       <div className="flex items-center gap-3">
@@ -401,7 +406,18 @@ function Masthead({ phase, round, total, onMenu, onBrand }) {
           </button>
         </h1>
       </div>
-      <span className={EYEBROW}>{label}</span>
+      <div className="flex items-center gap-4">
+        {showLeave && (
+          <button
+            type="button"
+            onClick={onLeave}
+            className="rounded-lg border border-[#ee0000]/40 bg-[#ee0000]/5 px-3 py-1 font-console text-[10px] font-semibold uppercase tracking-wider text-[#ee0000] transition-all hover:bg-[#ee0000] hover:text-black active:scale-95"
+          >
+            🚪 Leave Match
+          </button>
+        )}
+        <span className={EYEBROW}>{label}</span>
+      </div>
     </header>
   );
 }
