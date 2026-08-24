@@ -25,6 +25,7 @@ import { Harmonies } from "./screens/Harmonies";
 import { Wordzic } from "./screens/Wordzic";
 import { Lyricles } from "./screens/Lyricles";
 import { Crosszic } from "./screens/Crosszic";
+import FloatingDockNav from "./components/FloatingDockNav";
 
 export default function App() {
   const {
@@ -346,6 +347,11 @@ export default function App() {
           <span className="text-bone">{me ? me.name : "Guest"}</span>
         </footer>
       </div>
+
+      {/* Floating Bottom Quick Navigation Dock */}
+      {(!joined || phase === "GAME_OVER") && (
+        <FloatingDockNav onNavigate={handleNavigate} onOpenGame={openGame} />
+      )}
 
       {/* Single persistent, primed audio element reused across all rounds. */}
       <audio ref={audioRef} preload="auto" className="hidden" />
