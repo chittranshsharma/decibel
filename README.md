@@ -1,12 +1,12 @@
 <div align="center">
 
 ```
-  ███████╗███╗   ██╗██╗██████╗ ██████╗ ███████╗████████╗
-  ██╔════╝████╗  ██║██║██╔══██╗██╔══██╗██╔════╝╚══██╔══╝
-  ███████╗██╔██╗ ██║██║██████╔╝██████╔╝█████╗     ██║   
-  ╚════██║██║╚██╗██║██║██╔═══╝ ██╔═══╝ ██╔══╝     ██║   
-  ███████║██║ ╚████║██║██║     ██║     ███████╗   ██║   
-  ╚══════╝╚═╝  ╚═══╝╚═╝╚═╝     ╚═╝     ╚══════╝   ╚═╝   
+  ██████╗ ███████╗ ██████╗██╗██████╗ ███████╗██╗     
+  ██╔══██╗██╔════╝██╔════╝██║██╔══██╗██╔════╝██║     
+  ██║  ██║█████╗  ██║     ██║██████╔╝█████╗  ██║     
+  ██║  ██║██╔══╝  ██║     ██║██╔══██╗██╔══╝  ██║     
+  ██████╔╝███████╗╚██████╗██║██████╔╝███████╗███████╗
+  ╚═════╝ ╚══════╝ ╚═════╝╚═╝╚═════╝ ╚══════╝╚══════╝
 ```
 
 ### High-Frequency, Server-Authoritative Real-Time Audio Trivia Engine
@@ -23,8 +23,8 @@
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
 <p align="center">
-  <b>Snippet</b> is a zero-latency, server-authoritative multiplayer music trivia engine.<br>
-  Players compete simultaneously in high-intensity audio rounds, deciphering 30-second playable snippets across 11 meticulously curated genres, scraping custom Spotify playlists in real-time, or battling through deep underground crate cuts.
+  <b>Decibel</b> is a zero-latency, server-authoritative multiplayer music trivia engine.<br>
+  Players compete simultaneously in high-intensity audio rounds, deciphering 30-second playable tracks across 11 meticulously curated genres, scraping custom Spotify playlists in real-time, or battling through deep underground crate cuts.
 </p>
 
 ---
@@ -67,7 +67,7 @@
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────┐
-│  SNIPPET // MATCH 04/10 ──────────── TIME REMAINING: 07.4s ─────────── │
+│  DECIBEL // MATCH 04/10 ──────────── TIME REMAINING: 07.4s ─────────── │
 ├────────────────────────────────────────────────────────────────────────┤
 │                                                                        │
 │   [AUDIO STREAMING] ılı.lıllılı.ıllı.lı.ılıllılı.ıllı [BITRATE: 256K]  │
@@ -181,7 +181,7 @@ The game provides a host-level **Vibe Selector** to calibrate match difficulty a
 
 ## 🟢 Custom Spotify Playlist Ingest Engine
 
-Snippet features a keyless, zero-dependency Spotify playlist extraction and preview resolution engine:
+Decibel features a keyless, zero-dependency Spotify playlist extraction and preview resolution engine:
 
 ```
 [ Host Enters Spotify URL ] ──> [ spotifyFetcher.js: parseSpotifyPlaylistId ]
@@ -206,7 +206,7 @@ Snippet features a keyless, zero-dependency Spotify playlist extraction and prev
 
 ## 🧮 Mathematical Scoring Engine
 
-Snippet implements an escalating, speed-sensitive, and streak-multiplied scoring curve calculated deterministically on the server:
+Decibel implements an escalating, speed-sensitive, and streak-multiplied scoring curve calculated deterministically on the server:
 
 $$\text{FinalScore} = \text{round}\left( \Big( \text{BasePoints}(r) + \text{VelocityBonus}(t_a, T) \Big) \times \text{StreakMultiplier}(s) \right)$$
 
@@ -230,7 +230,7 @@ $$\text{StreakMultiplier}(s) = 1.0 + \min(4, \max(0, s - 1)) \times 0.1$$
 
 ## 📊 Database Architecture & Sub-Millisecond Sampling
 
-Snippet utilizes **Supabase PostgreSQL 17** engineered for 500,000+ track catalogs.
+Decibel utilizes **Supabase PostgreSQL 17** engineered for 500,000+ track catalogs.
 
 ### Table Schema (`catalog_tracks`)
 ```sql
@@ -314,8 +314,8 @@ All communication between client and server occurs via strongly typed Socket.IO 
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/chittranshsharma/snippet.git
-cd snippet
+git clone https://github.com/chittranshsharma/decibel.git
+cd decibel
 
 # Install server dependencies
 npm install
@@ -350,7 +350,7 @@ Open **`http://localhost:5173`** in multiple browser tabs to test multiplayer ga
 
 ## 🧪 Test Suite & Quality Verification
 
-Snippet includes unit and integration tests written in **Vitest**:
+Decibel includes unit and integration tests written in **Vitest**:
 
 ```bash
 npm test

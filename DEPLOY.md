@@ -1,6 +1,6 @@
-# Deploying Snippet
+# Deploying Decibel
 
-Snippet has **two deployable parts** that must go to **two different kinds of host**:
+Decibel has **two deployable parts** that must go to **two different kinds of host**:
 
 | Part | What it is | Where it goes |
 | --- | --- | --- |
@@ -63,7 +63,7 @@ Snippet has **two deployable parts** that must go to **two different kinds of ho
    has to change. Render's free Postgres is deleted after its trial window — if
    that happens the server logs a warning and falls back to the JSON snapshot,
    it does not go down.
-4. Note the public URL, e.g. `https://snippet-server.up.railway.app`.
+4. Note the public URL, e.g. `https://decibel-server.up.railway.app`.
 
 ## 2. Client → Vercel
 
