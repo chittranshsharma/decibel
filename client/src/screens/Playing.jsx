@@ -183,8 +183,8 @@ export function Playing({
           {doubleDownActive ? " · 🔥 2X DOUBLE" : ""}
           {shieldActive ? " · 🛡️ SHIELD" : ""}
         </span>
-        <span className="font-console text-xs font-semibold uppercase tracking-[0.16em] text-dim">
-          QV <span className="text-[#50e3c2] font-bold">{questionValue}</span> · Speed ≤{maxSpeedBonus}
+        <span className="font-console text-xs font-semibold uppercase tracking-[0.16em] text-neutral-300">
+          QV <span className="text-amber-400 font-bold drop-shadow-[0_0_8px_rgba(245,166,35,0.6)]">{questionValue}</span> · Speed ≤{maxSpeedBonus}
         </span>
       </div>
 
@@ -214,37 +214,37 @@ export function Playing({
         </button>
       )}
 
-      {/* Bento Options Grid */}
-      <div className="grid gap-3">
-        {state.options.map((opt, i) => {
+      {/* Primary 4 Arcade Options Grid */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {state.options?.map((opt, i) => {
           const selected = myGuess === opt;
           const isEliminated = eliminatedOptions.includes(opt);
-          const dimmed = (locked && !selected) || isEliminated;
+          const dimmed = hasGuessed && !selected;
           const c = OPT_COLORS[i % OPT_COLORS.length];
 
           return (
-            <div key={opt} className="min-w-0 animate-rise" style={{ animationDelay: `${i * 50}ms` }}>
+            <div key={opt} className="relative">
               <button
                 type="button"
                 onClick={() => onGuess(opt)}
                 disabled={locked || isEliminated}
                 aria-label={`Option ${i + 1}: ${opt}`}
                 className={[
-                  "flex w-full items-center justify-between rounded-xl border px-4 py-4 text-left font-geist text-sm tracking-[-0.2px] text-bone",
-                  "transition-all enabled:active:scale-[.98]",
+                  "flex w-full items-center justify-between rounded-2xl border px-4 py-4 text-left font-geist text-sm tracking-[-0.2px] text-white font-medium",
+                  "transition-all enabled:active:scale-[.98] cursor-pointer shadow-lg",
                   selected
-                    ? `ring-2 ${c.sel} bg-white/10 text-white font-semibold animate-lockin`
+                    ? `ring-2 ${c.sel} bg-white/15 text-white font-bold animate-lockin shadow-[0_0_25px_rgba(245,166,35,0.3)]`
                     : isEliminated
                     ? "border-white/5 bg-black/40 line-through text-dim/30 pointer-events-none"
                     : doubleDownActive
-                    ? `border-[#ff0080]/60 bg-[#ff0080]/5 hover:bg-[#ff0080]/15 ${c.hov}`
-                    : `border-white/5 bg-white/[0.02] backdrop-blur-md ${c.hov}`,
+                    ? `border-amber-400/60 bg-amber-400/10 hover:bg-amber-400/20 hover:border-amber-300 shadow-[0_0_20px_rgba(245,166,35,0.2)] ${c.hov}`
+                    : `border-white/15 bg-white/[0.05] backdrop-blur-xl hover:border-amber-400/60 hover:bg-white/[0.09] hover:shadow-[0_0_20px_rgba(245,166,35,0.18)] ${c.hov}`,
                   dimmed ? "pointer-events-none opacity-30" : "",
                   "disabled:cursor-not-allowed",
                 ].join(" ")}
               >
                 <span className="flex items-center gap-3.5 min-w-0">
-                  <span className={`grid h-6 w-6 place-items-center rounded-md border border-white/10 bg-black/60 font-console text-xs font-bold ${c.num}`}>
+                  <span className={`grid h-7 w-7 place-items-center rounded-lg border border-white/20 bg-black/70 font-console text-xs font-bold ${c.num}`}>
                     {i + 1}
                   </span>
                   <span className="min-w-0 truncate">{opt}</span>

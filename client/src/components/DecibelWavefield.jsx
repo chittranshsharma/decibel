@@ -17,8 +17,19 @@ export default function DecibelWavefield() {
     if (!ctx) return;
 
     let animId;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    const updateSize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    updateSize();
 
     const mouse = {
       x: width * 0.5,
@@ -28,10 +39,10 @@ export default function DecibelWavefield() {
       active: false,
     };
 
+    let resizeTimer;
     const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(updateSize, 100);
     };
 
     const handleMouseMove = (e) => {
@@ -45,50 +56,60 @@ export default function DecibelWavefield() {
     };
 
     window.addEventListener("resize", handleResize);
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     window.addEventListener("mouseleave", handleMouseLeave);
 
     let phase = 0;
+    let isVisible = !document.hidden;
 
-    // Harmonic Audio Wave Definitions
+    const handleVisibilityChange = () => {
+      isVisible = !document.hidden;
+      if (isVisible) {
+        animId = requestAnimationFrame(render);
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Harmonic Audio Wave Definitions (Elevated arcade glow)
     const waves = [
-      { freq: 0.0028, speed: 0.012, amp: 42, yOffset: 0.32, color: "rgba(245, 166, 35, 0.14)", width: 1.8 },
-      { freq: 0.0042, speed: 0.016, amp: 55, yOffset: 0.38, color: "rgba(255, 184, 77, 0.10)", width: 1.4 },
-      { freq: 0.0019, speed: 0.009, amp: 35, yOffset: 0.45, color: "rgba(245, 166, 35, 0.12)", width: 1.6 },
-      { freq: 0.0035, speed: 0.014, amp: 48, yOffset: 0.52, color: "rgba(255, 255, 255, 0.06)", width: 1.2 },
-      { freq: 0.0022, speed: 0.011, amp: 60, yOffset: 0.60, color: "rgba(245, 166, 35, 0.08)", width: 1.5 },
-      { freq: 0.0048, speed: 0.018, amp: 38, yOffset: 0.68, color: "rgba(255, 184, 77, 0.07)", width: 1.2 },
+      { freq: 0.0028, speed: 0.014, amp: 44, yOffset: 0.30, color: "rgba(245, 166, 35, 0.22)", width: 2.0 },
+      { freq: 0.0042, speed: 0.018, amp: 58, yOffset: 0.38, color: "rgba(255, 200, 100, 0.18)", width: 1.6 },
+      { freq: 0.0019, speed: 0.011, amp: 38, yOffset: 0.46, color: "rgba(180, 80, 255, 0.16)", width: 1.8 },
+      { freq: 0.0035, speed: 0.016, amp: 52, yOffset: 0.54, color: "rgba(245, 166, 35, 0.18)", width: 1.5 },
+      { freq: 0.0022, speed: 0.013, amp: 64, yOffset: 0.62, color: "rgba(255, 180, 60, 0.14)", width: 1.8 },
+      { freq: 0.0048, speed: 0.020, amp: 42, yOffset: 0.70, color: "rgba(255, 255, 255, 0.10)", width: 1.2 },
     ];
 
-    // Equalizer spectrum columns along the bottom
-    const EQ_BARS = 36;
+    const EQ_BARS = 40;
 
     const render = () => {
-      phase += 0.8;
-      mouse.x += (mouse.targetX - mouse.x) * 0.05;
-      mouse.y += (mouse.targetY - mouse.y) * 0.05;
+      if (!isVisible) return;
+
+      phase += 0.9;
+      mouse.x += (mouse.targetX - mouse.x) * 0.06;
+      mouse.y += (mouse.targetY - mouse.y) * 0.06;
 
       ctx.clearRect(0, 0, width, height);
 
-      // 1. Deep Obsidian Studio Base
+      // 1. Deep Obsidian Studio Base with Warm Spotlight Center
       const bgGrad = ctx.createRadialGradient(
         mouse.x,
         mouse.y,
-        50,
+        60,
         width * 0.5,
-        height * 0.5,
-        Math.max(width, height) * 0.85
+        height * 0.45,
+        Math.max(width, height) * 0.8
       );
-      bgGrad.addColorStop(0, "rgba(18, 14, 28, 0.85)");
-      bgGrad.addColorStop(0.5, "rgba(8, 7, 13, 0.95)");
-      bgGrad.addColorStop(1, "rgba(3, 2, 6, 1)");
+      bgGrad.addColorStop(0, "rgba(28, 20, 42, 0.92)");
+      bgGrad.addColorStop(0.45, "rgba(12, 10, 18, 0.96)");
+      bgGrad.addColorStop(1, "rgba(5, 4, 8, 1)");
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
       // 2. Subtle Isometric Studio Audio Grid
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.022)";
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.035)";
       ctx.lineWidth = 1;
-      const gridSize = 64;
+      const gridSize = 56;
       ctx.beginPath();
       for (let x = 0; x < width; x += gridSize) {
         ctx.moveTo(x, 0);
@@ -110,13 +131,11 @@ export default function DecibelWavefield() {
         const currentPhase = phase * w.speed + wIdx * 1.4;
 
         for (let x = 0; x <= width; x += 6) {
-          // Interactive mouse wave distortion
           const distToMouse = Math.hypot(x - mouse.x, baseLineY - mouse.y);
           const mouseDisp = mouse.active
-            ? Math.sin(distToMouse * 0.03 - phase * 0.05) * Math.max(0, 36 - distToMouse * 0.06)
+            ? Math.sin(distToMouse * 0.03 - phase * 0.06) * Math.max(0, 42 - distToMouse * 0.07)
             : 0;
 
-          // Harmonic multi-sine synthesis
           const primaryWave = Math.sin(x * w.freq + currentPhase) * w.amp;
           const harmonicWave = Math.sin(x * w.freq * 2.2 - currentPhase * 0.7) * (w.amp * 0.35);
           const y = baseLineY + primaryWave + harmonicWave + mouseDisp;
@@ -130,15 +149,16 @@ export default function DecibelWavefield() {
         ctx.stroke();
       });
 
-      // 4. Subtle Bottom Audio Spectrum Equalizer
+      // 4. Glowing Bottom Audio Spectrum Equalizer
       const barWidth = width / EQ_BARS;
       for (let i = 0; i < EQ_BARS; i++) {
         const barX = i * barWidth;
-        const waveFactor = Math.sin(phase * 0.03 + i * 0.35) * Math.cos(phase * 0.02 - i * 0.2);
-        const barH = Math.max(6, Math.abs(waveFactor) * (height * 0.12));
+        const waveFactor = Math.sin(phase * 0.035 + i * 0.32) * Math.cos(phase * 0.025 - i * 0.18);
+        const barH = Math.max(8, Math.abs(waveFactor) * (height * 0.14));
 
         const barGrad = ctx.createLinearGradient(0, height - barH, 0, height);
-        barGrad.addColorStop(0, "rgba(245, 166, 35, 0.12)");
+        barGrad.addColorStop(0, "rgba(245, 166, 35, 0.22)");
+        barGrad.addColorStop(0.5, "rgba(245, 166, 35, 0.08)");
         barGrad.addColorStop(1, "rgba(245, 166, 35, 0.01)");
 
         ctx.fillStyle = barGrad;
@@ -148,13 +168,15 @@ export default function DecibelWavefield() {
       animId = requestAnimationFrame(render);
     };
 
-    render();
+    animId = requestAnimationFrame(render);
 
     return () => {
       cancelAnimationFrame(animId);
+      clearTimeout(resizeTimer);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
@@ -162,7 +184,7 @@ export default function DecibelWavefield() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-0 pointer-events-none w-full h-full"
-      style={{ opacity: 0.95 }}
+      style={{ opacity: 1.0 }}
     />
   );
 }

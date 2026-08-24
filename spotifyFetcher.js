@@ -14,6 +14,9 @@ const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 const CONCURRENCY_LIMIT = 8;
 const MAX_PLAYLIST_CANDIDATES = 500;
 
+const SPOTIFY_JUNK_REGEX =
+  /\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|radio edit remix|live at|live from|live in|live version|anniversary edition|demo|instrumental|karaoke|tribute|cover|acoustic|acoustic version|sped.?up|slowed|reverb|nightcore)\b|[([].*?\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|live|acoustic|instrumental|karaoke|tribute|cover|demo|sped.?up|slowed)\b.*?[)\]]/i;
+
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || "";
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || "";
 
@@ -96,6 +99,7 @@ async function fetchFromSpotifyApi(playlistId, token) {
       const track = item.track;
       if (!track || !track.name) continue;
       const title = track.name.trim();
+      if (SPOTIFY_JUNK_REGEX.test(title)) continue;
       const artist = track.artists?.map((a) => a.name).join(", ") || "Unknown Artist";
       const previewUrl = track.preview_url || null;
 
@@ -175,6 +179,7 @@ async function fetchRawSpotifyTracks(playlistId) {
               track.subtitle ||
               (Array.isArray(track.artists) ? track.artists.map((a) => a.name).join(", ") : "");
             if (!title || !artist) return null;
+            if (SPOTIFY_JUNK_REGEX.test(title)) return null;
 
             // Direct Spotify preview url if embedded
             const directPreview = item.audioPreview?.url || track.preview_url || item.preview_url || null;
@@ -201,10 +206,12 @@ async function fetchRawSpotifyTracks(playlistId) {
   const itemRegex = /"name":"([^"]+)","artists":\[{"name":"([^"]+)"/g;
   let m;
   while ((m = itemRegex.exec(html)) !== null) {
+    const rawTitle = m[1].replace(/\\u0026/g, "&").trim();
+    if (SPOTIFY_JUNK_REGEX.test(rawTitle)) continue;
     tracks.push({
       id: `sp_${playlistId}_${tracks.length}`,
-      title: m[1].replace(/\\u0026/g, "&"),
-      artist: m[2].replace(/\\u0026/g, "&"),
+      title: rawTitle,
+      artist: m[2].replace(/\\u0026/g, "&").trim(),
       previewUrl: null,
       durationMs: 180000,
     });

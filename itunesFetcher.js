@@ -77,7 +77,7 @@ function sample(pool, n) {
 // (iTunes can return the same track from multiple albums) to avoid repeats.
 // releaseYear is kept so callers can filter by decade.
 const JUNK_TRACK_REGEX =
-  /\b(instrumental|karaoke|tribute|cover|acoustic|type beat|slowed|sped up|nightcore|reverb|orchestral|synthesizer|piano version|guitar cover)\b|\((instrumental|karaoke|tribute|cover)\)|\[(instrumental|karaoke|tribute|cover)\]/i;
+  /\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|radio edit remix|live at|live from|live in|live version|live 20\d\d|anniversary edition|demo|instrumental|karaoke|tribute|cover|acoustic|acoustic version|type beat|slowed|sped.?up|nightcore|reverb|orchestral|synthesizer|piano version|guitar cover|re-?record(ed)?|remaster(ed)?)\b|[([].*?\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|live|acoustic|instrumental|karaoke|tribute|cover|demo|sped.?up|slowed)\b.*?[)\]]/i;
 
 function normalize(results) {
   const list = Array.isArray(results) ? results : [];

@@ -411,26 +411,29 @@ function Masthead({ phase, round, total, onMenu, onBrand, joined, onLeave }) {
   const showLeave = joined && (phase === "ROUND_PLAYING" || phase === "ROUND_REVEAL");
 
   return (
-    <header className="flex items-center justify-between gap-3 border-b border-white/10 pb-4">
+    <header className="flex items-center justify-between gap-3 border-b border-white/15 pb-4">
       <div className="flex items-center gap-3">
         {onMenu && (
           <button
             type="button"
             onClick={onMenu}
             aria-label="Open menu"
-            className="inline-flex h-9 w-9 items-center justify-center font-geist text-lg leading-none text-dim transition-colors hover:text-white rounded-sm border border-white/10 bg-[#111114]"
+            className="inline-flex h-10 w-10 items-center justify-center font-geist text-xl font-bold leading-none text-white rounded-xl border border-white/20 bg-white/[0.08] shadow-md hover:border-amber-400/60 hover:bg-amber-400/15 hover:text-amber-300 transition-all active:scale-95 cursor-pointer"
           >
             ≡
           </button>
         )}
-        <h1 className="flex items-center font-geist text-2xl font-semibold uppercase leading-none tracking-[-0.8px] text-white">
+        <h1 className="flex items-center font-geist text-2xl font-black uppercase leading-none tracking-[-0.8px]">
           <button
             type="button"
             onClick={onBrand || undefined}
             disabled={!onBrand}
-            className="flex min-h-11 items-center disabled:cursor-default"
+            className="flex min-h-11 items-center gap-1 group cursor-pointer disabled:cursor-default"
           >
-            DECIBEL<span className="text-[#00dfd8]">.</span>
+            <span className="text-shiny-chrome font-black tracking-tight drop-shadow-[0_0_20px_rgba(245,166,35,0.4)]">
+              DECIBEL
+            </span>
+            <span className="inline-block h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_10px_#f5a623] animate-pulse" />
           </button>
         </h1>
       </div>
@@ -439,12 +442,12 @@ function Masthead({ phase, round, total, onMenu, onBrand, joined, onLeave }) {
           <button
             type="button"
             onClick={onLeave}
-            className="rounded-lg border border-[#ee0000]/40 bg-[#ee0000]/5 px-3 py-1 font-console text-[10px] font-semibold uppercase tracking-wider text-[#ee0000] transition-all hover:bg-[#ee0000] hover:text-black active:scale-95"
+            className="rounded-lg border border-[#ee0000]/50 bg-[#ee0000]/10 px-3 py-1 font-console text-[10px] font-semibold uppercase tracking-wider text-[#ff4444] transition-all hover:bg-[#ee0000] hover:text-black active:scale-95 cursor-pointer"
           >
             🚪 Leave Match
           </button>
         )}
-        <span className={EYEBROW}>{label}</span>
+        <span className={`${EYEBROW} text-amber-400/90 drop-shadow-sm`}>{label}</span>
       </div>
     </header>
   );

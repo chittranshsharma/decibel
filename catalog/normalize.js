@@ -8,7 +8,7 @@ import { familiesForAppleGenre, isUndergroundArtist } from "./genres.js";
 export const MIN_DURATION_MS = 20 * 1000; // 20s minimum duration
 
 const JUNK_VERSION_RE =
-  /\b(live|karaoke|tribute|cover|remaster(ed)?|re-?record(ed)?|instrumental|acoustic version|sped.?up|slowed|reverb|8.?bit|lullaby|workout|dj mix|medley|originally performed|in the style of|made famous|demo)\b/i;
+  /\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|radio edit remix|live|live at|live from|live in|karaoke|tribute|cover|remaster(ed)?|re-?record(ed)?|instrumental|acoustic|acoustic version|sped.?up|slowed|reverb|8.?bit|lullaby|workout|dj mix|medley|originally performed|in the style of|made famous|demo)\b|[([].*?\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|live|acoustic|instrumental|karaoke|tribute|cover|demo|sped.?up|slowed)\b.*?[)\]]/i;
 
 const COMPILATION_RE =
   /\b(greatest hits|best of|number one|number ones|anthology|essential|the hits|hits collection|for the record|ultimate collection|decades|the collection)\b/i;

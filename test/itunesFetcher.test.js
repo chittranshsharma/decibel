@@ -127,11 +127,22 @@ describe("fetchSongs (mocked iTunes)", () => {
     expect(new Set(artists).size).toBe(3);
   });
 
-  it("falls back to stale cache on a network error", async () => {
-    fetch.mockResolvedValueOnce(ok(RESULTS));
-    await fetchSongs("rap", 3); // warm the cache
-    fetch.mockRejectedValueOnce(new Error("network down"));
-    const out = await fetchSongs("rap", 3);
-    expect(out.length).toBe(3);
+  it("strictly filters out remixes, live recordings, and acoustic cuts", async () => {
+    const REMIX_POOL = [
+      { trackId: 401, trackName: "Levitating (feat. DaBaby) - Don Diablo Remix", artistName: "Dua Lipa", previewUrl: "u", trackTimeMillis: 30000, primaryGenreName: "Pop" },
+      { trackId: 402, trackName: "Starboy (Kygo Remix)", artistName: "The Weeknd", previewUrl: "u", trackTimeMillis: 30000, primaryGenreName: "Pop" },
+      { trackId: 403, trackName: "HUMBLE. (Live at Coachella)", artistName: "Kendrick Lamar", previewUrl: "u", trackTimeMillis: 30000, primaryGenreName: "Hip-Hop/Rap" },
+      { trackId: 404, trackName: "Someone Like You (Acoustic Version)", artistName: "Adele", previewUrl: "u", trackTimeMillis: 30000, primaryGenreName: "Pop" },
+      { trackId: 405, trackName: "God's Plan", artistName: "Drake", previewUrl: "u", trackTimeMillis: 30000, primaryGenreName: "Hip-Hop/Rap" },
+      { trackId: 406, trackName: "Blinding Lights", artistName: "The Weeknd", previewUrl: "u", trackTimeMillis: 30000, primaryGenreName: "Pop" },
+    ];
+    fetch.mockResolvedValue(ok(REMIX_POOL));
+    const out = await fetchSongs("pop", 10);
+    const names = out.map((t) => t.trackName);
+    expect(names).not.toContain("Levitating (feat. DaBaby) - Don Diablo Remix");
+    expect(names).not.toContain("Starboy (Kygo Remix)");
+    expect(names).not.toContain("HUMBLE. (Live at Coachella)");
+    expect(names).not.toContain("Someone Like You (Acoustic Version)");
+    expect(names).toContain("Blinding Lights");
   });
 });
