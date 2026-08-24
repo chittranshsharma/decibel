@@ -21,6 +21,8 @@ describe("Harmonies Puzzles", () => {
   });
 });
 
+import { evaluateWordleGuess } from "../client/src/screens/Wordzic.jsx";
+
 describe("Wordzic Words", () => {
   it("validates that all Wordzic words are 5-letter uppercase strings", () => {
     expect(WORDZIC_WORDS.length).toBeGreaterThan(10);
@@ -28,6 +30,21 @@ describe("Wordzic Words", () => {
       expect(word).toHaveLength(5);
       expect(/^[A-Z]{5}$/.test(word)).toBe(true);
     }
+  });
+
+  it("accurately handles duplicate letters in Wordle evaluation", () => {
+    // ROBOT against TEMPO (only 1 'O' in target, 2 in guess)
+    const evals1 = evaluateWordleGuess("ROBOT", "TEMPO");
+    // Target TEMPO: R=absent, O=present, B=absent, O=absent (since 1st O claimed it), T=present
+    expect(evals1[0]).toBe("absent");
+    expect(evals1[1]).toBe("present");
+    expect(evals1[2]).toBe("absent");
+    expect(evals1[3]).toBe("absent"); // duplicate O is absent!
+    expect(evals1[4]).toBe("present");
+
+    // Exact match
+    const evalsExact = evaluateWordleGuess("TEMPO", "TEMPO");
+    expect(evalsExact).toEqual(["correct", "correct", "correct", "correct", "correct"]);
   });
 });
 

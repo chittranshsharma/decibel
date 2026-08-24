@@ -189,6 +189,7 @@ export function useGameSocket() {
   const clearNotice = useCallback(() => setNotice(null), []);
   const clearFiftyFifty = useCallback(() => setFiftyFiftyResult(null), []);
   const requestFiftyFifty = useCallback(() => socketRef.current?.emit("fiftyFifty"), []);
+  const usePowerUp = useCallback((type) => socketRef.current?.emit("usePowerUp", { type }), []);
   const leaveRoom = useCallback(() => {
     clearSession();
     socketRef.current?.disconnect();
@@ -229,6 +230,7 @@ export function useGameSocket() {
     fiftyFiftyResult,
     clearFiftyFifty,
     requestFiftyFifty,
+    usePowerUp,
     createRoom,
     joinRoom,
     quickPlay,

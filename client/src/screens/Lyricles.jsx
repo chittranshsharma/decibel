@@ -33,9 +33,19 @@ export function Lyricles({ onBack }) {
     if (!query.trim() || status !== "playing") return;
 
     const guessText = query.trim();
+    const clean = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const gClean = clean(guessText);
+    const tClean = clean(puzzle.track);
+    const aClean = clean(puzzle.artist);
+
     const isCorrect =
-      guessText.toLowerCase().includes(puzzle.track.toLowerCase()) ||
-      guessText.toLowerCase().includes(puzzle.artist.toLowerCase());
+      gClean.length >= 2 &&
+      (gClean === tClean ||
+        gClean === aClean ||
+        gClean.includes(tClean) ||
+        (tClean.length >= 4 && tClean.includes(gClean)) ||
+        gClean.includes(aClean) ||
+        (aClean.length >= 4 && aClean.includes(gClean)));
 
     const nextGuesses = [...guesses, guessText];
     setGuesses(nextGuesses);

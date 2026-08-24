@@ -12,6 +12,7 @@ export function Crosszic({ onBack }) {
   const [selectedCell, setSelectedCell] = useState({ r: 0, c: 0 });
   const [direction, setDirection] = useState("across"); // "across" | "down"
   const [solved, setSolved] = useState(false);
+  const [revealed, setRevealed] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [timerActive, setTimerActive] = useState(true);
 
@@ -24,6 +25,7 @@ export function Crosszic({ onBack }) {
     setSelectedCell({ r: 0, c: 0 });
     setDirection("across");
     setSolved(false);
+    setRevealed(false);
     setSeconds(0);
     setTimerActive(true);
   }, [puzzleIndex]);
@@ -138,6 +140,7 @@ export function Crosszic({ onBack }) {
 
   const handleReveal = () => {
     setUserGrid(puzzle.grid.map((row) => [...row]));
+    setRevealed(true);
     setSolved(true);
     setTimerActive(false);
   };
@@ -162,51 +165,59 @@ export function Crosszic({ onBack }) {
         </button>
       </div>
 
-      <div className="flex items-center justify-between font-console text-xs">
-        <span className="text-dim">Direction: <strong className="text-amber uppercase">{direction}</strong> (Tap cell to toggle)</span>
-        <span className="font-mono text-amber tabular-nums">⏱ {formatTime(seconds)}</span>
+      {/* Grid, Timer & Active Clue Header */}
+      <div className="flex items-center justify-between font-console text-xs text-dim">
+        <span>DIRECTION: <strong className="text-amber uppercase">{direction}</strong></span>
+        <span>TIME: <strong className="text-bone">{formatTime(seconds)}</strong></span>
       </div>
 
-      {/* Crossword 5x5 Grid */}
-      <div className="mx-auto flex justify-center">
-        <div className="grid grid-cols-5 gap-1.5 rounded-2xl border border-white/10 bg-black/60 p-2 shadow-2xl">
-          {puzzle.grid.map((row, r) =>
+      {/* 5x5 Crossword Grid */}
+      <div className="mx-auto flex flex-col items-center">
+        <div className="grid grid-cols-5 gap-1 border-2 border-rule bg-black p-1.5 rounded-lg shadow-inner">
+          {userGrid.map((row, r) =>
             row.map((cell, c) => {
-              const isBlocked = cell === "#";
+              const isBlock = puzzle.grid[r][c] === "#";
               const isSelected = selectedCell.r === r && selectedCell.c === c;
               const isHighlighted =
-                !isBlocked &&
+                !isBlock &&
                 (direction === "across" ? selectedCell.r === r : selectedCell.c === c);
-              const val = userGrid[r]?.[c] || "";
+              const clueNum = getClueNumber(r, c);
 
-              if (isBlocked) {
+              if (isBlock) {
                 return (
-                  <div key={`${r}-${c}`} className="h-11 w-11 sm:h-12 sm:w-12 rounded-lg bg-black/80 border border-white/5" />
+                  <div
+                    key={`${r}-${c}`}
+                    className="h-11 w-11 sm:h-12 sm:w-12 bg-[#09090b] border border-white/5"
+                  />
                 );
               }
 
               return (
-                <button
-                  type="button"
+                <div
                   key={`${r}-${c}`}
                   onClick={() => handleCellClick(r, c)}
-                  className={`relative flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-lg font-geist text-base sm:text-lg font-bold uppercase transition-all ${
+                  className={`relative flex h-11 w-11 sm:h-12 sm:w-12 cursor-pointer items-center justify-center font-geist text-base font-bold uppercase transition-colors select-none ${
                     isSelected
-                      ? "bg-[#50e3c2] text-black font-extrabold shadow-[0_0_15px_rgba(80,227,194,0.4)] z-10"
+                      ? "bg-amber text-black ring-2 ring-amber"
                       : isHighlighted
-                      ? "bg-white/10 text-white border border-[#50e3c2]/40"
-                      : "bg-[#121218]/90 text-bone border border-white/10 hover:border-white/20"
-                  }`}
+                      ? "bg-amber/15 text-bone"
+                      : "bg-cabinet text-bone hover:bg-cabinet/80"
+                  } border border-rule`}
                 >
-                  {val}
-                </button>
+                  {clueNum && (
+                    <span className={`absolute top-0.5 left-1 font-console text-[9px] ${isSelected ? "text-black font-bold" : "text-dim"}`}>
+                      {clueNum}
+                    </span>
+                  )}
+                  {cell}
+                </div>
               );
             })
           )}
         </div>
       </div>
 
-      {/* Clues Section */}
+      {/* Clues List */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 pt-2">
         <div className="space-y-2">
           <p className={EYEBROW}>Across Clues</p>
@@ -255,12 +266,12 @@ export function Crosszic({ onBack }) {
 
       {/* Solve Banner */}
       {solved && (
-        <div className={`${PANEL} p-5 text-center border-good space-y-3`}>
-          <p className="font-marquee text-2xl font-black uppercase text-good">
-            ★ MINI CROSSWORD COMPLETE! ★
+        <div className={`${PANEL} p-5 text-center ${revealed ? "border-amber" : "border-good"} space-y-3`}>
+          <p className={`font-marquee text-2xl font-black uppercase ${revealed ? "text-amber" : "text-good"}`}>
+            {revealed ? "SOLUTION REVEALED" : "★ MINI CROSSWORD COMPLETE! ★"}
           </p>
           <p className="font-console text-xs text-dim">
-            Solved in {formatTime(seconds)}
+            {revealed ? "Better luck on the next one!" : `Solved in ${formatTime(seconds)}`}
           </p>
           <button
             type="button"

@@ -15,6 +15,9 @@ export async function initStorage(log) {
   try {
     const { default: pg } = await import("pg");
     pool = new pg.Pool({ connectionString: url, max: 4 });
+    pool.on("error", (err) => {
+      log?.warn?.("pg pool idle client error in storage", { error: String(err?.message || err) });
+    });
     await pool.query(`
       CREATE TABLE IF NOT EXISTS scores (
         id BIGSERIAL PRIMARY KEY,
@@ -26,6 +29,8 @@ export async function initStorage(log) {
         genre TEXT,
         created_at TIMESTAMPTZ NOT NULL DEFAULT now()
       );
+      CREATE INDEX IF NOT EXISTS idx_scores_score ON scores (score DESC);
+      CREATE INDEX IF NOT EXISTS idx_scores_name ON scores (name);
     `);
     ready = true;
     log?.info?.("postgres storage ready (global leaderboard enabled)");

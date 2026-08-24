@@ -50,6 +50,9 @@ export async function initCatalog(log) {
     try {
       const { default: pg } = await import("pg");
       pool = new pg.Pool({ connectionString: url, max: 8 });
+      pool.on("error", (err) => {
+        logger?.warn?.("pg pool idle client error in catalog", { error: String(err?.message || err) });
+      });
       await pool.query(CREATE_SQL);
       backend = "postgres";
       const { total } = await catalogStats();
@@ -230,24 +233,47 @@ async function candidates(genre, count, range = null, vibe = "all") {
       where += ` AND release_year BETWEEN $${params.length - 1} AND $${params.length}`;
     }
 
+    const seed = Math.random();
+    const queryParams = [...params, seed, limit];
+    const seedParamIdx = queryParams.length - 1;
+    const limitParamIdx = queryParams.length;
+
     const res = await pool.query(
       `SELECT track_id AS "trackId", track_name AS "trackName", artist_name AS "artistName",
               preview_url AS "previewUrl", release_year AS "releaseYear", base_title AS "baseTitle",
               apple_genre AS "appleGenre"
          FROM catalog_tracks
-        WHERE ${where}
-        ORDER BY random_seed
-        LIMIT $${params.length + 1}`,
-      [...params, limit]
+        WHERE ${where} AND random_seed >= $${seedParamIdx}
+        ORDER BY random_seed ASC
+        LIMIT $${limitParamIdx}`,
+      queryParams
     );
 
-    if (res.rows.length >= count) return res.rows;
+    let candidateRows = res.rows;
+    if (candidateRows.length < count) {
+      // Wrap around from 0 to seed
+      const needed = limit - candidateRows.length;
+      const wrapParams = [...params, seed, needed];
+      const wrapRes = await pool.query(
+        `SELECT track_id AS "trackId", track_name AS "trackName", artist_name AS "artistName",
+                preview_url AS "previewUrl", release_year AS "releaseYear", base_title AS "baseTitle",
+                apple_genre AS "appleGenre"
+           FROM catalog_tracks
+          WHERE ${where} AND random_seed < $${seedParamIdx}
+          ORDER BY random_seed ASC
+          LIMIT $${limitParamIdx}`,
+        wrapParams
+      );
+      candidateRows = [...candidateRows, ...wrapRes.rows];
+    }
+
+    if (candidateRows.length >= count) return candidateRows;
 
     // Fallback without strict vibe tag if pool was thin
     if (vibe !== "all") {
       return candidates(genre, count, range, "all");
     }
-    return res.rows;
+    return candidateRows;
   }
 
   const all = [];

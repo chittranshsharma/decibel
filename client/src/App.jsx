@@ -36,7 +36,7 @@ export default function App() {
     messages, reactions, roomCode, createRoom, joinRoom, quickPlay, start, guess, restart,
     sendChat, sendReaction, clearError, clearNotice, leaveRoom,
     playlistStatus, setCustomPlaylist, vibeStatus, generateAiVibe,
-    fiftyFiftyResult, clearFiftyFifty, requestFiftyFifty,
+    fiftyFiftyResult, clearFiftyFifty, requestFiftyFifty, usePowerUp,
   } = useGameSocket();
 
   // --- Mobile audio unlock (priming) ---------------------------------------
@@ -352,6 +352,7 @@ export default function App() {
               fiftyFiftyResult={fiftyFiftyResult}
               onClearFiftyFifty={clearFiftyFifty}
               onRequestFiftyFifty={requestFiftyFifty}
+              onUsePowerUp={usePowerUp}
             />
           ) : phase === "ROUND_REVEAL" ? (
             reveal ? (

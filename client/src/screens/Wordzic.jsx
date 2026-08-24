@@ -9,6 +9,39 @@ const KEYBOARD_ROWS = [
   ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "⌫"],
 ];
 
+export function evaluateWordleGuess(guess, target) {
+  if (!guess || !target || guess.length !== 5 || target.length !== 5) {
+    return Array(5).fill("absent");
+  }
+  const res = Array(5).fill("absent");
+  const letterCounts = {};
+
+  for (let i = 0; i < 5; i++) {
+    const char = target[i];
+    letterCounts[char] = (letterCounts[char] || 0) + 1;
+  }
+
+  // Pass 1: exact matches
+  for (let i = 0; i < 5; i++) {
+    if (guess[i] === target[i]) {
+      res[i] = "correct";
+      letterCounts[guess[i]]--;
+    }
+  }
+
+  // Pass 2: misplaced matches up to remaining letter frequency
+  for (let i = 0; i < 5; i++) {
+    if (res[i] === "correct") continue;
+    const char = guess[i];
+    if (letterCounts[char] && letterCounts[char] > 0) {
+      res[i] = "present";
+      letterCounts[char]--;
+    }
+  }
+
+  return res;
+}
+
 export function Wordzic({ onBack }) {
   const [targetIndex, setTargetIndex] = useState(0);
   const targetWord = WORDZIC_WORDS[targetIndex % WORDZIC_WORDS.length];
@@ -85,29 +118,28 @@ export function Wordzic({ onBack }) {
   // Compute key statuses for keyboard
   const keyStatuses = {};
   for (const guess of guesses) {
+    const evals = evaluateWordleGuess(guess, targetWord);
     for (let i = 0; i < guess.length; i++) {
       const letter = guess[i];
-      if (targetWord[i] === letter) {
+      const ev = evals[i];
+      if (ev === "correct") {
         keyStatuses[letter] = "correct";
-      } else if (targetWord.includes(letter)) {
-        if (keyStatuses[letter] !== "correct") {
-          keyStatuses[letter] = "present";
-        }
-      } else {
-        if (!keyStatuses[letter]) {
-          keyStatuses[letter] = "absent";
-        }
+      } else if (ev === "present" && keyStatuses[letter] !== "correct") {
+        keyStatuses[letter] = "present";
+      } else if (!keyStatuses[letter]) {
+        keyStatuses[letter] = "absent";
       }
     }
   }
 
   const getTileClass = (guess, colIndex) => {
     if (!guess) return "border border-rule bg-cabinet text-bone";
-    const letter = guess[colIndex];
-    if (letter === targetWord[colIndex]) {
+    const evals = evaluateWordleGuess(guess, targetWord);
+    const ev = evals[colIndex];
+    if (ev === "correct") {
       return "bg-good text-black font-bold border-good";
     }
-    if (targetWord.includes(letter)) {
+    if (ev === "present") {
       return "bg-amber text-black font-bold border-amber";
     }
     return "bg-void border-dim/40 text-dim";
@@ -115,14 +147,10 @@ export function Wordzic({ onBack }) {
 
   const handleShare = () => {
     const grid = guesses
-      .map((g) =>
-        g
-          .split("")
-          .map((letter, i) =>
-            letter === targetWord[i] ? "🟩" : targetWord.includes(letter) ? "🟨" : "⬛"
-          )
-          .join("")
-      )
+      .map((g) => {
+        const evals = evaluateWordleGuess(g, targetWord);
+        return evals.map((e) => (e === "correct" ? "🟩" : e === "present" ? "🟨" : "⬛")).join("");
+      })
       .join("\n");
     const text = `Decibel Wordzic #${targetIndex + 1} ${status === "won" ? guesses.length : "X"}/6\n\n${grid}`;
     navigator.clipboard.writeText(text);

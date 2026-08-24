@@ -18,6 +18,10 @@ import { maskProfanity } from "./profanity.js";
 import {
   DEFAULT_SETTINGS,
   MAX_SPEED_BONUS,
+  MIN_REACTION_MS,
+  MAX_FIFTY_FIFTY,
+  MAX_DOUBLE_DOWN,
+  MAX_SHIELD,
   sanitizeSettings,
   poolSizeFor,
   cleanName,
@@ -25,6 +29,7 @@ import {
   questionValueFor,
   speedBonusFor,
   streakBonusFor,
+  computeRoundScore,
 } from "./gameLogic.js";
 import { log } from "./log.js";
 import { initStorage, recordMatch, topScores } from "./storage.js";
@@ -138,6 +143,8 @@ function makePlayer(id, name) {
     hasGuessed: false,
     lastRoundScore: 0,
     lastCorrect: false,
+    powerups: { fiftyFifty: MAX_FIFTY_FIFTY, doubleDown: MAX_DOUBLE_DOWN, shield: MAX_SHIELD },
+    activeRoundPowerups: { doubleDown: false, shield: false },
   };
 }
 
@@ -396,6 +403,8 @@ function resetToLobby(room) {
     p.lastRoundScore = 0;
     p.lastCorrect = false;
     p.spectator = false; // promote any watchers into the rematch
+    p.powerups = { fiftyFifty: MAX_FIFTY_FIFTY, doubleDown: MAX_DOUBLE_DOWN, shield: MAX_SHIELD };
+    p.activeRoundPowerups = { doubleDown: false, shield: false };
   }
   // If the held host was dropped, hand the crown to the new first player.
   const newHostId = [...room.players.keys()][0];
@@ -423,6 +432,7 @@ function startRound(room, n) {
     p.hasGuessed = false;
     p.lastRoundScore = 0;
     p.lastCorrect = false;
+    p.activeRoundPowerups = { doubleDown: false, shield: false };
   }
 
   const qv = questionValueFor(n - 1);
@@ -501,7 +511,6 @@ async function endRound(room) {
   room.phase = PHASE.ROUND_REVEAL;
 
   const correctName = room.correct ?? null;
-  const questionValue = questionValueFor(room.round - 1);
 
   let fastest = null;
   const scoring = [...room.players.values()].filter((p) => !p.spectator);
@@ -511,11 +520,19 @@ async function endRound(room) {
     const isCorrect = answered && g.option === correctName;
     const answerTimeSeconds = answered ? Math.round(g.elapsedMs / 10) / 100 : null;
 
-    p.streak = isCorrect ? (p.streak || 0) + 1 : 0;
-    const streakBonus = isCorrect ? streakBonusFor(p.streak) : 0;
-    const pointsEarned = isCorrect
-      ? questionValue + speedBonusFor(g.elapsedMs, room.settings.roundMs) + streakBonus
-      : 0;
+    const scoreResult = computeRoundScore({
+      roundIndex: room.round - 1,
+      elapsedMs: g ? g.elapsedMs : room.settings.roundMs,
+      roundMs: room.settings.roundMs,
+      streak: p.streak,
+      isCorrect,
+      doubleDown: Boolean(g?.doubleDown || p.activeRoundPowerups?.doubleDown),
+      hasShield: Boolean(g?.hasShield || p.activeRoundPowerups?.shield),
+    });
+
+    p.streak = scoreResult.nextStreak;
+    const pointsEarned = scoreResult.pointsEarned;
+    const streakBonus = scoreResult.streakBonus;
 
     p.score += pointsEarned;
     p.lastRoundScore = pointsEarned;
@@ -535,6 +552,8 @@ async function endRound(room) {
       answerTimeSeconds,
       score: p.score,
       gained: pointsEarned,
+      doubleDown: scoreResult.doubleDownActive,
+      shieldSaved: scoreResult.shieldSaved,
     };
   });
 
@@ -562,6 +581,14 @@ async function endRound(room) {
     });
   } catch (err) {
     log.warn("DJ commentary generation failed", { error: String(err?.message || err) });
+  }
+
+  if (!djCommentary) {
+    if (roundWinner) {
+      djCommentary = `${roundWinner.name} locked it in lightning fast in ${roundWinner.answerTimeSeconds}s! 🔥`;
+    } else {
+      djCommentary = `Tough round! That was "${room.correctTrackName}" by ${room.correctArtist}. Nobody got it.`;
+    }
   }
 
   // The round is OVER, so disclosing the answer here is intentional and safe.
@@ -1155,9 +1182,15 @@ io.on("connection", (socket) => {
       socket.emit("errorMsg", { message: "Invalid option." });
       return;
     }
-    const elapsedMs = Date.now() - room.roundStartedAt;
+    const rawElapsed = Date.now() - room.roundStartedAt;
+    const elapsedMs = Math.max(MIN_REACTION_MS, rawElapsed);
     player.hasGuessed = true;
-    room.guesses.set(socket.id, { option: choice, elapsedMs });
+    room.guesses.set(socket.id, {
+      option: choice,
+      elapsedMs,
+      doubleDown: Boolean(player.activeRoundPowerups?.doubleDown),
+      hasShield: Boolean(player.activeRoundPowerups?.shield),
+    });
 
     socket.emit("guessAck", { accepted: true }); // SAFE
     broadcastState(room);
@@ -1175,15 +1208,71 @@ io.on("connection", (socket) => {
     broadcastState(room);
   });
 
-  // --- fiftyFifty: server picks which options to eliminate (correct never touched) ---
+  // --- usePowerUp: validate and activate doubleDown, shield, or fiftyFifty ---
+  socket.on("usePowerUp", (payload) => {
+    const room = roomOf(socket);
+    if (!room || room.phase !== PHASE.ROUND_PLAYING) return;
+    const player = room.players.get(socket.id);
+    if (!player || player.spectator || player.hasGuessed) return;
+    const type = String(payload?.type || "").trim();
+
+    if (type === "fiftyFifty") {
+      if ((player.powerups?.fiftyFifty ?? 0) <= 0) {
+        socket.emit("errorMsg", { message: "50:50 already used this match." });
+        return;
+      }
+      const wrong = room.options.filter((o) => o !== room.correct);
+      if (wrong.length < 2) return;
+      player.powerups.fiftyFifty -= 1;
+      const shuffled = wrong.slice();
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      const eliminated = shuffled.slice(0, 2);
+      socket.emit("fiftyFiftyResult", { eliminated, remaining: player.powerups.fiftyFifty });
+      return;
+    }
+
+    if (type === "doubleDown") {
+      if ((player.powerups?.doubleDown ?? 0) <= 0) {
+        socket.emit("errorMsg", { message: "Double Down already used this match." });
+        return;
+      }
+      if (player.activeRoundPowerups?.doubleDown) return;
+      player.powerups.doubleDown -= 1;
+      player.activeRoundPowerups.doubleDown = true;
+      socket.emit("powerupActivated", { type: "doubleDown", remaining: player.powerups.doubleDown });
+      return;
+    }
+
+    if (type === "shield") {
+      if ((player.powerups?.shield ?? 0) <= 0) {
+        socket.emit("errorMsg", { message: "Shield already used this match." });
+        return;
+      }
+      if (player.activeRoundPowerups?.shield) return;
+      player.powerups.shield -= 1;
+      player.activeRoundPowerups.shield = true;
+      socket.emit("powerupActivated", { type: "shield", remaining: player.powerups.shield });
+      return;
+    }
+  });
+
+  // --- fiftyFifty: server picks which options to eliminate (single use per game) ---
   socket.on("fiftyFifty", () => {
     const room = roomOf(socket);
     if (!room || room.phase !== PHASE.ROUND_PLAYING) return;
     const player = room.players.get(socket.id);
     if (!player || player.spectator || player.hasGuessed) return;
+    if ((player.powerups?.fiftyFifty ?? 0) <= 0) {
+      socket.emit("errorMsg", { message: "50:50 already used this match." });
+      return;
+    }
     // Build list of wrong options (everything except the correct answer)
     const wrong = room.options.filter((o) => o !== room.correct);
     if (wrong.length < 2) return; // not enough to eliminate
+    player.powerups.fiftyFifty -= 1;
     // Fisher-Yates shuffle on wrong options, then take 2
     const shuffled = wrong.slice();
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -1192,7 +1281,7 @@ io.on("connection", (socket) => {
     }
     const eliminated = shuffled.slice(0, 2);
     // Send only to this player — SAFE: eliminated list never contains the correct answer
-    socket.emit("fiftyFiftyResult", { eliminated }); // SAFE
+    socket.emit("fiftyFiftyResult", { eliminated, remaining: player.powerups.fiftyFifty }); // SAFE
   });
 
 

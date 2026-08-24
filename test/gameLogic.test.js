@@ -7,6 +7,7 @@ import {
   questionValueFor,
   speedBonusFor,
   streakBonusFor,
+  computeRoundScore,
   DEFAULT_SETTINGS,
   MAX_SPEED_BONUS,
 } from "../gameLogic.js";
@@ -96,9 +97,10 @@ describe("scoring", () => {
 
   it("speed bonus is max at t=0 and zero at/after the deadline", () => {
     expect(speedBonusFor(0, 10000)).toBe(MAX_SPEED_BONUS);
+    expect(speedBonusFor(150, 10000)).toBe(MAX_SPEED_BONUS);
     expect(speedBonusFor(10000, 10000)).toBe(0);
     expect(speedBonusFor(99999, 10000)).toBe(0);
-    expect(speedBonusFor(5000, 10000)).toBe(Math.round(MAX_SPEED_BONUS * 0.5));
+    expect(speedBonusFor(5000, 10000)).toBe(178);
   });
 
   it("streak bonus tiers", () => {
@@ -107,6 +109,67 @@ describe("scoring", () => {
     expect(streakBonusFor(3)).toBe(100);
     expect(streakBonusFor(4)).toBe(200);
     expect(streakBonusFor(9)).toBe(200);
+  });
+
+  it("computeRoundScore accurately calculates points and handles powerups", () => {
+    // Correct without powerups
+    const r1 = computeRoundScore({
+      roundIndex: 0,
+      elapsedMs: 2000,
+      roundMs: 10000,
+      streak: 0,
+      isCorrect: true,
+    });
+    expect(r1.pointsEarned).toBe(300 + speedBonusFor(2000, 10000) + 0);
+    expect(r1.nextStreak).toBe(1);
+
+    // Double Down 2x
+    const rDouble = computeRoundScore({
+      roundIndex: 0,
+      elapsedMs: 2000,
+      roundMs: 10000,
+      streak: 0,
+      isCorrect: true,
+      doubleDown: true,
+    });
+    expect(rDouble.pointsEarned).toBe(r1.pointsEarned * 2);
+
+    // Incorrect without shield resets streak
+    const rWrong = computeRoundScore({
+      roundIndex: 1,
+      streak: 3,
+      isCorrect: false,
+      hasShield: false,
+    });
+    expect(rWrong.pointsEarned).toBe(0);
+    expect(rWrong.nextStreak).toBe(0);
+
+    // Incorrect with shield preserves streak
+    const rShield = computeRoundScore({
+      roundIndex: 1,
+      streak: 3,
+      isCorrect: false,
+      hasShield: true,
+    });
+    expect(rShield.pointsEarned).toBe(0);
+    expect(rShield.nextStreak).toBe(3);
+    expect(rShield.shieldSaved).toBe(true);
+  });
+});
+
+describe("buildRound deduplication", () => {
+  it("filters near-duplicate titles sharing the same baseTitle", () => {
+    const poolWithDupes = [
+      { trackId: 1, trackName: "Starboy", artistName: "The Weeknd", previewUrl: "u1" },
+      { trackId: 2, trackName: "Starboy (Remix)", artistName: "Kygo", previewUrl: "u2" },
+      { trackId: 3, trackName: "Starboy - Instrumental", artistName: "Studio", previewUrl: "u3" },
+      { trackId: 4, trackName: "Blinding Lights", artistName: "Abel", previewUrl: "u4" },
+      { trackId: 5, trackName: "Save Your Tears", artistName: "Max", previewUrl: "u5" },
+      { trackId: 6, trackName: "Can't Feel My Face", artistName: "Dan", previewUrl: "u6" },
+    ];
+    const r = buildRound(poolWithDupes, new Set(), { optionsCount: 4, mode: "TITLE" });
+    const starboyCount = r.options.filter((opt) => opt.toLowerCase().includes("starboy")).length;
+    expect(starboyCount).toBe(1);
   });
 });
 

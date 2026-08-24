@@ -8,6 +8,12 @@ import { GENRE_KEYS } from "./catalog/genres.js";
 export const QUESTION_BASE = 300;
 export const QUESTION_STEP = 250;
 export const MAX_SPEED_BONUS = 350;
+export const MIN_REACTION_MS = 150; // human auditory reflex floor for bot mitigation
+
+// ----- Power-up rules (1 charge each per game session) -----
+export const MAX_FIFTY_FIFTY = 1;
+export const MAX_DOUBLE_DOWN = 1;
+export const MAX_SHIELD = 1;
 
 // ----- Host-configurable settings (allowlists; first item is the default) -----
 export const ROUND_CHOICES = [10, 5, 15];
@@ -75,35 +81,62 @@ export function shuffle(list) {
   return out;
 }
 
+// Base title normalization for deduplication
+function normalizedBase(track) {
+  if (!track) return "";
+  if (track.baseTitle) return track.baseTitle;
+  return String(track.trackName || "")
+    .toLowerCase()
+    .replace(/\s*[-([].*$/, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+
 // Build one round
 export function buildRound(pool, usedTrackIds, settings) {
   const need = settings.optionsCount - 1;
-  const valueOf = settings.mode === "ARTIST" ? (t) => t.artistName : (t) => t.trackName;
+  const isArtist = settings.mode === "ARTIST";
+  const valueOf = isArtist ? (t) => t.artistName : (t) => t.trackName;
 
   const unused = pool.filter((t) => !usedTrackIds.has(t.trackId));
   const candidates = unused.length > 0 ? unused : pool;
   const correct = candidates[Math.floor(Math.random() * candidates.length)];
   const correctValue = valueOf(correct);
 
-  const usedValues = new Set([correctValue]);
-  const usedArtists = new Set([correct.artistName]);
+  const usedValues = new Set([correctValue.toLowerCase().trim()]);
+  const usedBaseTitles = new Set([normalizedBase(correct)]);
+  const usedArtists = new Set([String(correct.artistName || "").toLowerCase().trim()]);
   const distractors = [];
   const others = shuffle(pool.filter((t) => t.trackId !== correct.trackId));
 
   for (const t of others) {
     if (distractors.length === need) break;
-    if (usedArtists.has(t.artistName)) continue;
-    if (usedValues.has(valueOf(t))) continue;
+    const aNorm = String(t.artistName || "").toLowerCase().trim();
+    const vNorm = valueOf(t).toLowerCase().trim();
+    const base = normalizedBase(t);
+
+    if (usedArtists.has(aNorm)) continue;
+    if (usedValues.has(vNorm)) continue;
+    if (!isArtist && base && usedBaseTitles.has(base)) continue;
+
     distractors.push(t);
-    usedArtists.add(t.artistName);
-    usedValues.add(valueOf(t));
+    usedArtists.add(aNorm);
+    usedValues.add(vNorm);
+    if (base) usedBaseTitles.add(base);
   }
+
+  // Fallback: relax unique artist restriction if pool is tight, but keep value uniqueness
   if (distractors.length < need) {
     for (const t of others) {
       if (distractors.length === need) break;
-      if (usedValues.has(valueOf(t))) continue;
+      const vNorm = valueOf(t).toLowerCase().trim();
+      const base = normalizedBase(t);
+
+      if (usedValues.has(vNorm)) continue;
+      if (!isArtist && base && usedBaseTitles.has(base)) continue;
+
       distractors.push(t);
-      usedValues.add(valueOf(t));
+      usedValues.add(vNorm);
+      if (base) usedBaseTitles.add(base);
     }
   }
 
@@ -119,11 +152,15 @@ export function buildRound(pool, usedTrackIds, settings) {
 }
 
 export function questionValueFor(roundIndex) {
-  return QUESTION_BASE + roundIndex * QUESTION_STEP;
+  return QUESTION_BASE + Math.max(0, roundIndex) * QUESTION_STEP;
 }
 
 export function speedBonusFor(elapsedMs, roundMs) {
-  const ratio = Math.max(0, Math.min(1, (roundMs - elapsedMs) / roundMs));
+  if (elapsedMs == null || elapsedMs >= roundMs) return 0;
+  const clampedElapsed = Math.max(MIN_REACTION_MS, Math.min(elapsedMs, roundMs));
+  const effectiveWindow = roundMs - MIN_REACTION_MS;
+  if (effectiveWindow <= 0) return 0;
+  const ratio = Math.max(0, Math.min(1, (roundMs - clampedElapsed) / effectiveWindow));
   return Math.round(MAX_SPEED_BONUS * ratio);
 }
 
@@ -135,28 +172,81 @@ export function streakBonusFor(streak) {
 }
 
 export function questionValue(roundIndex) {
-  return QUESTION_BASE + roundIndex * QUESTION_STEP;
+  return QUESTION_BASE + Math.max(0, roundIndex) * QUESTION_STEP;
 }
 
 export function roundMaxPoints(roundIndex) {
-  return QUESTION_BASE + roundIndex * QUESTION_STEP + MAX_SPEED_BONUS;
+  return QUESTION_BASE + Math.max(0, roundIndex) * QUESTION_STEP + MAX_SPEED_BONUS;
 }
 
-export function computeScore({ correct, answerTimeSeconds, roundTimeSeconds, roundIndex, streak }) {
+/**
+ * Canonical, unified scoring calculation.
+ * Returns breakdown of points earned and updated streak.
+ */
+export function computeRoundScore({
+  roundIndex = 0,
+  elapsedMs = 10000,
+  roundMs = 10000,
+  streak = 0,
+  isCorrect = false,
+  doubleDown = false,
+  hasShield = false,
+}) {
+  if (!isCorrect) {
+    const nextStreak = hasShield ? streak : 0;
+    return {
+      pointsEarned: 0,
+      streakBonus: 0,
+      speedBonus: 0,
+      baseQuestionValue: 0,
+      nextStreak,
+      shieldSaved: hasShield && streak > 0,
+      doubleDownActive: Boolean(doubleDown),
+    };
+  }
+
+  const baseQuestionValue = questionValueFor(roundIndex);
+  const speedBonus = speedBonusFor(elapsedMs, roundMs);
+  const nextStreak = (streak || 0) + 1;
+  const streakBonus = streakBonusFor(nextStreak);
+
+  let rawTotal = baseQuestionValue + speedBonus + streakBonus;
+  if (doubleDown) {
+    rawTotal *= 2;
+  }
+
+  return {
+    pointsEarned: rawTotal,
+    streakBonus: doubleDown ? streakBonus * 2 : streakBonus,
+    speedBonus: doubleDown ? speedBonus * 2 : speedBonus,
+    baseQuestionValue: doubleDown ? baseQuestionValue * 2 : baseQuestionValue,
+    nextStreak,
+    shieldSaved: false,
+    doubleDownActive: Boolean(doubleDown),
+  };
+}
+
+// Backward compatibility helper
+export function computeScore({ correct, answerTimeSeconds, roundTimeSeconds = 10, roundIndex = 0, streak = 0 }) {
   if (!correct || answerTimeSeconds == null) return 0;
-  const clampedTime = Math.max(0, Math.min(answerTimeSeconds, roundTimeSeconds));
-  const speedRatio = 1 - clampedTime / roundTimeSeconds;
-  const base = QUESTION_BASE + roundIndex * QUESTION_STEP;
-  const speed = Math.round(speedRatio * MAX_SPEED_BONUS);
-  const streakMult = Math.min(5, Math.max(1, streak || 1));
-  const multiplier = 1 + (streakMult - 1) * 0.1;
-  return Math.round((base + speed) * multiplier);
+  const res = computeRoundScore({
+    roundIndex,
+    elapsedMs: answerTimeSeconds * 1000,
+    roundMs: roundTimeSeconds * 1000,
+    streak,
+    isCorrect: true,
+  });
+  return res.pointsEarned;
 }
 
 export default {
   QUESTION_BASE,
   QUESTION_STEP,
   MAX_SPEED_BONUS,
+  MIN_REACTION_MS,
+  MAX_FIFTY_FIFTY,
+  MAX_DOUBLE_DOWN,
+  MAX_SHIELD,
   ROUND_CHOICES,
   TIMER_CHOICES,
   OPTION_CHOICES,
@@ -176,5 +266,6 @@ export default {
   streakBonusFor,
   questionValue,
   roundMaxPoints,
+  computeRoundScore,
   computeScore,
 };

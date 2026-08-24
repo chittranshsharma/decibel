@@ -13,7 +13,20 @@ const OPT_COLORS = [
   { num: "text-[#f9cb28]", sel: "border-[#f9cb28] bg-[#f9cb28]/10 ring-[#f9cb28]", hov: "enabled:hover:border-[#f9cb28] enabled:hover:bg-[#f9cb28]/5" },
 ];
 
-export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGuess, onReact, audioRef, fiftyFiftyResult, onClearFiftyFifty, onRequestFiftyFifty }) {
+export function Playing({
+  state,
+  roundMeta,
+  myGuess,
+  hasGuessed,
+  spectator,
+  onGuess,
+  onReact,
+  audioRef,
+  fiftyFiftyResult,
+  onClearFiftyFifty,
+  onRequestFiftyFifty,
+  onUsePowerUp,
+}) {
   const locked = hasGuessed || spectator;
   const startRef = useRef(() => {});
   const [needsTap, setNeedsTap] = useState(false);
@@ -136,20 +149,22 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
     if (!powerups.fiftyFifty || locked || fiftyFiftyPending || state.options.length < 3) return;
     setPowerups((p) => ({ ...p, fiftyFifty: false }));
     setFiftyFiftyPending(true);
-    // Ask server to pick which options to eliminate — server never includes the correct answer
-    if (onRequestFiftyFifty) onRequestFiftyFifty();
+    if (onUsePowerUp) onUsePowerUp("fiftyFifty");
+    else if (onRequestFiftyFifty) onRequestFiftyFifty();
   };
 
   const useDoubleDown = () => {
     if (!powerups.doubleDown || locked || doubleDownActive) return;
     setPowerups((p) => ({ ...p, doubleDown: false }));
     setDoubleDownActive(true);
+    if (onUsePowerUp) onUsePowerUp("doubleDown");
   };
 
   const useShield = () => {
     if (!powerups.shield || locked || shieldActive) return;
     setPowerups((p) => ({ ...p, shield: false }));
     setShieldActive(true);
+    if (onUsePowerUp) onUsePowerUp("shield");
   };
 
   const questionValue =

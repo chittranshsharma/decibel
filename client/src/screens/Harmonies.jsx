@@ -3,6 +3,15 @@ import { useState, useEffect } from "react";
 import { EYEBROW, PANEL, BTN_AMBER, BTN_GHOST } from "../ui";
 import { HARMONIES_PUZZLES } from "../puzzleData";
 
+function fisherYatesShuffle(list) {
+  const out = list.slice();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
 export function Harmonies({ onBack }) {
   const [puzzleIndex, setPuzzleIndex] = useState(0);
   const puzzle = HARMONIES_PUZZLES[puzzleIndex % HARMONIES_PUZZLES.length];
@@ -19,8 +28,8 @@ export function Harmonies({ onBack }) {
     const all = puzzle.groups.flatMap((g) =>
       g.items.map((item) => ({ text: item, groupTheme: g.theme, groupLevel: g.level }))
     );
-    // Shuffle
-    setTiles(all.sort(() => Math.random() - 0.5));
+    // Shuffle with Fisher-Yates
+    setTiles(fisherYatesShuffle(all));
     setSelected([]);
     setSolvedGroups([]);
     setMistakesRemaining(4);
@@ -37,7 +46,7 @@ export function Harmonies({ onBack }) {
   };
 
   const handleShuffle = () => {
-    setTiles((prev) => [...prev].sort(() => Math.random() - 0.5));
+    setTiles((prev) => fisherYatesShuffle(prev));
   };
 
   const handleDeselect = () => {
