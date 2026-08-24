@@ -105,14 +105,25 @@ export function useGameSocket() {
     });
 
     socket.on("chat", (m) => {
-      const id = ++seqRef.current;
-      setMessages((prev) => [...prev, { ...m, key: id }].slice(-60));
+      const msgId = ++seqRef.current;
+      setMessages((prev) => [
+        ...prev,
+        {
+          key: msgId,
+          playerId: m.id,
+          playerName: m.name || "Guest",
+          text: m.text,
+          ts: m.ts,
+        },
+      ].slice(-60));
     });
 
     socket.on("reaction", (r) => {
       const key = ++seqRef.current;
       const lane = key % 5;
-      setReactions((prev) => [...prev, { ...r, key, lane }]);
+      const x = 15 + Math.random() * 70;
+      const y = 40 + Math.random() * 40;
+      setReactions((prev) => [...prev, { ...r, key, lane, x, y }]);
       const t = setTimeout(() => {
         expiryTimers.delete(t);
         setReactions((prev) => prev.filter((x) => x.key !== key));
