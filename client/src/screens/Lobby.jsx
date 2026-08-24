@@ -3,19 +3,84 @@ import { useState } from "react";
 import { EYEBROW, PANEL, BTN_AMBER, BTN_GHOST, Avatar, Chat } from "../ui";
 
 export const GENRES = [
-  { label: "HIP-HOP", value: "hip-hop" },
-  { label: "OLD SCHOOL RAP", value: "oldschool-hiphop" },
-  { label: "TRAP & RAGE", value: "trap" },
-  { label: "HYPERPOP & DIGICORE", value: "hyperpop" },
-  { label: "DESI HIP HOP", value: "desi-hip-hop" },
-  { label: "ROCK & ALT", value: "rock" },
-  { label: "INDIE", value: "indie" },
-  { label: "BEDROOM POP", value: "bedroom-pop" },
-  { label: "R&B & SOUL", value: "rnb" },
-  { label: "POP", value: "pop" },
-  { label: "DESI INDIE", value: "desi-indie" },
-  { label: "SPOTIFY PLAYLIST", value: "spotify" },
-  { label: "🪄 AI VIBE CRATE", value: "ai-vibe" },
+  {
+    label: "HIP-HOP",
+    value: "hip-hop",
+    sub: "Kendrick · Drake · Cole",
+    image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    label: "OLD SCHOOL RAP",
+    value: "oldschool-hiphop",
+    sub: "2Pac · Biggie · Nas",
+    image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    label: "TRAP & RAGE",
+    value: "trap",
+    sub: "Carti · Travis · Metro",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    label: "HYPERPOP",
+    value: "hyperpop",
+    sub: "Charli · 100 gecs · SOPHIE",
+    image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    label: "DESI HIP HOP",
+    value: "desi-hip-hop",
+    sub: "Seedhe Maut · KR$NA · Stan",
+    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    label: "ROCK & ALT",
+    value: "rock",
+    sub: "Nirvana · Queen · Arctic Monkeys",
+    image: "https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    label: "INDIE",
+    value: "indie",
+    sub: "Tame Impala · Phoebe · Strokes",
+    image: "https://images.unsplash.com/photo-1511735111819-9a3f7709049c?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    label: "BEDROOM POP",
+    value: "bedroom-pop",
+    sub: "Clairo · Rex Orange · Cavetown",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    label: "R&B & SOUL",
+    value: "rnb",
+    sub: "Frank Ocean · SZA · Weeknd",
+    image: "https://images.unsplash.com/photo-1520523839898-50712192e8a7?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    label: "POP",
+    value: "pop",
+    sub: "Taylor · Dua Lipa · Billie",
+    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    label: "DESI INDIE",
+    value: "desi-indie",
+    sub: "Prateek Kuhad · Anuv Jain",
+    image: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    label: "SPOTIFY PLAYLIST",
+    value: "spotify",
+    sub: "Import Any Public URL",
+    image: "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    label: "🪄 AI VIBE CRATE",
+    value: "ai-vibe",
+    sub: "Prompt Groq LPU Engine",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
+  },
 ];
 
 export const VIBE_OPTS = [
@@ -206,7 +271,7 @@ export function Lobby({
                 </span>
               )}
             </div>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4">
               {GENRES.map((g) => {
                 const active = g.value === genre;
                 const isSpecial = g.value === "spotify" || g.value === "ai-vibe";
@@ -216,15 +281,56 @@ export function Lobby({
                     key={g.value}
                     onClick={() => handleGenreChange(g.value)}
                     aria-pressed={active}
-                    className={`rounded-xl px-4 py-2.5 font-geist text-xs font-semibold uppercase tracking-wider transition-all active:scale-95 ${
+                    className={`group relative overflow-hidden rounded-xl p-3 text-left transition-all duration-200 active:scale-95 border ${
                       active
-                        ? "bg-amber-400 text-black font-bold shadow-[0_0_16px_rgba(245,166,35,0.35)]"
+                        ? "border-amber-400 ring-2 ring-amber-400/40 shadow-[0_0_24px_rgba(245,166,35,0.35)] scale-[1.02]"
                         : isSpecial
-                        ? "border border-amber-400/40 bg-amber-400/5 text-amber-400 hover:border-amber-400"
-                        : "border border-white/10 bg-[#121218]/90 text-bone hover:border-white/25 hover:bg-[#181822]"
+                        ? "border-amber-400/30 bg-black/60 hover:border-amber-400/70 hover:scale-[1.01]"
+                        : "border-white/10 bg-black/60 hover:border-white/25 hover:scale-[1.01]"
                     }`}
                   >
-                    {g.label}
+                    {/* Background artwork with dark gradient overlay */}
+                    <div className="absolute inset-0 z-0 overflow-hidden">
+                      <img
+                        src={g.image}
+                        alt=""
+                        loading="lazy"
+                        className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-110 opacity-30 group-hover:opacity-45"
+                      />
+                      <div
+                        className={`absolute inset-0 ${
+                          active
+                            ? "bg-gradient-to-t from-black via-black/80 to-amber-950/40"
+                            : "bg-gradient-to-t from-black via-black/85 to-black/60"
+                        }`}
+                      />
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="relative z-10 flex h-full flex-col justify-between min-h-[4.25rem]">
+                      <div className="flex items-center justify-between gap-1">
+                        <span
+                          className={`font-geist text-xs font-bold uppercase tracking-wider ${
+                            active ? "text-amber-400 drop-shadow-[0_0_8px_rgba(245,166,35,0.4)]" : "text-white"
+                          }`}
+                        >
+                          {g.label}
+                        </span>
+                        {active && (
+                          <span className="flex h-2 w-2 relative shrink-0">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400" />
+                          </span>
+                        )}
+                      </div>
+                      <p
+                        className={`font-console text-[10px] truncate ${
+                          active ? "text-amber-300/90 font-semibold" : "text-bone/60 group-hover:text-bone/85"
+                        }`}
+                      >
+                        {g.sub}
+                      </p>
+                    </div>
                   </button>
                 );
               })}
