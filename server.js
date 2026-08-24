@@ -38,8 +38,6 @@ const IS_PROD = process.env.NODE_ENV === "production";
 // driven by arbitrary sites.
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN
   ? process.env.CLIENT_ORIGIN.split(",").map((s) => s.trim())
-  : IS_PROD
-  ? []
   : "*";
 // Abuse caps (env-overridable). Bound total rooms and connections-per-IP so a
 // flood of sockets can't exhaust memory (createRoom/quickPlay each open a room).

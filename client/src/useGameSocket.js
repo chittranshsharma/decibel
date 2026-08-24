@@ -58,7 +58,7 @@ export function useGameSocket() {
         : (rawUrl || window.location.origin);
 
     const socket = io(targetUrl, {
-      transports: ["websocket"],
+      transports: ["polling", "websocket"],
     });
     socketRef.current = socket;
 
