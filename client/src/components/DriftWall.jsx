@@ -81,25 +81,25 @@ const columnFactor = (index, variance) => {
 export const DriftWall = ({
   items = GENRE_WALL_ITEMS,
   columns = 5,
-  tileWidth = 160,
-  tileHeight = 100,
+  tileWidth = 170,
+  tileHeight = 108,
   gap = 14,
   radius = 14,
   tilt = 12,
   turn = -10,
   roll = 0,
   perspective = 1200,
-  depth = 100,
-  speed = 32,
+  depth = 90,
+  speed = 48,
   direction = 'up',
   variance = 0.45,
   parallax = 0.5,
-  pauseOnHover = true,
+  pauseOnHover = false,
   lift = 52,
   fade = 0.65,
-  dim = 0.8,
+  dim = 0.88,
   grayscale = false,
-  overlayColor = '#07070a',
+  overlayColor = '#060010',
   onSelectGenre,
   className = '',
   style
@@ -287,11 +287,18 @@ export const DriftWall = ({
 
   const renderTile = (item, id, colIndex) => {
     const inner = (
-      <span className="drift-wall__inner group cursor-pointer relative overflow-hidden">
-        <img src={item.image} alt={item.title ?? ''} loading="lazy" decoding="async" draggable={false} />
+      <span className="drift-wall__inner group cursor-pointer relative overflow-hidden bg-gradient-to-br from-[#1b1528] to-[#0a0812] border border-white/10">
+        <img
+          src={item.image}
+          alt={item.title ?? ''}
+          loading="eager"
+          decoding="async"
+          draggable={false}
+          className="drift-img-kenburns"
+        />
         <span className="drift-wall__overlay" aria-hidden="true" />
-        <span className="absolute inset-0 p-3 flex flex-col justify-end bg-gradient-to-t from-black/95 via-black/50 to-transparent pointer-events-none transition-all">
-          <span className="font-geist text-xs font-bold text-white tracking-tight leading-tight line-clamp-1">
+        <span className="absolute inset-0 p-3 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/45 to-transparent pointer-events-none transition-all">
+          <span className="font-geist text-xs font-bold text-white tracking-tight leading-tight line-clamp-1 group-hover:text-amber-300 transition-colors">
             {item.title}
           </span>
           <span className="font-console text-[9px] text-amber-400 font-semibold tracking-wider truncate mt-0.5">

@@ -157,15 +157,16 @@ export function Home({ games, stats, onOpen, onProfile, googleUser, onGoogleSign
           <DriftWall
             columns={5}
             tileWidth={170}
-            tileHeight={105}
+            tileHeight={108}
             gap={14}
             tilt={14}
             turn={-12}
             depth={90}
-            speed={30}
+            speed={48}
             parallax={0.5}
-            lift={48}
-            overlayColor="#07070a"
+            pauseOnHover={false}
+            lift={52}
+            overlayColor="#05030a"
             onSelectGenre={(genreKey) => {
               onOpen(games.find((g) => g.key === "musicquiz"));
             }}
