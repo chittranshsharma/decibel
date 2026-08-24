@@ -33,7 +33,8 @@ export default function App() {
     connected, myId, state, reveal, gameOver, loading, error, roundMeta, countdown, notice,
     messages, reactions, roomCode, createRoom, joinRoom, quickPlay, start, guess, restart,
     sendChat, sendReaction, clearError, clearNotice, leaveRoom,
-    playlistStatus, setCustomPlaylist,
+    playlistStatus, setCustomPlaylist, vibeStatus, generateAiVibe,
+    fiftyFiftyResult, clearFiftyFifty, requestFiftyFifty,
   } = useGameSocket();
 
   // --- Mobile audio unlock (priming) ---------------------------------------
@@ -271,9 +272,7 @@ export default function App() {
         />
 
         <main className="flex flex-1 flex-col justify-start py-8">
-          {!connected && !joined ? (
-            <Centered eyebrow="Status" title="Connecting…" />
-          ) : !joined && view === "home" ? (
+          {!joined && view === "home" ? (
             <Home games={GAMES} stats={stats} onOpen={openGame} onProfile={() => setView("profile")} />
           ) : !joined && view === "profile" ? (
             <Profile stats={stats} onBack={() => setView("home")} />
@@ -286,13 +285,17 @@ export default function App() {
           ) : !joined && view === "crosszic" ? (
             <Crosszic onBack={() => setView("home")} />
           ) : !joined ? (
-            <EntryScreen
-              onCreate={handleCreate}
-              onJoin={handleJoinRoom}
-              onQuick={handleQuick}
-              onHome={() => setView("home")}
-              clipPref={clipPref}
-            />
+            !connected ? (
+              <Centered eyebrow="Status" title="Connecting to server…" />
+            ) : (
+              <EntryScreen
+                onCreate={handleCreate}
+                onJoin={handleJoinRoom}
+                onQuick={handleQuick}
+                onHome={() => setView("home")}
+                clipPref={clipPref}
+              />
+            )
           ) : phase === "LOBBY" ? (
             <Lobby
               players={players}
@@ -306,6 +309,8 @@ export default function App() {
               onLeave={handleLeave}
               playlistStatus={playlistStatus}
               onSetPlaylist={setCustomPlaylist}
+              vibeStatus={vibeStatus}
+              onGenerateVibe={generateAiVibe}
             />
           ) : phase === "ROUND_PLAYING" ? (
             <Playing
@@ -317,6 +322,9 @@ export default function App() {
               onGuess={handleGuess}
               onReact={sendReaction}
               audioRef={audioRef}
+              fiftyFiftyResult={fiftyFiftyResult}
+              onClearFiftyFifty={clearFiftyFifty}
+              onRequestFiftyFifty={requestFiftyFifty}
             />
           ) : phase === "ROUND_REVEAL" ? (
             reveal ? (

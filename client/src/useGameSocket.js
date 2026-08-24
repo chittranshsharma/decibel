@@ -44,6 +44,8 @@ export function useGameSocket() {
   const [messages, setMessages] = useState([]); // room chat log
   const [reactions, setReactions] = useState([]); // ephemeral floated call-outs
   const [playlistStatus, setPlaylistStatus] = useState(null); // { loading, error, name, tracksCount }
+  const [vibeStatus, setVibeStatus] = useState(null); // { loading, error, ready, vibeTitle, description, tracksCount }
+  const [fiftyFiftyResult, setFiftyFiftyResult] = useState(null); // { eliminated: string[] } — server-safe 50:50
   const seqRef = useRef(0);
 
   useEffect(() => {
@@ -91,6 +93,10 @@ export function useGameSocket() {
       setLoading(null);
     });
 
+    socket.on("fiftyFiftyResult", (d) => {
+      if (d && Array.isArray(d.eliminated)) setFiftyFiftyResult(d);
+    });
+
     socket.on("chat", (m) => {
       const id = ++seqRef.current;
       setMessages((prev) => [...prev, { ...m, key: id }].slice(-60));
@@ -109,6 +115,10 @@ export function useGameSocket() {
 
     socket.on("playlistStatus", (status) => {
       setPlaylistStatus(status);
+    });
+
+    socket.on("vibeStatus", (status) => {
+      setVibeStatus(status);
     });
 
     socket.on("playerLeft", (d) =>
@@ -153,8 +163,14 @@ export function useGameSocket() {
     (url) => socketRef.current?.emit("setCustomPlaylist", { url }),
     []
   );
+  const generateAiVibe = useCallback(
+    (prompt) => socketRef.current?.emit("generateAiVibe", { prompt }),
+    []
+  );
   const clearError = useCallback(() => setError(null), []);
   const clearNotice = useCallback(() => setNotice(null), []);
+  const clearFiftyFifty = useCallback(() => setFiftyFiftyResult(null), []);
+  const requestFiftyFifty = useCallback(() => socketRef.current?.emit("fiftyFifty"), []);
   const leaveRoom = useCallback(() => {
     clearSession();
     socketRef.current?.disconnect();
@@ -167,6 +183,8 @@ export function useGameSocket() {
     setCountdown(null);
     setRoundMeta(null);
     setPlaylistStatus(null);
+    setVibeStatus(null);
+    setFiftyFiftyResult(null);
     socketRef.current?.connect();
   }, []);
 
@@ -187,6 +205,12 @@ export function useGameSocket() {
     playlistStatus,
     setPlaylistStatus,
     setCustomPlaylist,
+    vibeStatus,
+    setVibeStatus,
+    generateAiVibe,
+    fiftyFiftyResult,
+    clearFiftyFifty,
+    requestFiftyFifty,
     createRoom,
     joinRoom,
     quickPlay,

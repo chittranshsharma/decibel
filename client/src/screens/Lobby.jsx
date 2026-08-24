@@ -1,4 +1,4 @@
-// Lobby: player list, room code, host settings, Spotify playlist import, chat.
+// Lobby: player list, room code, host settings, Spotify playlist import, AI vibe generator, chat.
 import { useState } from "react";
 import { EYEBROW, PANEL, BTN_AMBER, BTN_GHOST, Avatar, Chat } from "../ui";
 
@@ -15,12 +15,22 @@ export const GENRES = [
   { label: "POP", value: "pop" },
   { label: "DESI INDIE", value: "desi-indie" },
   { label: "SPOTIFY PLAYLIST", value: "spotify" },
+  { label: "🪄 AI VIBE CRATE", value: "ai-vibe" },
 ];
 
 export const VIBE_OPTS = [
   { label: "All", value: "all" },
   { label: "Mainstream", value: "mainstream" },
   { label: "Underground", value: "underground" },
+];
+
+const QUICK_VIBES = [
+  "90s Tokyo Midnight Drift",
+  "Monsoon Coffee Shop Indie",
+  "High-Octane Gym Phonk",
+  "2000s Bollywood Party",
+  "Cyberpunk Synthwave 2077",
+  "90s UK Garage & 2-Step",
 ];
 
 const ROUND_OPTS = [
@@ -68,10 +78,13 @@ export function Lobby({
   onLeave,
   playlistStatus,
   onSetPlaylist,
+  vibeStatus,
+  onGenerateVibe,
 }) {
   const [copied, setCopied] = useState(false);
   const [genre, setGenre] = useState(GENRES[0].value);
   const [spotifyUrl, setSpotifyUrl] = useState("");
+  const [vibePrompt, setVibePrompt] = useState("");
 
   const [settings, setSettings] = useState({
     rounds: 10,
@@ -104,6 +117,12 @@ export function Lobby({
     onSetPlaylist(spotifyUrl.trim());
   };
 
+  const handleGenerateVibe = (e) => {
+    e.preventDefault();
+    if (!vibePrompt.trim() || !onGenerateVibe) return;
+    onGenerateVibe(vibePrompt.trim());
+  };
+
   const handleGenreChange = (newGenre) => {
     setGenre(newGenre);
     if (newGenre === "oldschool-hiphop" && settings.decade === "new") {
@@ -117,6 +136,8 @@ export function Lobby({
     }
     return true;
   });
+
+  const isCustomSource = genre === "spotify" || genre === "ai-vibe";
 
   return (
     <div className="space-y-8 animate-rise">
@@ -181,7 +202,7 @@ export function Lobby({
             <div className="mt-3 flex flex-wrap gap-2">
               {GENRES.map((g) => {
                 const active = g.value === genre;
-                const isSpotify = g.value === "spotify";
+                const isSpecial = g.value === "spotify" || g.value === "ai-vibe";
                 return (
                   <button
                     type="button"
@@ -190,10 +211,14 @@ export function Lobby({
                     aria-pressed={active}
                     className={`rounded-xl px-4 py-2.5 font-geist text-xs font-semibold uppercase tracking-wider transition-all active:scale-95 ${
                       active
-                        ? isSpotify
+                        ? g.value === "ai-vibe"
+                          ? "bg-gradient-to-r from-[#50e3c2] to-[#7928ca] text-black font-bold shadow-[0_0_20px_rgba(80,227,194,0.5)]"
+                          : isSpecial
                           ? "bg-[#50e3c2] text-black shadow-[0_0_20px_rgba(80,227,194,0.4)]"
                           : "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]"
-                        : isSpotify
+                        : g.value === "ai-vibe"
+                        ? "border border-[#7928ca]/50 bg-[#7928ca]/10 text-[#50e3c2] hover:border-[#50e3c2]"
+                        : isSpecial
                         ? "border border-[#50e3c2]/40 bg-[#50e3c2]/5 text-[#50e3c2] hover:border-[#50e3c2]"
                         : "border border-white/10 bg-[#121218]/90 text-bone hover:border-white/25 hover:bg-[#181822]"
                     }`}
@@ -204,6 +229,80 @@ export function Lobby({
               })}
             </div>
           </div>
+
+          {/* AI Vibe Crate Input */}
+          {genre === "ai-vibe" && (
+            <div className={`${PANEL} p-5 space-y-4 border-[#50e3c2]/30 bg-gradient-to-b from-[#50e3c2]/5 to-transparent`}>
+              <div className="flex items-center justify-between">
+                <p className={EYEBROW}>🪄 Prompt-to-Crate Engine</p>
+                <span className="font-console text-[10px] font-bold text-[#50e3c2] uppercase tracking-wider bg-[#50e3c2]/10 px-2 py-0.5 rounded border border-[#50e3c2]/20">
+                  Powered by Groq AI
+                </span>
+              </div>
+              <p className="font-geist text-xs text-dim">
+                Type any vibe, scene, or era — Groq maps it to curated audio previews instantly.
+              </p>
+
+              {/* Quick Prompt Chips */}
+              <div className="flex flex-wrap gap-1.5">
+                {QUICK_VIBES.map((qv) => (
+                  <button
+                    key={qv}
+                    type="button"
+                    onClick={() => setVibePrompt(qv)}
+                    className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 font-geist text-[11px] text-bone hover:border-[#50e3c2]/50 hover:text-[#50e3c2] transition-colors"
+                  >
+                    + {qv}
+                  </button>
+                ))}
+              </div>
+
+              <form onSubmit={handleGenerateVibe} className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="e.g. 90s Tokyo midnight drift, monsoon cafe indie..."
+                  value={vibePrompt}
+                  onChange={(e) => setVibePrompt(e.target.value)}
+                  maxLength={100}
+                  className="w-full rounded-lg border border-white/10 bg-black/60 px-3 py-2.5 font-geist text-xs text-bone placeholder:text-dim focus:border-[#50e3c2] focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  disabled={vibeStatus?.loading || !vibePrompt.trim()}
+                  className="rounded-lg bg-gradient-to-r from-[#50e3c2] to-[#00dfd8] px-4 py-2 font-geist text-xs font-bold text-black transition-all hover:opacity-90 disabled:opacity-50 shrink-0"
+                >
+                  {vibeStatus?.loading ? "Curating…" : "Generate"}
+                </button>
+              </form>
+
+              {vibeStatus?.loading && (
+                <div className="flex items-center gap-2 font-console text-xs uppercase tracking-wider text-[#f5a623] animate-pulse">
+                  <span className="inline-block h-2 w-2 rounded-full bg-[#f5a623]"></span>
+                  {vibeStatus.message || "Generating vibe crate with Groq AI…"}
+                </div>
+              )}
+
+              {vibeStatus?.error && (
+                <p className="font-console text-xs text-[#ee0000]">{vibeStatus.error}</p>
+              )}
+
+              {vibeStatus?.ready && (
+                <div className="rounded-xl border border-[#50e3c2]/30 bg-[#50e3c2]/10 p-3.5 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-geist text-sm font-bold text-white">
+                      🎵 {vibeStatus.vibeTitle}
+                    </span>
+                    <span className="font-console text-[10px] font-semibold text-[#50e3c2]">
+                      {vibeStatus.tracksCount} TRACKS READY
+                    </span>
+                  </div>
+                  {vibeStatus.description && (
+                    <p className="font-geist text-xs text-dim italic">"{vibeStatus.description}"</p>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Spotify Playlist URL Input */}
           {genre === "spotify" && (
@@ -220,7 +319,7 @@ export function Lobby({
                 <button
                   type="submit"
                   disabled={playlistStatus?.loading || !spotifyUrl.trim()}
-                  className="rounded-lg bg-[#50e3c2] px-4 py-2 font-geist text-xs font-semibold text-black transition-opacity disabled:opacity-50"
+                  className="rounded-lg bg-[#50e3c2] px-4 py-2 font-geist text-xs font-semibold text-black transition-opacity disabled:opacity-50 shrink-0"
                 >
                   {playlistStatus?.loading ? "Loading…" : "Load"}
                 </button>
@@ -243,7 +342,7 @@ export function Lobby({
 
           {/* Settings Matrix */}
           <div className="space-y-4">
-            {genre !== "spotify" && (
+            {!isCustomSource && (
               <SettingRow label="Vibe" options={VIBE_OPTS} value={settings.vibe} onChange={setField("vibe")} />
             )}
             <SettingRow label="Mode" options={MODE_OPTS} value={settings.mode} onChange={setField("mode")} />
@@ -251,7 +350,7 @@ export function Lobby({
             <SettingRow label="Rounds" options={ROUND_OPTS} value={settings.rounds} onChange={setField("rounds")} />
             <SettingRow label="Timer" options={TIMER_OPTS} value={settings.roundMs} onChange={setField("roundMs")} />
             <SettingRow label="Answers" options={OPTION_OPTS} value={settings.optionsCount} onChange={setField("optionsCount")} />
-            {genre !== "spotify" && (
+            {!isCustomSource && (
               <SettingRow label="Era" options={availableDecades} value={settings.decade} onChange={setField("decade")} />
             )}
           </div>
@@ -311,3 +410,4 @@ function SettingRow({ label, options, value, onChange }) {
 }
 
 export default Lobby;
+

@@ -221,19 +221,38 @@ export function ReactionOverlay({ reactions }) {
   );
 }
 
-// Countdown Overlay
-export function CountdownOverlay({ seconds, round, worth, maxPoints }) {
+// Countdown Overlay — counts down from `seconds` to 0 in real-time
+export function CountdownOverlay({ seconds: initialSeconds, round, worth, maxPoints }) {
+  const [secs, setSecs] = useState(initialSeconds ?? 3);
+
+  useEffect(() => {
+    setSecs(initialSeconds ?? 3);
+    if (!initialSeconds || initialSeconds <= 0) return;
+    let remaining = initialSeconds;
+    const id = setInterval(() => {
+      remaining -= 1;
+      setSecs(remaining);
+      if (remaining <= 0) clearInterval(id);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [round, initialSeconds]);
+
+  const totalPoints = (worth ?? 0) + (maxPoints ?? 0);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md animate-rise">
       <div className="text-center space-y-3">
         <p className="font-console text-xs uppercase tracking-[0.25em] text-[#50e3c2]">
           ROUND {round} STARTING
         </p>
-        <p className="font-geist text-8xl font-bold tracking-tight text-white animate-digitpop">
-          {seconds}
+        <p
+          key={secs}
+          className="font-geist text-8xl font-bold tracking-tight text-white animate-digitpop"
+        >
+          {Math.max(0, secs)}
         </p>
         <p className="font-geist text-sm text-dim">
-          Worth up to <span className="text-[#f5a623] font-semibold">{worth + maxPoints}</span> points
+          Worth up to <span className="text-[#f5a623] font-semibold">{totalPoints}</span> pts
         </p>
       </div>
     </div>

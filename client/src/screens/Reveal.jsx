@@ -38,6 +38,27 @@ export function Reveal({ reveal, myId, onReact, players }) {
         </div>
       )}
 
+      {/* AI Live Hype DJ Commentary Card */}
+      {reveal?.djCommentary && (
+        <div
+          className="relative overflow-hidden rounded-2xl border border-[#f5a623]/30 bg-gradient-to-r from-[#f5a623]/10 via-[#7928ca]/10 to-[#50e3c2]/10 p-4 backdrop-blur-md transition-all animate-rise"
+          style={{ animationDelay: "120ms" }}
+        >
+          <div className="flex items-center gap-2 pb-1.5">
+            <span className="flex h-2 w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#50e3c2] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#50e3c2]"></span>
+            </span>
+            <span className="font-console text-[10px] font-bold uppercase tracking-widest text-[#f5a623]">
+              🎙️ DJ DECIBEL (LIVE)
+            </span>
+          </div>
+          <p className="font-geist text-sm font-semibold tracking-tight text-white/95 italic">
+            "{reveal.djCommentary}"
+          </p>
+        </div>
+      )}
+
       {/* Winner Spotlight Card */}
       {winner ? (
         <BorderGlow

@@ -8,7 +8,8 @@
 import http from "node:http";
 import { randomUUID, timingSafeEqual, createHash } from "node:crypto";
 import { Server } from "socket.io";
-import { getSongs } from "./songProvider.js";
+import { getSongs, fetchVibeTracks } from "./songProvider.js";
+import { generateDjCommentary, generateMatchVerdict, generateVibeCrate } from "./groqService.js";
 import { initCatalog, catalogStats } from "./catalog/store.js";
 import { scheduleIngest, runIngest, ingestRunning } from "./catalog/ingest.js";
 import { fetchSpotifyPlaylist } from "./spotifyFetcher.js";
@@ -109,6 +110,11 @@ function makeRoom(code) {
     refreshing: false,
     isPublic: false, // listed for quick-play matchmaking
     disconnectGrace: new Map(), // rejoin token -> grace timeout
+    customPlaylistTracks: null,
+    customPlaylistName: null,
+    customPlaylistId: null,
+    aiVibe: null,
+    lastDjVerdict: null,
   };
 }
 
@@ -369,6 +375,7 @@ function resetToLobby(room) {
   room.correctArtist = null;
   room.correctTrackName = null;
   room.history = [];
+  room.lastDjVerdict = null;
   // room.settings is intentionally preserved so "play again" keeps the host's
   // last choices.
   for (const t of room.disconnectGrace.values()) clearTimeout(t);
@@ -476,6 +483,9 @@ async function maybeRefreshPool(room) {
   try {
     const fresh = await getSongs(room.settings.genre, poolSizeFor(room.settings), {
       decade: room.settings.decade,
+      vibe: room.settings.vibe,
+      customPlaylistTracks: room.customPlaylistTracks,
+      searchQueries: room.aiVibe?.searchQueries,
     });
     if (fresh && fresh.length >= room.settings.optionsCount) {
       room.pool = fresh;
@@ -488,7 +498,7 @@ async function maybeRefreshPool(room) {
   }
 }
 
-function endRound(room) {
+async function endRound(room) {
   clearTimers(room);
   room.phase = PHASE.ROUND_REVEAL;
 
@@ -514,7 +524,7 @@ function endRound(room) {
     p.lastCorrect = isCorrect;
 
     if (isCorrect && (fastest === null || g.elapsedMs < fastest.elapsedMs)) {
-      fastest = { name: p.name, elapsedMs: g.elapsedMs, answerTimeSeconds };
+      fastest = { name: p.name, elapsedMs: g.elapsedMs, answerTimeSeconds, streak: p.streak };
     }
 
     return {
@@ -530,7 +540,7 @@ function endRound(room) {
     };
   });
 
-  const roundWinner = fastest ? { name: fastest.name, answerTimeSeconds: fastest.answerTimeSeconds } : null;
+  const roundWinner = fastest ? { name: fastest.name, answerTimeSeconds: fastest.answerTimeSeconds, streak: fastest.streak } : null;
 
   room.history.push({
     trackName: room.correctTrackName,
@@ -542,6 +552,19 @@ function endRound(room) {
     .slice()
     .sort((a, b) => b.score - a.score)
     .map((p, i) => ({ rank: i + 1, id: p.id, name: p.name, score: p.score }));
+
+  let djCommentary = null;
+  try {
+    djCommentary = await generateDjCommentary({
+      track: { trackName: room.correctTrackName, artistName: room.correctArtist },
+      winner: roundWinner,
+      results,
+      round: room.round,
+      totalRounds: room.settings.rounds,
+    });
+  } catch (err) {
+    log.warn("DJ commentary generation failed", { error: String(err?.message || err) });
+  }
 
   // The round is OVER, so disclosing the answer here is intentional and safe.
   // `correct` is the gradable value (title or artist); `track` always carries
@@ -555,6 +578,7 @@ function endRound(room) {
     results,
     roundWinner,
     leaderboard,
+    djCommentary,
   };
   // Retain so a mid-reveal rejoiner can be re-sent the answer/results instead
   // of rendering an empty "No one got it" screen.
@@ -576,14 +600,26 @@ function endRound(room) {
   }, REVEAL_MS);
 }
 
-function gameOver(room) {
+async function gameOver(room) {
   clearTimers(room);
   room.phase = PHASE.GAME_OVER;
   const leaderboard = [...room.players.values()]
     .filter((p) => !p.spectator)
     .sort((a, b) => b.score - a.score)
     .map((p, i) => ({ rank: i + 1, id: p.id, name: p.name, score: p.score }));
-  io.to(room.code).emit("gameOver", { leaderboard, roundHistory: room.history }); // SAFE: round over
+
+  let djVerdict = null;
+  try {
+    djVerdict = await generateMatchVerdict({
+      leaderboard,
+      roundHistory: room.history,
+    });
+  } catch (err) {
+    log.warn("DJ match verdict generation failed", { error: String(err?.message || err) });
+  }
+
+  room.lastDjVerdict = djVerdict;
+  io.to(room.code).emit("gameOver", { leaderboard, roundHistory: room.history, djVerdict }); // SAFE: round over
   broadcastState(room);
   // Persist final scores for the global leaderboard (no-op without DATABASE_URL).
   recordMatch({ players: [...room.players.values()], settings: room.settings }, log);
@@ -601,6 +637,33 @@ const httpServer = http.createServer(async (req, res) => {
     allowOrigin = CLIENT_ORIGIN; // "*" in dev
   }
   if (allowOrigin) res.setHeader("Access-Control-Allow-Origin", allowOrigin);
+
+  // AI Crate Generation endpoint
+  if (req.method === "POST" && req.url && req.url.startsWith("/api/ai/crate")) {
+    let body = "";
+    req.on("data", (chunk) => {
+      body += chunk;
+      if (body.length > 10000) req.destroy();
+    });
+    req.on("end", async () => {
+      try {
+        const parsed = JSON.parse(body || "{}");
+        const prompt = String(parsed.prompt || "").trim();
+        if (!prompt) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: "prompt is required" }));
+          return;
+        }
+        const crate = await generateVibeCrate(prompt);
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ ok: true, crate }));
+      } catch (err) {
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: err?.message || "Internal server error" }));
+      }
+    });
+    return;
+  }
 
   // Global leaderboard (only meaningful when DATABASE_URL is configured).
   if (req.method === "GET" && req.url && req.url.startsWith("/leaderboard")) {
@@ -916,6 +979,7 @@ io.on("connection", (socket) => {
           .sort((a, b) => b.score - a.score)
           .map((p, i) => ({ rank: i + 1, id: p.id, name: p.name, score: p.score })),
         roundHistory: room.history,
+        djVerdict: room.lastDjVerdict,
       });
     }
     broadcastState(room);
@@ -957,6 +1021,7 @@ io.on("connection", (socket) => {
         decade: room.settings.decade,
         vibe: room.settings.vibe,
         customPlaylistTracks: room.customPlaylistTracks,
+        searchQueries: room.aiVibe?.searchQueries,
       });
     } catch {
       room.loading = false;
@@ -1008,6 +1073,62 @@ io.on("connection", (socket) => {
     }
   });
 
+  // --- generateAiVibe: curate a custom crate from natural language prompt ---
+  socket.on("generateAiVibe", async (payload) => {
+    const room = roomOf(socket);
+    if (!room || room.phase !== PHASE.LOBBY) return;
+    const prompt = String((payload && payload.prompt) ?? "").trim();
+    if (!prompt) {
+      socket.emit("vibeStatus", { loading: false, error: "Please enter a vibe or mood description." });
+      return;
+    }
+    if (rateLimited(socket, "vibe", 5, 10000)) {
+      socket.emit("vibeStatus", { loading: false, error: "Too fast. Wait a moment and try again." });
+      return;
+    }
+
+    socket.emit("vibeStatus", { loading: true, message: `Curating "${prompt.slice(0, 30)}" with Groq AI…` });
+    try {
+      const crate = await generateVibeCrate(prompt);
+      socket.emit("vibeStatus", {
+        loading: true,
+        message: `Fetching preview tracks for ${crate.vibeTitle}…`,
+      });
+      const tracks = await fetchVibeTracks(crate.searchQueries, 25);
+      if (!tracks || tracks.length < 4) {
+        socket.emit("vibeStatus", {
+          loading: false,
+          error: `Could not find enough playable clips for "${prompt}". Try another vibe.`,
+        });
+        return;
+      }
+      room.customPlaylistTracks = tracks;
+      room.customPlaylistName = crate.vibeTitle;
+      room.aiVibe = {
+        title: crate.vibeTitle,
+        description: crate.description,
+        prompt,
+        searchQueries: crate.searchQueries,
+        tracksCount: tracks.length,
+      };
+      socket.emit("vibeStatus", {
+        loading: false,
+        ready: true,
+        vibeTitle: crate.vibeTitle,
+        description: crate.description,
+        tracksCount: tracks.length,
+      });
+      io.to(room.code).emit("notice", {
+        message: `🪄 AI Crate "${crate.vibeTitle}" curated (${tracks.length} tracks).`,
+      });
+    } catch (err) {
+      socket.emit("vibeStatus", {
+        loading: false,
+        error: err?.message || "Failed to generate AI vibe crate.",
+      });
+    }
+  });
+
   // --- guess: one answer per player per round ---
   socket.on("guess", (payload) => {
     const room = roomOf(socket);
@@ -1055,6 +1176,27 @@ io.on("connection", (socket) => {
     resetToLobby(room);
     broadcastState(room);
   });
+
+  // --- fiftyFifty: server picks which options to eliminate (correct never touched) ---
+  socket.on("fiftyFifty", () => {
+    const room = roomOf(socket);
+    if (!room || room.phase !== PHASE.ROUND_PLAYING) return;
+    const player = room.players.get(socket.id);
+    if (!player || player.spectator || player.hasGuessed) return;
+    // Build list of wrong options (everything except the correct answer)
+    const wrong = room.options.filter((o) => o !== room.correct);
+    if (wrong.length < 2) return; // not enough to eliminate
+    // Fisher-Yates shuffle on wrong options, then take 2
+    const shuffled = wrong.slice();
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    const eliminated = shuffled.slice(0, 2);
+    // Send only to this player — SAFE: eliminated list never contains the correct answer
+    socket.emit("fiftyFiftyResult", { eliminated }); // SAFE
+  });
+
 
   // --- chat: room-scoped messages, rate-limited, sanitized, profanity-masked ---
   socket.on("chat", (payload) => {

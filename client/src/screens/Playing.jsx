@@ -13,7 +13,7 @@ const OPT_COLORS = [
   { num: "text-[#f9cb28]", sel: "border-[#f9cb28] bg-[#f9cb28]/10 ring-[#f9cb28]", hov: "enabled:hover:border-[#f9cb28] enabled:hover:bg-[#f9cb28]/5" },
 ];
 
-export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGuess, onReact, audioRef }) {
+export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGuess, onReact, audioRef, fiftyFiftyResult, onClearFiftyFifty, onRequestFiftyFifty }) {
   const locked = hasGuessed || spectator;
   const startRef = useRef(() => {});
   const [needsTap, setNeedsTap] = useState(false);
@@ -29,11 +29,22 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
   const [eliminatedOptions, setEliminatedOptions] = useState([]);
   const [doubleDownActive, setDoubleDownActive] = useState(false);
   const [shieldActive, setShieldActive] = useState(false);
+  const [fiftyFiftyPending, setFiftyFiftyPending] = useState(false);
+
+  // Apply server-returned 50:50 result
+  useEffect(() => {
+    if (fiftyFiftyResult && Array.isArray(fiftyFiftyResult.eliminated)) {
+      setEliminatedOptions(fiftyFiftyResult.eliminated);
+      setFiftyFiftyPending(false);
+    }
+  }, [fiftyFiftyResult]);
 
   useEffect(() => {
     setEliminatedOptions([]);
     setDoubleDownActive(false);
     setShieldActive(false);
+    setFiftyFiftyPending(false);
+    if (onClearFiftyFifty) onClearFiftyFifty();
   }, [state.round]);
 
   // Audio Playback effect
@@ -122,12 +133,11 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
   }, [locked, state.options, eliminatedOptions, onGuess]);
 
   const useFiftyFifty = () => {
-    if (!powerups.fiftyFifty || locked || state.options.length < 3) return;
+    if (!powerups.fiftyFifty || locked || fiftyFiftyPending || state.options.length < 3) return;
     setPowerups((p) => ({ ...p, fiftyFifty: false }));
-    const countToElim = Math.min(2, state.options.length - 2);
-    const shuffled = [...state.options].sort(() => Math.random() - 0.5);
-    const toElim = shuffled.slice(0, countToElim);
-    setEliminatedOptions(toElim);
+    setFiftyFiftyPending(true);
+    // Ask server to pick which options to eliminate — server never includes the correct answer
+    if (onRequestFiftyFifty) onRequestFiftyFifty();
   };
 
   const useDoubleDown = () => {

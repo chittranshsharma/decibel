@@ -18,8 +18,8 @@ export const DECADE_CHOICES = ["all", "new", "2020s", "2010s", "2000s", "1990s",
 export const CLIP_CHOICES = ["RANDOM", "INTRO"];
 export const VIBE_CHOICES = ["all", "mainstream", "underground"];
 
-// Playable genres: 10 curated families + custom Spotify playlist option
-export const ALLOWED_GENRES = [...GENRE_KEYS, "spotify"];
+// Playable genres: 10 curated families + custom Spotify playlist + AI Vibe Crate
+export const ALLOWED_GENRES = [...GENRE_KEYS, "spotify", "ai-vibe"];
 
 export const DEFAULT_SETTINGS = {
   rounds: ROUND_CHOICES[0],

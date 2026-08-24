@@ -23,6 +23,24 @@ export function GameOver({ gameOver, players, myId, onRestart, messages, onChat 
         </h2>
       </div>
 
+      {/* DJ Decibel Final Verdict Card */}
+      {gameOver?.djVerdict && (
+        <div className="relative overflow-hidden rounded-2xl border border-[#50e3c2]/40 bg-gradient-to-r from-[#50e3c2]/10 via-[#7928ca]/15 to-[#ff0080]/10 p-5 backdrop-blur-md transition-all shadow-[0_0_30px_rgba(80,227,194,0.15)] animate-rise">
+          <div className="flex items-center gap-2 pb-2">
+            <span className="flex h-2.5 w-2.5 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#50e3c2] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#50e3c2]"></span>
+            </span>
+            <span className="font-console text-xs font-bold uppercase tracking-widest text-[#50e3c2]">
+              🎙️ DJ DECIBEL'S MATCH VERDICT
+            </span>
+          </div>
+          <p className="font-geist text-base font-semibold tracking-tight text-white/95 leading-relaxed">
+            "{gameOver.djVerdict}"
+          </p>
+        </div>
+      )}
+
       {champ && (
         <BorderGlow
           animated={true}

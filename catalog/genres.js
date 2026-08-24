@@ -86,18 +86,23 @@ export const GENRE_FAMILIES = {
     label: "Desi Hip Hop",
     match: /desi hip hop|indian hip hop|punjabi hip hop/i,
     mainstream: [
-      "DIVINE", "KR$NA", "Seedhe Maut", "MC Stan", "Raftaar", "Badshah",
-      "Yo Yo Honey Singh", "Talha Anjum", "Talhah Yunus", "Karan Aujla",
-      "AP Dhillon", "Sidhu Moose Wala", "Shubh", "Ikka", "Dino James",
-      "King", "Emiway Bantai", "Young Stunners", "Fotty Seven", "Raga",
+      // OG specified keeps
+      "KR$NA", "Seedhe Maut", "MC Stan", "Talha Anjum", "Talhah Yunus",
+      "Ikka", "King", "Young Stunners", "Raga",
+      // Scene-famous, substantial following
+      "Arpit Bala", "Chaar Diwaari", "Nanku", "Karun",
+      "Yashraj", "Tienas", "Rawal", "Prabh Deep", "Ahmer",
+      "Siyaahi", "Swadesi", "Dhanji", "Tarun",
     ],
     underground: [
-      "Dhanji", "Chaar Diwaari", "Yashraj", "Rawal", "Bharg", "Prabh Deep",
-      "Siyaahi", "Ahmer", "Rebel 7", "Frappe Ash", "Full Power", "Gravity",
-      "The Siege", "Bagi Munda", "Mark Bhatia", "Darcy", "Qaab", "Sikander Kahlon",
-      "SOS", "Straight Outta Srinagar", "Wolf.Cryman", "Tsumyoki", "Swadesi",
-      "Tienas", "Farhan Khan", "DRV", "Panther", "EPR Iyer", "Umer Anjum",
-      "Nanku", "Arpit Bala", "Tarun", "Lil Kabeer", "Smoke", "Ruab", "Sammad",
+      // User-requested deep cuts
+      "Prathamesh", "Naam Sujal", "Vichaar", "Shauharty", "MC Altaf",
+      // True underground / niche scene
+      "Frappe Ash", "Full Power", "The Siege", "Bagi Munda",
+      "Mark Bhatia", "Darcy", "Qaab", "Sikander Kahlon",
+      "SOS", "Straight Outta Srinagar", "Wolf.Cryman", "Tsumyoki",
+      "Farhan Khan", "DRV", "Panther", "EPR Iyer", "Umer Anjum",
+      "Lil Kabeer", "Smoke", "Ruab", "Sammad", "Rebel 7", "Bharg",
     ],
   },
   rock: {

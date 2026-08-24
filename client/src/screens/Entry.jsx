@@ -34,7 +34,7 @@ export function EntryScreen({ onCreate, onJoin, onQuick, onHome }) {
           Enter the Room
         </h2>
         <p className="font-geist text-xs text-[#8f8f8f]">
-          Choose your handle, host a private match, or quick-match with players.
+          Choose your handle, host a private match, curate AI vibe crates, or quick-match.
         </p>
       </div>
 

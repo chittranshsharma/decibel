@@ -9,7 +9,7 @@
   ╚═════╝ ╚══════╝ ╚═════╝╚═╝╚═════╝ ╚══════╝╚══════╝
 ```
 
-### High-Frequency, Server-Authoritative Real-Time Audio Trivia Engine
+### Ultra-Low Latency Multiplayer Audio Trivia, AI Live DJ & Crate Engine
 *Engineered for audiophiles, crate diggers, speed demons, and competitive room matches.*
 
 ---
@@ -17,14 +17,14 @@
 [![Node.js](https://img.shields.io/badge/Runtime-Node.js%20v20+-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
 [![React](https://img.shields.io/badge/Frontend-React%2018%20%2B%20Vite-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
 [![Socket.IO](https://img.shields.io/badge/Network-Socket.IO%20v4-010101?style=for-the-badge&logo=socket.io&logoColor=white)](https://socket.io)
-[![Supabase](https://img.shields.io/badge/Database-Supabase%20PostgreSQL%2017-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
-[![Vitest](https://img.shields.io/badge/Tests-50%2F50%20Passing-729B1B?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev)
-[![Sampling Latency](https://img.shields.io/badge/Sampling%20Latency-%3C1.8ms-FF0055?style=for-the-badge&logo=speedtest&logoColor=white)](#-database-architecture--sub-millisecond-sampling)
+[![Supabase](https://img.shields.io/badge/Database-Supabase%20PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
+[![Groq AI](https://img.shields.io/badge/AI%20Inference-Groq%20LPU%20(Llama%203.1)-F55036?style=for-the-badge&logo=fastapi&logoColor=white)](https://groq.com)
+[![Vitest](https://img.shields.io/badge/Tests-59%2F59%20Passing-729B1B?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
 <p align="center">
-  <b>Decibel</b> is a zero-latency, server-authoritative multiplayer music trivia engine.<br>
-  Players compete simultaneously in high-intensity audio rounds, deciphering 30-second playable tracks across 11 meticulously curated genres, scraping custom Spotify playlists in real-time, or battling through deep underground crate cuts.
+  <b>Decibel</b> is a high-frequency, server-authoritative multiplayer music guessing engine.<br>
+  Compete live in 30-second audio battles across 11 culturally authentic genre crates, scrape Spotify playlists in real-time, generate custom crates with natural-language Groq AI prompts, deploy in-game power-ups, and enjoy live AI DJ commentary.
 </p>
 
 ---
@@ -33,33 +33,89 @@
 
 ## 📑 Table of Contents
 
-- [⚡ System Highlights](#-system-highlights)
+- [⚡ Core Highlights](#-core-highlights)
+- [🎙️ AI Live Hype DJ & Natural Language Crate Engine](#️-ai-live-hype-dj--natural-language-crate-engine)
+- [💣 Arcade Modifiers & Power-Up System](#-arcade-modifiers--power-up-system)
+- [🎮 Daily Solo Arcade Hub](#-daily-solo-arcade-hub)
 - [🕹️ Live Gameplay Interface](#️-live-gameplay-interface)
 - [🏛️ High-Level Architecture](#️-high-level-architecture)
 - [🎵 11 Curated Genres & Scene Rosters](#-11-curated-genres--scene-rosters)
 - [🎛️ Vibe Tier Selector (Mainstream vs. Underground)](#️-vibe-tier-selector-mainstream-vs-underground)
-- [🟢 Custom Spotify Playlist Ingest Engine](#-custom-spotify-playlist-ingest-engine)
+- [🟢 Keyless Spotify Playlist Ingestion](#-keyless-spotify-playlist-ingestion)
 - [🧮 Mathematical Scoring Engine](#-mathematical-scoring-engine)
-- [📊 Database Architecture & Sub-Millisecond Sampling](#-database-architecture--sub-millisecond-sampling)
+- [📊 Database Architecture & Dual Storage Pipeline](#-database-architecture--dual-storage-pipeline)
 - [🔌 WebSocket Wire Protocol Specification](#-websocket-wire-protocol-specification)
 - [🛡️ Anti-Cheat & Security Guarantees](#️-anti-cheat--security-guarantees)
-- [🚀 Quickstart & Local Cluster Setup](#-quickstart--local-cluster-setup)
+- [🚀 Quickstart & Local Setup](#-quickstart--local-setup)
 - [🧪 Test Suite & Quality Verification](#-test-suite--quality-verification)
-- [⚙️ Environment Variable Reference](#️-environment-variable-reference)
-- [📦 Production Deployment](#-production-deployment)
+- [⚙️ Environment Configuration](#️-environment-configuration)
 - [📄 License & Credits](#-license--credits)
 
 ---
 
-## ⚡ System Highlights
+## ⚡ Core Highlights
 
-- **🛡️ 100% Server-Authoritative FSM**: Zero client-side trust. Track metadata, answer keys, audio synchronization offsets, and monotonic answer clocks are guarded strictly on the backend.
-- **🎧 11 Deep Curation Genres**: Spans Modern Hip-Hop, 90s Old School Rap, Trap & Rage, Hyperpop & Digicore, Desi Hip Hop, Rock & Alt, Indie, Bedroom Pop, R&B & Soul, Pop, and Desi Indie.
-- **🎛️ Vibe Selector**: Granularly toggle between **Mainstream** (global anthems, billboard titans) and **True Underground** (scene deep cuts, bandcamp staples, experimental cult favorites).
-- **🟢 Keyless Spotify Playlist Ingestion**: Ingests public Spotify playlists via embed metadata extraction, concurrently resolving high-bitrate 30s playable audio snippets via Apple Search CDN.
-- **📊 500k-Scale Database Engine**: Optimized Supabase PostgreSQL storage featuring GIN array containment indexing, B-Tree `random_seed` point lookups ($<1.8\text{ms}$ query cost), and dual-tier local JSON fallback.
-- **🕹️ Cyberpunk / Arcade CRT Terminal UI**: Sound-reactive visualizer, scanline filters, monospace tracking, and responsive layout built with Tailwind CSS.
-- **⚡ Deterministic Distractor Generation**: Round-robin artist balancing algorithm prevents duplicate choices and artist bias while generating plausible distractors.
+- **🛡️ 100% Server-Authoritative FSM**: Track metadata, answers, audio synchronization timestamps, power-up states, and monotonic clocks are guarded strictly on the backend.
+- **🎙️ Groq LPU AI Host ("DJ Decibel")**: Ultra-fast LLM inference delivers snappy, contextual commentary between rounds and comprehensive match verdicts upon game over.
+- **🪄 Prompt-to-Crate Engine**: Type any vibe, scene, or mood (e.g., *"90s Tokyo midnight drift"*) to generate instant curated audio crates powered by Groq and Apple Search CDN.
+- **💣 Arcade Power-Ups**: Single-charge tactical modifiers per match including **50:50 Eliminator** (server-safe), **2X Double Down** multiplier, and **Streak Shield**.
+- **🎮 Solo Puzzle Suite**: Four standalone daily audio games: **Harmonies** (Connections), **Wordzic** (Wordle), **Lyricles** (timed lyrics), and **Crosszic** (music crossword).
+- **🎧 11 Deep Curation Genres**: Spanning Modern Hip-Hop, Old School Rap, Trap & Rage, Hyperpop & Digicore, Desi Hip Hop, Rock & Alt, Indie, Bedroom Pop, R&B & Soul, Mainstream Pop, and Desi Indie.
+- **🎛️ Vibe Selector**: Granularly toggle between **Mainstream** (chart titans) and **True Underground** (scene deep cuts, bandcamp staples, cult acts).
+- **🟢 Keyless Spotify Playlist Ingest**: Scrapes public Spotify playlists via embed metadata, concurrently resolving high-bitrate playable audio snippets.
+- **📊 500k-Scale Database Engine**: Supabase PostgreSQL storage with indexed random sampling and automatic local JSON snapshot fallback.
+
+---
+
+## 🎙️ AI Live Hype DJ & Natural Language Crate Engine
+
+Decibel integrates ultra-fast **Groq LPU inference** (`llama-3.1-8b-instant`) to bring matches alive with zero latency penalties:
+
+```
+                  ┌────────────────────────────────────────────────────────┐
+                  │                 GROQ AI INFERENCE HUB                  │
+                  └───────────────────────────┬────────────────────────────┘
+                                              │
+                    ┌─────────────────────────┴─────────────────────────┐
+                    ▼                                                   ▼
+       ┌─────────────────────────┐                         ┌─────────────────────────┐
+       │   🎙️ DJ LIVE COMMENTARY  │                         │   🪄 PROMPT-TO-CRATE     │
+       ├─────────────────────────┤                         ├─────────────────────────┤
+       │ • Roasts & Hype at      │                         │ • Natural language input│
+       │   ROUND_REVEAL          │                         │ • Contextual seed maps  │
+       │ • Fastest reaction time │                         │ • Direct 30s preview    │
+       │ • Streak shoutouts      │                         │   stream generation     │
+       │ • Final Match Verdict   │                         │ • Instant lobby inject  │
+       └─────────────────────────┘                         └─────────────────────────┘
+```
+
+---
+
+## 💣 Arcade Modifiers & Power-Up System
+
+Players have **1 single charge per modifier** per match session to turn the tide:
+
+| Modifier | Icon | Behavior | Server Invariant |
+| :--- | :---: | :--- | :--- |
+| **50:50 Eliminator** | 💣 | Removes 2 incorrect distractor options from the grid. | Server calculates elimination set; **correct answer is mathematically impossible to eliminate**. |
+| **2X Double Down** | ⚡ | Multiplies base question value and speed bonus by $2\times$ for the current round. | Evaluated server-side at round resolution. Wrong answer yields 0 points. |
+| **Streak Shield** | 🛡️ | Prevents active combo streak from resetting on a wrong guess or timeout. | Consumed only if the player fails to answer correctly. |
+
+---
+
+## 🎮 Daily Solo Arcade Hub
+
+Beyond multiplayer rooms, Decibel features 4 dedicated solo audio games accessible via the floating dock:
+
+```
+ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+ │   🎵 HARMONIES  │ │    🔤 WORDZIC   │ │   📜 LYRICLES   │ │   🧩 CROSSZIC   │
+ ├─────────────────┤ ├─────────────────┤ ├─────────────────┤ ├─────────────────┤
+ │ Find 4 groups   │ │ Guess 5-letter  │ │ Fast-paced timed│ │ Musical artists │
+ │ of 4 related    │ │ musical words & │ │ lyric fill-in-  │ │ and terminology │
+ │ artists/genres. │ │ track titles.   │ │ the-blanks.     │ │ mini crossword. │
+ └─────────────────┘ └─────────────────┘ └─────────────────┘ └─────────────────┘
+```
 
 ---
 
@@ -67,22 +123,24 @@
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────┐
-│  DECIBEL // MATCH 04/10 ──────────── TIME REMAINING: 07.4s ─────────── │
+│  DECIBEL // ROUND 04/10 ────────── TIME REMAINING: 07.4s ───────────── │
 ├────────────────────────────────────────────────────────────────────────┤
 │                                                                        │
 │   [AUDIO STREAMING] ılı.lıllılı.ıllı.lı.ılıllılı.ıllı [BITRATE: 256K]  │
-│   GENRE: HYPERPOP & DIGICORE  •  VIBE: UNDERGROUND  •  MODE: TITLE     │
+│   GENRE: DESI HIP HOP  •  VIBE: MAINSTREAM  •  MODE: TITLE             │
 │                                                                        │
 │   ┌─────────────────────────────────┐ ┌──────────────────────────────┐ │
-│   │ [1] SPOILED LITTLE BRAT         │ │ [2] 757                      │ │
-│   │     Underscores                 │ │     100 gecs                 │ │
+│   │ [1] Untitled                    │ │ [2] Shaktimaan               │ │
+│   │     KR$NA                       │ │     Seedhe Maut              │ │
 │   ├─────────────────────────────────┤ ├──────────────────────────────┤ │
-│   │ [3] ROYAL BLUE WALLS            │ │ [4] HOMESWITCHER             │ │
-│   │     Jane Remover                │ │     Jane Remover & kmoe      │ │
+│   │ [3] LOVESEXDHOKA!!!             │ │ [4] Afsanay                  │ │
+│   │     Chaar Diwaari               │ │     Young Stunners           │ │
 │   └─────────────────────────────────┘ └──────────────────────────────┘ │
 │                                                                        │
+│   MODIFIERS: [ 💣 50:50 (1x) ]  [ ⚡ 2X BET (1x) ]  [ 🛡️ SHIELD (1x) ] │
+│                                                                        │
 │   LEADERBOARD (LIVE):                                                  │
-│   1UP  CYBER_PUNK    4,850 PTS  (🔥 STREAK x4)                         │
+│   1UP  CHITTRANSH    4,850 PTS  (🔥 STREAK x4)                         │
 │   2UP  CRATE_DIGGER  4,120 PTS  (🔥 STREAK x2)                         │
 │   3UP  SYNTH_WAVE    3,400 PTS  (• STREAK x1)                          │
 └────────────────────────────────────────────────────────────────────────┘
@@ -95,71 +153,77 @@
 ```mermaid
 flowchart TD
     subgraph ClientLayer ["Client Workspace (React 18 + Vite SPA)"]
-        UI["Sound-Reactive Retro UI"]
-        AudioEngine["WebAudio / HTML5 Audio Streamer"]
+        UI["Sound-Reactive Arcade UI"]
+        FloatingDock["Glassmorphism Floating Dock"]
+        AudioEngine["HTML5 Persistent Audio Streamer"]
         SocketIO_Client["Socket.IO Client Engine"]
         UI --> SocketIO_Client
+        FloatingDock --> UI
         SocketIO_Client --> AudioEngine
     end
 
     subgraph ServerLayer ["Server Cluster (Node.js Stateful Gateway)"]
         Gateway["Socket.IO Gateway"]
-        FSM["Room State Machine"]
-        Scorer["Deterministic Velocity Scorer"]
+        FSM["Room State Machine (PHASE Lifecycle)"]
+        Scorer["Velocity & Streak Multiplier Scorer"]
         DistractorGen["Round-Robin Distractor Engine"]
+        PowerUpHandler["Server-Authoritative Power-Up FSM"]
         Sanitizer["Profanity & Input Sanitizer"]
         
         Gateway <--> FSM
         FSM --> Scorer
         FSM --> DistractorGen
+        FSM --> PowerUpHandler
         FSM --> Sanitizer
     end
 
-    subgraph IngestionLayer ["Ingestion & Resolution Pipeline"]
-        SpotifyParser["Public Spotify Embed Scraper"]
-        AudioResolver["Apple / iTunes Preview Resolver"]
-        SpotifyParser --> AudioResolver
+    subgraph ExternalServices ["External Engines & APIs"]
+        Groq["Groq LPU (Llama 3.1 AI DJ & Crate Generator)"]
+        SpotifyParser["Public Spotify Embed Resolver"]
+        AppleCDN["Apple / iTunes Audio Stream CDN"]
     end
 
     subgraph StorageLayer ["Data & Persistence Layer"]
-        Supabase[("Supabase PostgreSQL 17")]
-        MemoryCache[("In-Memory Fast Snapshot")]
-        LeaderboardTable[("Global Leaderboard")]
+        Supabase[("Supabase PostgreSQL")]
+        MemoryCache[("In-Memory Local Snapshot")]
+        LeaderboardTable[("Global Match Records")]
     end
 
     SocketIO_Client <-->|"Bi-directional WebSocket"| Gateway
-    FSM -->|"Indexed Point Scan (<2ms)"| Supabase
-    FSM -.->|"Local Fallback Snapshot"| MemoryCache
-    FSM -->|"Record Match Outcome"| LeaderboardTable
-    FSM -->|"Custom Playlist Request"| SpotifyParser
-    AudioResolver -->|"Playable 30s Snippet"| AudioEngine
+    FSM -->|"DJ Commentary & Crates"| Groq
+    FSM -->|"Indexed Sample (<2ms)"| Supabase
+    FSM -.->|"Local Fallback"| MemoryCache
+    FSM -->|"Record Score"| LeaderboardTable
+    FSM -->|"Custom Playlist"| SpotifyParser
+    SpotifyParser --> AppleCDN
+    AppleCDN -->|"Playable 30s Snippet"| AudioEngine
 ```
 
 ---
 
 ## 🎵 11 Curated Genres & Scene Rosters
 
-Every genre contains strictly bifurcated rosters ensuring genuine cultural accuracy:
+Rosters are curated to ensure genuine cultural accuracy across all tiers:
 
 | Genre Key | Display Label | Mainstream Roster Highlights | True Underground / Scene Highlights |
 | :--- | :--- | :--- | :--- |
-| `hip-hop` | **Modern Hip-Hop** | Kendrick Lamar, Drake, J. Cole, Travis Scott, JID, JPEGMAFIA, Denzel Curry, Mac Miller | Billy Woods, Armand Hammer, Mach-Hommy, Rome Streetz, Boldy James, MIKE, MAVI, Pink Siifu |
-| `oldschool-hiphop` | **Old School Rap** | 2Pac, The Notorious B.I.G., Wu-Tang Clan, Nas, MF DOOM, Mos Def, Big L, Mobb Deep | Jeru the Damaja, Kool G Rap, Camp Lo, Smif-N-Wessun, O.C., Company Flow, Cannibal Ox |
-| `trap` | **Trap & Rage** | Playboi Carti, Yeat, Ken Carson, Destroy Lonely, Future, Young Thug, Metro Boomin | Lucki, Summrs, Autumn!, Kankan, Homixide Gang, UnoTheActivist, Black Kray, SpaceGhostPurrp |
-| `hyperpop` | **Hyperpop & Digicore** | Charli XCX, 100 gecs, SOPHIE, Bladee, Ecco2k, Thaiboy Digital, 2hollis, Jane Remover | Underscores, Midwxst, Aldn, Sebii, Blackwinterwells, Osquinn (Quinn), Dltzk, Frost Children |
-| `desi-hip-hop` | **Desi Hip Hop** | DIVINE, KR$NA, Seedhe Maut, MC Stan, Raftaar, Talha Anjum, Young Stunners | Dhanji, Chaar Diwaari, Yashraj, Rawal, Bharg, Prabh Deep, Siyaahi, SOS, Bagi Munda |
-| `rock` | **Rock & Alt Rock** | Queen, Nirvana, Linkin Park, Radiohead, Smashing Pumpkins, Jeff Buckley, The Smiths | Black Country New Road, Fontaines D.C., King Gizzard, IDLES, Slint, Swans, Turnstile, Duster |
-| `indie` | **Indie & Alt** | Arctic Monkeys, The Strokes, Tame Impala, Phoebe Bridgers, boygenius, Elliott Smith | Car Seat Headrest, Alvvays, Alex G, Big Thief, Sufjan Stevens, MJ Lenderman, Panchiko |
-| `bedroom-pop` | **Bedroom & Dream Pop** | Clairo, Rex Orange County, Boy Pablo, TV Girl, The Marías, Men I Trust, Mac DeMarco | Crumb, Current Joys, Eyedress, Vansire, TEMPOREX, Monsune, Goth Babe, Strawberry Guy |
-| `rnb` | **R&B & Soul** | SZA, Frank Ocean, The Weeknd, Brent Faiyaz, Daniel Caesar, Kelela, Sampha, FKA twigs | Ravyn Lenae, Dijon, Mk.gee, Rochelle Jordan, Cleo Sol, SAULT, Choker, Sudan Archives |
-| `pop` | **Mainstream Pop** | Taylor Swift, Billie Eilish, Dua Lipa, Sabrina Carpenter, Olivia Rodrigo, Chappell Roan | Magdalena Bay, Remi Wolf, Allie X, Yeule, Sky Ferreira, Ethel Cain, Maisie Peters |
-| `desi-indie` | **Desi Indie & Alt** | Prateek Kuhad, Anuv Jain, The Local Train, When Chai Met Toast, Lifafa, Peter Cat | Begum, Tejas, Dhrruv, Bawari Basanti, Taba Chake, Thermal And A Quarter, Bloodywood |
+| `desi-hip-hop` | **Desi Hip Hop** | KR$NA, Seedhe Maut, MC Stan, Talha Anjum, Talhah Yunus, Ikka, King, Young Stunners, Raga, Arpit Bala, Chaar Diwaari, Nanku, Karun, Yashraj, Rawal, Prabh Deep, Ahmer, Siyaahi, Dhanji | Prathamesh, Naam Sujal, Vichaar, Shauharty, MC Altaf, Frappe Ash, The Siege, Bagi Munda, Darcy, Qaab, Sikander Kahlon, SOS, Wolf.Cryman, Tienas, Farhan Khan, DRV, Panther, Bharg |
+| `hip-hop` | **Modern Hip-Hop** | Kendrick Lamar, Drake, J. Cole, Travis Scott, JID, JPEGMAFIA, Denzel Curry, Mac Miller, 21 Savage, Tyler The Creator | Billy Woods, Armand Hammer, Mach-Hommy, Rome Streetz, Boldy James, MIKE, MAVI, Pink Siifu, Ka, Roc Marciano |
+| `oldschool-hiphop` | **Old School Rap** | 2Pac, Biggie, Wu-Tang Clan, Nas, MF DOOM, Mos Def, Big L, Mobb Deep, Rakim, Outkast, A Tribe Called Quest | Jeru the Damaja, Kool G Rap, Camp Lo, Smif-N-Wessun, O.C., Company Flow, Cannibal Ox, Non Phixion |
+| `trap` | **Trap & Rage** | Playboi Carti, Yeat, Ken Carson, Destroy Lonely, Future, Young Thug, 21 Savage, Lil Uzi Vert, Metro Boomin | Lucki, Summrs, Autumn!, Kankan, Homixide Gang, UnoTheActivist, Black Kray, SpaceGhostPurrp, Duwap Kaine |
+| `hyperpop` | **Hyperpop & Digicore** | Charli XCX, 100 gecs, SOPHIE, Bladee, Ecco2k, Thaiboy Digital, 2hollis, Jane Remover, Brakence, Glaive | Underscores, Midwxst, Aldn, Sebii, Blackwinterwells, Osquinn, Dltzk, Frost Children, Snow Strippers |
+| `rock` | **Rock & Alt Rock** | Queen, Nirvana, Linkin Park, Radiohead, Smashing Pumpkins, Jeff Buckley, The Smiths, Foo Fighters, Green Day | Black Country New Road, Fontaines D.C., King Gizzard, IDLES, Slint, Swans, Turnstile, Duster, Panchiko |
+| `indie` | **Indie & Alt** | Arctic Monkeys, The Strokes, Tame Impala, Phoebe Bridgers, boygenius, Elliott Smith, Lorde, Lana Del Rey | Car Seat Headrest, Alvvays, Alex G, Big Thief, Sufjan Stevens, MJ Lenderman, Water From Your Eyes |
+| `bedroom-pop` | **Bedroom & Dream Pop** | Clairo, Rex Orange County, Boy Pablo, TV Girl, The Marías, Men I Trust, Mac DeMarco, Dominic Fike | Crumb, Current Joys, Eyedress, Vansire, TEMPOREX, Monsune, Goth Babe, Strawberry Guy, Far Caspian |
+| `rnb` | **R&B & Soul** | SZA, Frank Ocean, The Weeknd, Brent Faiyaz, Daniel Caesar, Kelela, Sampha, FKA twigs, Omar Apollo | Ravyn Lenae, Dijon, Mk.gee, Rochelle Jordan, Cleo Sol, SAULT, Choker, Sudan Archives, Arlo Parks |
+| `pop` | **Mainstream Pop** | Taylor Swift, Billie Eilish, Dua Lipa, Sabrina Carpenter, Olivia Rodrigo, Chappell Roan, Ariana Grande | Magdalena Bay, Remi Wolf, Allie X, Yeule, Sky Ferreira, Ethel Cain, Maisie Peters, The Japanese House |
+| `desi-indie` | **Desi Indie & Alt** | Prateek Kuhad, Anuv Jain, The Local Train, When Chai Met Toast, Lifafa, Peter Cat Recording Co., Sanam | Begum, Tejas, Dhrruv, Bawari Basanti, Taba Chake, Thermal And A Quarter, Bloodywood, Gauley Bhai |
 
 ---
 
 ## 🎛️ Vibe Tier Selector (Mainstream vs. Underground)
 
-The game provides a host-level **Vibe Selector** to calibrate match difficulty and curation:
+Hosts can tailor match difficulty and curation style in the room lobby:
 
 ```
                   ┌────────────────────────────────────────┐
@@ -171,23 +235,23 @@ The game provides a host-level **Vibe Selector** to calibrate match difficulty a
       ┌───────────────┐       ┌───────────────┐       ┌───────────────┐
       │   ALL (50/50) │       │   MAINSTREAM  │       │  UNDERGROUND  │
       ├───────────────┤       ├───────────────┤       ├───────────────┤
-      │ Balanced mix  │       │ Chart-toppers │       │ Deep cuts,    │
-      │ of anthems &  │       │ & recognizable│       │ B-sides, cult │
-      │ hidden gems   │       │ global hits   │       │ scene staples │
+      │ Balanced mix  │       │ Recognizable  │       │ Deep cuts,    │
+      │ of hits and   │       │ anthems &     │       │ B-sides &     │
+      │ hidden gems   │       │ scene bangers │       │ cult classics │
       └───────────────┘       └───────────────┘       └───────────────┘
 ```
 
 ---
 
-## 🟢 Custom Spotify Playlist Ingest Engine
+## 🟢 Keyless Spotify Playlist Ingestion
 
-Decibel features a keyless, zero-dependency Spotify playlist extraction and preview resolution engine:
+Paste any public Spotify playlist URL into the lobby. Decibel extracts tracks on the fly and resolves direct playable audio:
 
 ```
-[ Host Enters Spotify URL ] ──> [ spotifyFetcher.js: parseSpotifyPlaylistId ]
+[ Host Pastes Spotify URL ] ──> [ spotifyFetcher.js: parseSpotifyPlaylistId ]
                                                 │
                                                 ▼
-                                [ Scrape Spotify Embed JSON Payload ]
+                                [ Scrape Spotify Embed Metadata Payload ]
                                                 │
                                                 ▼
                                 [ Extract Array<{ title, artist }> ]
@@ -206,204 +270,146 @@ Decibel features a keyless, zero-dependency Spotify playlist extraction and prev
 
 ## 🧮 Mathematical Scoring Engine
 
-Decibel implements an escalating, speed-sensitive, and streak-multiplied scoring curve calculated deterministically on the server:
+Decibel computes deterministic velocity scores server-side:
 
-$$\text{FinalScore} = \text{round}\left( \Big( \text{BasePoints}(r) + \text{VelocityBonus}(t_a, T) \Big) \times \text{StreakMultiplier}(s) \right)$$
+$$\text{FinalScore} = \text{round}\left( \Big( \text{BasePoints}(r) + \text{VelocityBonus}(t_a, T) \Big) \times \text{StreakMultiplier}(s) \right) \times \text{DoubleDown}$$
 
 ### 1. Escalating Base Points
 $$\text{BasePoints}(r) = 300 + (r \times 250)$$
-*Where $r \in [0, \text{rounds}-1]$ represents the zero-indexed round number.*
+*Where $r \in [0, \text{rounds}-1]$ represents the round index.*
 
 ### 2. Linear Velocity Bonus
 $$\text{VelocityBonus}(t_a, T) = \text{round}\left( 350 \times \left(1 - \frac{\text{clamp}(t_a, 0, T)}{T}\right) \right)$$
-*Where $t_a$ is the monotonic answer elapsed time in milliseconds and $T$ is the total round duration.*
+*Where $t_a$ is the monotonic answer elapsed time in ms and $T$ is the total round duration.*
 
 ### 3. Streak Multiplier Curve
-$$\text{StreakMultiplier}(s) = 1.0 + \min(4, \max(0, s - 1)) \times 0.1$$
-- **1 Correct Answer**: $1.0\times$ multiplier
-- **2 Correct Answers**: $1.1\times$ multiplier
-- **3 Correct Answers**: $1.2\times$ multiplier
-- **4 Correct Answers**: $1.3\times$ multiplier
-- **5+ Correct Answers (Max Tier)**: $1.4\times$ multiplier
+- **1 Correct Answer**: $1.0\times$
+- **2 Correct Answers**: $1.1\times$
+- **3 Correct Answers**: $1.2\times$
+- **4 Correct Answers**: $1.3\times$
+- **5+ Correct Answers**: $1.4\times$ (Max Tier)
 
 ---
 
-## 📊 Database Architecture & Sub-Millisecond Sampling
+## 📊 Database Architecture & Dual Storage Pipeline
 
-Decibel utilizes **Supabase PostgreSQL 17** engineered for 500,000+ track catalogs.
+Decibel uses Supabase PostgreSQL with a self-healing in-memory JSON fallback (`catalog/snapshot.json`):
 
-### Table Schema (`catalog_tracks`)
 ```sql
 CREATE TABLE IF NOT EXISTS catalog_tracks (
-  track_id VARCHAR(64) PRIMARY KEY,
-  track_name TEXT NOT NULL,
-  artist_name TEXT NOT NULL,
-  artist_id VARCHAR(64),
-  preview_url TEXT NOT NULL,
-  apple_genre VARCHAR(128),
-  genre_keys TEXT[] NOT NULL,
-  release_year INT,
-  duration_ms INT,
-  base_title VARCHAR(256) NOT NULL,
-  random_seed FLOAT NOT NULL DEFAULT random()
+  track_id     TEXT PRIMARY KEY,
+  track_name   TEXT NOT NULL,
+  artist_name  TEXT NOT NULL,
+  artist_id    TEXT,
+  preview_url  TEXT NOT NULL,
+  apple_genre  TEXT,
+  genre_keys   TEXT[] NOT NULL,
+  release_year INTEGER,
+  duration_ms  INTEGER,
+  base_title   TEXT,
+  random_seed  FLOAT NOT NULL DEFAULT random(),
+  updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- Fast GIN inverted index for array containment queries: genre_keys @> ARRAY['trap:underground']
-CREATE INDEX IF NOT EXISTS catalog_tracks_genre_gin_idx ON catalog_tracks USING gin (genre_keys);
-
--- Indexed random seed for sub-2ms random sampling without expensive ORDER BY RANDOM() scans
-CREATE INDEX IF NOT EXISTS catalog_tracks_seed_idx ON catalog_tracks (random_seed);
-
--- B-Tree index for decade-filtered queries
-CREATE INDEX IF NOT EXISTS catalog_tracks_year_idx ON catalog_tracks (release_year);
+CREATE INDEX IF NOT EXISTS catalog_tracks_genre_idx ON catalog_tracks USING GIN (genre_keys);
+CREATE INDEX IF NOT EXISTS catalog_tracks_year_idx  ON catalog_tracks (release_year);
+CREATE INDEX IF NOT EXISTS catalog_tracks_seed_idx  ON catalog_tracks (random_seed);
 ```
-
-### ⚡ Sub-Millisecond Sampling Query
-```sql
--- O(log N) indexed random scan
-SELECT * FROM catalog_tracks
-WHERE genre_keys @> ARRAY['hyperpop']
-  AND random_seed >= random()
-ORDER BY random_seed ASC
-LIMIT 60;
-```
-
-### Performance Benchmarks
-| Operation | Dataset Size | Execution Time | Index Used |
-| :--- | :--- | :--- | :--- |
-| **Random Candidate Sampling** | 500,000 rows | **1.42 ms** | `catalog_tracks_seed_idx` |
-| **Vibe + Genre Array Filter** | 500,000 rows | **1.86 ms** | `catalog_tracks_genre_gin_idx` |
-| **Decade Filter (`release_year`)** | 500,000 rows | **0.94 ms** | `catalog_tracks_year_idx` |
-| **Local Snapshot Fallback** | In-Memory | **0.18 ms** | Memory Hash Map |
 
 ---
 
 ## 🔌 WebSocket Wire Protocol Specification
 
-All communication between client and server occurs via strongly typed Socket.IO events:
-
-| Event Name | Direction | Payload Structure | Description |
+| Event | Origin | Direction | Description |
 | :--- | :--- | :--- | :--- |
-| `createRoom` | Client $\rightarrow$ Server | `{ name, avatar, clipPref }` | Initializes a new room instance; sender becomes host. |
-| `joinRoom` | Client $\rightarrow$ Server | `{ code, name, avatar }` | Validates room code and registers client in room state. |
-| `updateSettings` | Host $\rightarrow$ Server | `{ rounds, roundMs, optionsCount, mode, decade, clip, vibe, genre }` | Sanitizes and updates game settings. |
-| `setCustomPlaylist` | Host $\rightarrow$ Server | `{ url }` | Triggers Spotify scraping and preview resolution. |
-| `startGame` | Host $\rightarrow$ Server | `void` | Transitions room state to `ROUND_PLAYING`. |
-| `submitGuess` | Client $\rightarrow$ Server | `{ option }` | Records user guess with high-resolution server timestamp. |
-| `roundStart` | Server $\rightarrow$ Client | `{ roundIndex, audioUrl, options, durationMs, clipOffset }` | Transmits round parameters to all players. |
-| `roundEnd` | Server $\rightarrow$ Client | `{ correct, trackName, artistName, scores, streaks }` | Reveals round solution and updated match standings. |
-| `gameOver` | Server $\rightarrow$ Client | `{ finalLeaderboard, stats }` | Concludes match; records leaderboard metrics. |
+| `createRoom` | Client | $\rightarrow$ Server | Initializes new room state machine and claims Host role. |
+| `joinRoom` | Client | $\rightarrow$ Server | Joins existing room (as player during Lobby; spectator during match). |
+| `startGame` | Host | $\rightarrow$ Server | Initiates round 1 with selected genre, vibe, and duration settings. |
+| `countdown` | Server | $\rightarrow$ Room | Broadcasts 3-second animated start overlay with round point stakes. |
+| `roundStart` | Server | $\rightarrow$ Room | Triggers audio playback and unlocks client option grids. |
+| `fiftyFifty` | Client | $\rightarrow$ Server | Requests 50:50 power-up (returns 2 safe eliminated wrong options). |
+| `guess` | Client | $\rightarrow$ Server | Submits single player answer with monotonic timestamp calculation. |
+| `reveal` | Server | $\rightarrow$ Room | Discloses correct answer, score deltas, fastest reaction, & AI DJ hype. |
+| `gameOver` | Server | $\rightarrow$ Room | Broadcasts final podium, match statistics, and AI match summary. |
+| `generateAiVibe` | Host | $\rightarrow$ Server | Prompts Groq to generate a themed crate with audio previews. |
 
 ---
 
 ## 🛡️ Anti-Cheat & Security Guarantees
 
-1. **Zero Client Trust**: Correct track titles, artist names, and solution indexes are never sent to the client during active round play.
-2. **Server-Monitored Clock**: The server measures time elapsed between `roundStart` broadcast and receipt of `submitGuess`. Client-reported timestamps are ignored.
-3. **Guess Immutability**: The server locks in a player's first submitted answer per round; subsequent attempts are rejected.
-4. **Input Sanitization & Profanity Filtering**: Player nicknames and chat messages are filtered through a deterministic regex obscenity masking dictionary.
-5. **DDoS & IP Connection Caps**: Rate limiting (`MAX_CONN_PER_IP = 30`, `MAX_ROOMS = 500`) prevents socket exhaustion.
+1. **Zero Client Answer Exposure**: The correct answer key is strictly held in memory on the server and is never sent over WebSockets until `ROUND_REVEAL`.
+2. **Opaque Audio Stream Hashes**: Audio preview URLs are served as raw CDN hashes containing no artist or title information in the network payload.
+3. **Monotonic Clocks**: Answer timings are calculated using server delta timestamps ($t_{\text{server}} - t_{\text{start}}$), neutralizing client clock tampering.
+4. **Sliding-Window Rate Limiting**: All socket events (guesses, chats, reactions, matchmaking) are governed by per-socket sliding rate limiters.
 
 ---
 
-## 🚀 Quickstart & Local Cluster Setup
+## 🚀 Quickstart & Local Setup
 
 ### Prerequisites
-- **Node.js**: `>= 20.0.0`
-- **npm**: `>= 10.0.0`
+- Node.js v20+
+- npm / yarn / pnpm
 
-### 1. Clone & Install
 ```bash
+# 1. Clone repository
 git clone https://github.com/chittranshsharma/decibel.git
 cd decibel
 
-# Install server dependencies
+# 2. Install dependencies (root & client)
 npm install
+npm --prefix client install
 
-# Install client dependencies
-cd client && npm install && cd ..
-```
+# 3. Configure environment
+cp .env.example .env
 
-### 2. Configure Environment
-Create `.env` in the root workspace:
-```env
-PORT=3000
-NODE_ENV=development
-CLIENT_ORIGIN=http://localhost:5173
-
-# Optional live Supabase PostgreSQL connection:
-DATABASE_URL=postgresql://postgres:[PASSWORD]@aws-0-ap-northeast-2.pooler.supabase.com:6543/postgres
-```
-
-### 3. Launch Development Cluster
-```bash
-# Terminal 1: Game Server (Port 3000)
+# 4. Start concurrent development cluster
 npm run dev
-
-# Terminal 2: Client Dev Server (Port 5173)
-cd client && npm run dev
+# In a separate terminal:
+npm --prefix client run dev
 ```
 
-Open **`http://localhost:5173`** in multiple browser tabs to test multiplayer gameplay.
+Visit `http://localhost:5173` to play!
 
 ---
 
 ## 🧪 Test Suite & Quality Verification
 
-Decibel includes unit and integration tests written in **Vitest**:
+Decibel maintains a thorough test suite powered by **Vitest**:
 
 ```bash
+# Run unit & integration tests
 npm test
 ```
 
 ```text
- ✓ test/itunesFetcher.test.js (8 tests)
  ✓ test/profanity.test.js (6 tests)
+ ✓ test/puzzles.test.js (4 tests)
+ ✓ test/groqService.test.js (5 tests)
+ ✓ test/itunesFetcher.test.js (8 tests)
  ✓ test/spotifyFetcher.test.js (4 tests)
  ✓ test/gameLogic.test.js (12 tests)
  ✓ test/catalog.test.js (20 tests)
 
- Test Files  5 passed (5)
-      Tests  50 passed (50)
-   Duration  849ms
+ Test Files  7 passed (7)
+      Tests  59 passed (59)
 ```
 
 ---
 
-## ⚙️ Environment Variable Reference
+## ⚙️ Environment Configuration
 
-| Variable | Scope | Type | Default | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `PORT` | Backend | `number` | `3000` | HTTP and WebSocket server listening port. |
-| `NODE_ENV` | Backend | `string` | `development` | Set to `production` for strict CORS enforcement. |
-| `CLIENT_ORIGIN` | Backend | `string` | `http://localhost:5173` | Allowed frontend origin for Socket.IO handshake. |
-| `DATABASE_URL` | Backend | `string` | `null` | PostgreSQL / Supabase connection pooling string. |
-| `CATALOG_FILE` | Backend | `string` | `./catalog/snapshot.json` | Path to local JSON snapshot for offline fallback. |
-| `MAX_ROOMS` | Backend | `number` | `500` | Maximum active concurrent room instances. |
-| `MAX_CONN_PER_IP` | Backend | `number` | `30` | Rate-limiting connection cap per client IP. |
-| `VITE_SOCKET_URL`| Frontend| `string` | `""` | Socket server URL (empty in dev for Vite proxy). |
-
----
-
-## 📦 Production Deployment
-
-### Backend Container (Railway / Render / Fly.io / AWS EC2)
-```bash
-# Build and start server process
-npm ci --omit=dev
-node --env-file=.env server.js
-```
-
-### Frontend Edge Deployment (Vercel / Cloudflare Pages / Netlify)
-```bash
-cd client
-npm ci
-npm run build
-# Deploy resulting `dist/` bundle
-```
+| Variable | Required | Default | Description |
+| :--- | :---: | :--- | :--- |
+| `PORT` | No | `3000` | Stateful WebSocket & HTTP server port |
+| `CLIENT_ORIGIN` | No | `http://localhost:5173` | Allowed CORS origin |
+| `DATABASE_URL` | No | `""` | Supabase / PostgreSQL connection pool string |
+| `GROQ_API_KEY` | Recommended | `""` | Groq LPU API key for DJ commentary & AI crates |
+| `GROQ_MODEL` | No | `llama-3.1-8b-instant` | Groq model for low-latency completions |
+| `CATALOG_FILE` | No | `./catalog/snapshot.json` | Local fallback catalog snapshot path |
 
 ---
 
 ## 📄 License & Credits
 
-Released under the **[MIT License](LICENSE)**. Engineered by [Chittransh Sharma](https://github.com/chittranshsharma).
+Built with ❤️ by **[Chittransh Sharma](https://github.com/chittranshsharma)**.  
+Licensed under the [MIT License](LICENSE).

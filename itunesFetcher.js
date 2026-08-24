@@ -103,10 +103,19 @@ function normalize(results) {
 // distinct iTunes genre — they're labelled "Hip-Hop/Rap" — so they map there.
 const GENRE_MATCHERS = {
   "hip-hop": /hip-?hop|rap/i,
+  "oldschool-hiphop": /hip-?hop|rap/i,
   rap: /hip-?hop|rap/i,
   drill: /hip-?hop|rap/i,
   trap: /hip-?hop|rap/i,
+  "desi-hip-hop": /hip-?hop|rap/i,
   "r&b": /r&b|soul/i,
+  rnb: /r&b|soul/i,
+  rock: /rock|metal|punk|grunge|alternative/i,
+  indie: /alternative|indie/i,
+  "bedroom-pop": /alternative|indie|pop/i,
+  hyperpop: /hyperpop|pop|alternative/i,
+  pop: /pop|singer/i,
+  "desi-indie": /alternative|indie|world/i,
 };
 // Below this many on-genre tracks we fall back to the unfiltered pool so a game
 // can always start (comfortably above the max options-per-round of 6).
@@ -118,17 +127,24 @@ function filterGenre(pool, genre) {
   return on.length >= MIN_GENRE_POOL ? on : pool;
 }
 
-// Search seeds per genre. The iTunes `term` search matches ALL fields, so a
-// search for a genre word that is also a common song title ("drill", "trap")
-// returns mostly songs literally titled that word — making the options a wall of
-// identical labels. For those genres we search varied scene/artist seeds instead
-// (picked at random per fetch for cross-game variety) and rely on the
-// primaryGenreName filter for genre accuracy. Genres whose word doesn't collide
-// with titles (hip-hop, rap, r&b) use the genre itself (the default).
+// Search seeds per genre. Using specific artist/scene seeds (instead of genre
+// words) dramatically improves iTunes result accuracy, since the fuzzy search
+// returns off-genre songs when given generic terms like "rock" or "indie".
+// Each genre has multiple seeds — one is chosen at random per fetch for variety.
 const SEARCH_SEEDS = {
   drill: ["pop smoke", "central cee", "brooklyn drill", "uk drill"],
-  trap: ["young thug", "migos", "future"],
+  trap: ["young thug", "migos", "future", "playboi carti", "21 savage"],
+  "oldschool-hiphop": ["2pac", "notorious big", "wu-tang clan", "nas", "jay-z", "snoop dogg", "outkast", "a tribe called quest"],
+  "desi-hip-hop": ["divine hip hop", "krsna rap", "seedhe maut", "mc stan", "raftaar", "dino james", "emiway bantai", "ikka rap", "young stunners", "prabh deep"],
+  rock: ["nirvana", "radiohead", "arctic monkeys", "foo fighters", "linkin park", "red hot chili peppers", "green day"],
+  indie: ["arctic monkeys", "tame impala", "the strokes", "vampire weekend", "mitski", "phoebe bridgers", "the 1975"],
+  "bedroom-pop": ["clairo", "rex orange county", "cavetown", "girl in red", "mac demarco", "tv girl"],
+  hyperpop: ["charli xcx", "100 gecs", "bladee", "sophie", "drain gang", "ericdoa"],
+  rnb: ["sza", "the weeknd", "frank ocean", "brent faiyaz", "daniel caesar", "bryson tiller"],
+  pop: ["taylor swift", "dua lipa", "billie eilish", "ariana grande", "olivia rodrigo", "sabrina carpenter"],
+  "desi-indie": ["prateek kuhad", "anuv jain", "when chai met toast", "peter cat recording", "parekh singh"],
 };
+
 
 // Canonical form of a track title for de-duplication: drop a trailing
 // "(feat…)"/"[remix]"/"(instrumental)" suffix, then keep only alphanumerics.
