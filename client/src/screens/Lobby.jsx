@@ -394,10 +394,10 @@ function SettingRow({ label, options, value, onChange }) {
               key={String(opt.value)}
               onClick={() => onChange(opt.value)}
               aria-pressed={active}
-              className={`rounded-lg px-3.5 py-1.5 font-geist text-xs font-medium transition-all active:scale-95 ${
+              className={`rounded-lg px-3.5 py-1.5 font-geist text-xs font-semibold transition-all duration-200 active:scale-95 border ${
                 active
-                  ? "bg-white text-black font-semibold shadow-md"
-                  : "border border-white/10 bg-white/5 text-dim hover:text-white hover:border-white/20"
+                  ? "bg-[#50e3c2]/10 border-[#50e3c2] text-white shadow-[0_0_12px_rgba(80,227,194,0.2)]"
+                  : "border-white/5 bg-white/[0.02] backdrop-blur-md text-dim hover:text-white hover:border-white/15 hover:bg-white/[0.05]"
               }`}
             >
               {opt.label}

@@ -223,7 +223,7 @@ export function Playing({ state, roundMeta, myGuess, hasGuessed, spectator, onGu
                     ? "border-white/5 bg-black/40 line-through text-dim/30 pointer-events-none"
                     : doubleDownActive
                     ? `border-[#ff0080]/60 bg-[#ff0080]/5 hover:bg-[#ff0080]/15 ${c.hov}`
-                    : `border-white/10 bg-[#121218]/90 ${c.hov}`,
+                    : `border-white/5 bg-white/[0.02] backdrop-blur-md ${c.hov}`,
                   dimmed ? "pointer-events-none opacity-30" : "",
                   "disabled:cursor-not-allowed",
                 ].join(" ")}

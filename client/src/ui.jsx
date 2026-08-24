@@ -6,18 +6,20 @@ import sound from "./sound";
 export const EYEBROW = "font-console text-[11px] uppercase tracking-[0.18em] text-dim font-medium";
 export const PANEL = "bento-card";
 
-// Mint Green / Neon Jam CTA Button
+// Mint Green / Neon Jam CTA Button (Glossy + Glassy)
 export const BTN_AMBER =
-  "bg-[#50e3c2] px-6 py-3 font-geist font-semibold text-sm rounded-xl text-black " +
-  "shadow-[0_0_20px_rgba(80,227,194,0.25)] hover:shadow-[0_0_30px_rgba(80,227,194,0.45)] " +
-  "transition-all hover:bg-[#68eed0] active:scale-[.98] " +
+  "relative bg-gradient-to-r from-[#50e3c2] to-[#00dfd8] px-6 py-3 font-geist font-bold text-sm rounded-xl text-black " +
+  "border border-[#50e3c2]/40 backdrop-blur-md " +
+  "shadow-[0_0_24px_rgba(80,227,194,0.25)] hover:shadow-[0_0_36px_rgba(80,227,194,0.45)] " +
+  "transition-all duration-200 hover:brightness-110 active:scale-[.98] " +
   "focus:outline-none focus:ring-2 focus:ring-[#50e3c2] focus:ring-offset-2 focus:ring-offset-black " +
   "disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-dim disabled:shadow-none disabled:transform-none";
 
-// Dark Glass 8px Rounded Button
+// Dark Glass 8px Rounded Button (Glossy + Glassy)
 export const BTN_GHOST =
-  "border border-white/10 bg-[#121218]/90 backdrop-blur-md px-4 py-2.5 font-geist font-medium text-sm text-bone rounded-lg " +
-  "transition-all hover:border-white/25 hover:bg-[#181822] active:scale-[.97] " +
+  "border border-white/10 bg-white/[0.03] backdrop-blur-lg px-4 py-2.5 font-geist font-semibold text-sm text-bone rounded-xl " +
+  "shadow-[0_4px_24px_rgba(0,0,0,0.5)] " +
+  "transition-all duration-200 hover:border-white/25 hover:bg-white/[0.08] active:scale-[.97] " +
   "focus:outline-none focus:ring-2 focus:ring-white/20 disabled:cursor-not-allowed disabled:opacity-40";
 
 // Reaction call-outs
