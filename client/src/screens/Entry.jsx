@@ -43,7 +43,7 @@ export function EntryScreen({ onCreate, onJoin, onQuick, onHome, googleUser }) {
           (googleCred ? (
             <div className="flex items-center justify-between border-b border-white/5 pb-3">
               <span className="min-w-0 truncate font-geist text-xs text-bone">
-                Signed in as <span className="font-semibold text-[#50e3c2]">{googleCred.name}</span>
+                Signed in as <span className="font-semibold text-amber-400">{googleCred.name}</span>
               </span>
               <button
                 type="button"
@@ -66,7 +66,7 @@ export function EntryScreen({ onCreate, onJoin, onQuick, onHome, googleUser }) {
                 onChange={(e) => setName(e.target.value)}
                 maxLength={20}
                 placeholder="ENTER YOUR NICKNAME"
-                className="w-full rounded-lg border border-white/10 bg-black/60 px-4 py-3 font-geist text-sm uppercase tracking-wider text-white placeholder:text-dim/50 focus:border-[#50e3c2] focus:outline-none"
+                className="w-full rounded-lg border border-white/10 bg-black/60 px-4 py-3 font-geist text-sm uppercase tracking-wider text-white placeholder:text-dim/50 focus:border-amber-400/70 focus:outline-none"
               />
             </div>
           </div>
@@ -100,7 +100,7 @@ export function EntryScreen({ onCreate, onJoin, onQuick, onHome, googleUser }) {
               onChange={(e) => setCode(e.target.value.toUpperCase().slice(0, 4))}
               maxLength={4}
               placeholder="CODE"
-              className="w-28 rounded-lg border border-white/10 bg-black/60 px-3 py-2.5 text-center font-console text-base uppercase tracking-[0.25em] text-white placeholder:text-dim/40 focus:border-[#50e3c2] focus:outline-none"
+              className="w-28 rounded-lg border border-white/10 bg-black/60 px-3 py-2.5 text-center font-console text-base uppercase tracking-[0.25em] text-white placeholder:text-dim/40 focus:border-amber-400/70 focus:outline-none"
             />
             <button
               type="button"

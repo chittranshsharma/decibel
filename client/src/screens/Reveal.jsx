@@ -31,9 +31,9 @@ export function Reveal({ reveal, myId, onReact, players }) {
         <div className={`${PANEL} p-5 space-y-1`} style={{ animationDelay: "80ms" }}>
           <p className={EYEBROW}>Correct Answer</p>
           <p className="font-geist text-xl font-bold tracking-tight text-white">
-            <span className={isArtist ? "text-[#50e3c2]" : ""}>{track.artistName}</span>
+            <span className={isArtist ? "text-amber-400" : ""}>{track.artistName}</span>
             <span className="text-dim"> — </span>
-            <span className={isArtist ? "" : "text-[#50e3c2]"}>{track.trackName}</span>
+            <span className={isArtist ? "" : "text-amber-400"}>{track.trackName}</span>
           </p>
         </div>
       )}
@@ -41,15 +41,15 @@ export function Reveal({ reveal, myId, onReact, players }) {
       {/* AI Live Hype DJ Commentary Card */}
       {reveal?.djCommentary && (
         <div
-          className="relative overflow-hidden rounded-2xl border border-[#f5a623]/30 bg-gradient-to-r from-[#f5a623]/10 via-[#7928ca]/10 to-[#50e3c2]/10 p-4 backdrop-blur-md transition-all animate-rise"
+          className="relative overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-r from-amber-400/10 via-black/40 to-amber-400/5 p-4 backdrop-blur-md transition-all animate-rise"
           style={{ animationDelay: "120ms" }}
         >
           <div className="flex items-center gap-2 pb-1.5">
             <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#50e3c2] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#50e3c2]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400"></span>
             </span>
-            <span className="font-console text-[10px] font-bold uppercase tracking-widest text-[#f5a623]">
+            <span className="font-console text-[10px] font-bold uppercase tracking-widest text-amber-400">
               🎙️ DJ DECIBEL (LIVE)
             </span>
           </div>
@@ -64,17 +64,16 @@ export function Reveal({ reveal, myId, onReact, players }) {
         <BorderGlow
           animated={true}
           borderRadius={20}
-          glowColor="168 76 60"
-          backgroundColor="rgba(80, 227, 194, 0.06)"
-          colors={['#50e3c2', '#00dfd8', '#7928ca']}
+          glowColor="40 90 70"
+          backgroundColor="rgba(245, 166, 35, 0.05)"
         >
           <div className="p-6">
             <div className="flex items-center justify-between">
-              <span className="font-console text-xs font-semibold text-[#50e3c2] uppercase tracking-wider">
+              <span className="font-console text-xs font-semibold text-amber-400 uppercase tracking-wider">
                 Fastest Correct Answer
               </span>
               {winnerStreak > 0 && (
-                <span className="font-console text-xs font-bold text-[#f5a623]">
+                <span className="font-console text-xs font-bold text-amber-400">
                   🔥 Streak +{winnerStreak}
                 </span>
               )}
@@ -86,7 +85,7 @@ export function Reveal({ reveal, myId, onReact, players }) {
                 </p>
                 <p className="mt-1 font-console text-xs tabular-nums text-dim">{winner.answerTimeSeconds}s response time</p>
               </div>
-              <p className="shrink-0 font-geist text-4xl font-extrabold tabular-nums text-[#50e3c2]">
+              <p className="shrink-0 font-geist text-4xl font-extrabold tabular-nums text-amber-400">
                 +{shownPoints}
               </p>
             </div>

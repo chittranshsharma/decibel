@@ -34,13 +34,13 @@ function GoogleSignInButton({ onSignIn }) {
 }
 
 export const GAMES = [
-  { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM", gradient: "from-[#ff0080] to-[#7928ca]" },
-  { key: "heardle", glyph: "▶", title: "Heardle", sub: "Guess the song from its intro", status: "play", clip: "INTRO", gradient: "from-[#50e3c2] to-[#007cf0]" },
-  { key: "create", glyph: "+", title: "Create Room", sub: "Private multiplayer room for friends", status: "play", clip: "RANDOM", gradient: "from-[#0070f3] to-[#00dfd8]" },
-  { key: "harmonies", glyph: "⌘", title: "Harmonies", sub: "Music connections 4x4 puzzle", status: "play", gradient: "from-[#00dfd8] to-[#50e3c2]" },
-  { key: "wordzic", glyph: "▦", title: "Wordzic", sub: "Guess the 5-letter music term", status: "play", gradient: "from-[#f9cb28] to-[#ff4d4d]" },
-  { key: "lyricles", glyph: "❝", title: "Lyricles", sub: "Guess the song from its lyrics", status: "play", gradient: "from-[#7928ca] to-[#ff0080]" },
-  { key: "crosszic", glyph: "✚", title: "Crosszic", sub: "Interactive 5x5 music crossword", status: "play", gradient: "from-[#50e3c2] to-[#3df07a]" },
+  { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM" },
+  { key: "heardle", glyph: "▶", title: "Heardle", sub: "Guess the song from its intro", status: "play", clip: "INTRO" },
+  { key: "create", glyph: "+", title: "Create Room", sub: "Private multiplayer room for friends", status: "play", clip: "RANDOM" },
+  { key: "harmonies", glyph: "⌘", title: "Harmonies", sub: "Music connections 4x4 puzzle", status: "play" },
+  { key: "wordzic", glyph: "▦", title: "Wordzic", sub: "Guess the 5-letter music term", status: "play" },
+  { key: "lyricles", glyph: "❝", title: "Lyricles", sub: "Guess the song from its lyrics", status: "play" },
+  { key: "crosszic", glyph: "✚", title: "Crosszic", sub: "Interactive 5x5 music crossword", status: "play" },
 ];
 
 // ---------- Home hub (landing) ----------
@@ -53,17 +53,17 @@ export function Home({ games, stats, onOpen, onProfile, googleUser, onGoogleSign
       {/* Hero Section */}
       <div className="relative z-10 space-y-6 pt-4 text-center sm:text-left">
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
-          <span className="inline-flex items-center gap-2.5 font-console text-xs font-semibold tracking-wider text-[#50e3c2] drop-shadow-sm">
+          <span className="inline-flex items-center gap-2.5 font-console text-xs font-semibold tracking-wider text-amber-400 drop-shadow-sm">
             <span className="flex items-end gap-0.5 h-3.5">
-              <span className="w-0.5 bg-[#50e3c2] animate-bounce" style={{ height: "60%", animationDuration: "0.8s" }} />
-              <span className="w-0.5 bg-[#50e3c2] animate-bounce" style={{ height: "100%", animationDuration: "1.1s" }} />
-              <span className="w-0.5 bg-[#50e3c2] animate-bounce" style={{ height: "45%", animationDuration: "0.7s" }} />
-              <span className="w-0.5 bg-[#50e3c2] animate-bounce" style={{ height: "85%", animationDuration: "0.9s" }} />
+              <span className="w-0.5 bg-amber-400 animate-bounce" style={{ height: "60%", animationDuration: "0.8s" }} />
+              <span className="w-0.5 bg-amber-400 animate-bounce" style={{ height: "100%", animationDuration: "1.1s" }} />
+              <span className="w-0.5 bg-amber-400 animate-bounce" style={{ height: "45%", animationDuration: "0.7s" }} />
+              <span className="w-0.5 bg-amber-400 animate-bounce" style={{ height: "85%", animationDuration: "0.9s" }} />
             </span>
             78,890 SONGS READY
           </span>
           <span className="text-white/30">·</span>
-          <span className="font-console text-xs font-medium tracking-wider text-slate-300 uppercase">
+          <span className="font-console text-xs font-medium tracking-wider text-neutral-400 uppercase">
             11 MUSIC SCENES
           </span>
         </div>
@@ -74,7 +74,7 @@ export function Home({ games, stats, onOpen, onProfile, googleUser, onGoogleSign
           <span className="text-gradient-jam">Beat your squad.</span>
         </h1>
 
-        <p className="mx-auto sm:mx-0 max-w-lg font-geist text-base font-normal leading-relaxed text-slate-200 drop-shadow-md">
+        <p className="mx-auto sm:mx-0 max-w-lg font-geist text-base font-normal leading-relaxed text-neutral-300 drop-shadow-md">
           Real-time multiplayer music trivia. Play your favorite Spotify playlists or battle with friends through underground crate cuts.
         </p>
 
@@ -122,9 +122,8 @@ export function Home({ games, stats, onOpen, onProfile, googleUser, onGoogleSign
       <BorderGlow
         animated={true}
         borderRadius={18}
-        glowColor="168 76 60"
-        backgroundColor="rgba(14, 14, 20, 0.85)"
-        colors={['#50e3c2', '#7928ca', '#00dfd8']}
+        glowColor="40 90 70"
+        backgroundColor="rgba(14, 13, 19, 0.85)"
       >
         <button
           type="button"
@@ -132,7 +131,7 @@ export function Home({ games, stats, onOpen, onProfile, googleUser, onGoogleSign
           className="flex w-full items-center justify-between p-5 text-left transition-all group cursor-pointer"
         >
           <span className="flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/5 text-lg group-hover:scale-105 transition-transform">
+            <span className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/5 text-lg text-amber-400 group-hover:scale-105 transition-transform">
               ★
             </span>
             <div>
@@ -140,7 +139,7 @@ export function Home({ games, stats, onOpen, onProfile, googleUser, onGoogleSign
               <p className="font-console text-xs text-dim">Local match performance</p>
             </div>
           </span>
-          <span className="font-console text-xs font-semibold tabular-nums text-[#50e3c2]">
+          <span className="font-console text-xs font-semibold tabular-nums text-amber-400">
             {stats.games} MATCHES · {stats.wins} WINS · BEST {stats.bestScore}
           </span>
         </button>
@@ -202,9 +201,8 @@ function GameBentoCard({ game, onOpen }) {
   return (
     <BorderGlow
       borderRadius={18}
-      glowColor="168 76 60"
-      backgroundColor="rgba(14, 14, 20, 0.85)"
-      colors={['#50e3c2', '#7928ca', '#ff0080']}
+      glowColor="40 90 70"
+      backgroundColor="rgba(14, 13, 19, 0.85)"
     >
       <button
         type="button"
@@ -214,22 +212,20 @@ function GameBentoCard({ game, onOpen }) {
       >
         <div className="flex items-start justify-between gap-3">
           <span
-            className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${
-              game.gradient || "from-white/10 to-white/5"
-            } font-geist text-xl font-bold text-white shadow-md group-hover:scale-105 transition-transform`}
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.04] font-geist text-xl font-bold text-white shadow-md group-hover:scale-105 group-hover:border-amber-400/40 group-hover:bg-white/[0.08] transition-all"
           >
             {game.glyph}
           </span>
-          <span className="font-console text-xs text-dim group-hover:text-[#50e3c2] transition-colors">
-            →
+          <span className="font-console text-xs text-dim group-hover:text-amber-400 group-hover:translate-x-0.5 transition-all">
+            {playable ? "→" : "SOON"}
           </span>
         </div>
 
         <div className="mt-4 space-y-1">
-          <h3 className="font-geist text-base font-semibold tracking-[-0.3px] text-white group-hover:text-[#50e3c2] transition-colors">
+          <h3 className="font-geist text-base font-semibold tracking-[-0.3px] text-white group-hover:text-amber-300 transition-colors">
             {game.title}
           </h3>
-          <p className="font-geist text-xs leading-relaxed text-slate-300">
+          <p className="font-geist text-xs leading-relaxed text-[#9e9ea8]">
             {game.sub}
           </p>
         </div>
@@ -332,7 +328,7 @@ export function Profile({ stats, onBack }) {
         <h2 className="font-geist text-3xl font-bold tracking-[-1px] text-white">
           Player Profile
         </h2>
-        <span className="font-console text-xs text-[#50e3c2] uppercase">Performance Records</span>
+        <span className="font-console text-xs text-amber-400 uppercase">Performance Records</span>
       </div>
 
       <div className={`${PANEL} p-6 space-y-4`}>
@@ -369,7 +365,7 @@ export function SideMenu({ games, onClose, onHome, onOpen, onProfile }) {
       >
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <span className="font-geist text-lg font-bold tracking-[-0.5px] text-white">
-            DECIBEL<span className="text-[#50e3c2]">.</span>
+            DECIBEL<span className="text-amber-400">.</span>
           </span>
           <button
             type="button"
@@ -390,7 +386,7 @@ export function SideMenu({ games, onClose, onHome, onOpen, onProfile }) {
                 onClick={() => onOpen(g)}
                 className="flex min-h-11 w-full items-center gap-3 px-3 py-2 text-left font-geist text-sm font-medium text-bone transition-all hover:bg-white/5 hover:text-white rounded-lg"
               >
-                <span className="grid h-7 w-7 place-items-center rounded-md bg-white/5 font-bold text-xs text-[#50e3c2]">
+                <span className="grid h-7 w-7 place-items-center rounded-md bg-white/5 font-bold text-xs text-amber-400">
                   {g.glyph}
                 </span>
                 {g.title}
@@ -410,7 +406,7 @@ export function SideMenu({ games, onClose, onHome, onOpen, onProfile }) {
           <button
             type="button"
             onClick={onProfile}
-            className="flex min-h-11 w-full items-center gap-3 px-3 py-2 text-left font-geist text-sm text-dim hover:text-[#50e3c2] rounded-lg"
+            className="flex min-h-11 w-full items-center gap-3 px-3 py-2 text-left font-geist text-sm text-dim hover:text-amber-400 rounded-lg"
           >
             ★ Player Profile
           </button>

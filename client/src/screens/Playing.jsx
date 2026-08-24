@@ -7,10 +7,10 @@ const QUESTION_STEP = 250;
 const MAX_SPEED_BONUS = 350;
 
 const OPT_COLORS = [
-  { num: "text-[#00dfd8]", sel: "border-[#00dfd8] bg-[#00dfd8]/10 ring-[#00dfd8]", hov: "enabled:hover:border-[#00dfd8] enabled:hover:bg-[#00dfd8]/5" },
-  { num: "text-[#ff0080]", sel: "border-[#ff0080] bg-[#ff0080]/10 ring-[#ff0080]", hov: "enabled:hover:border-[#ff0080] enabled:hover:bg-[#ff0080]/5" },
-  { num: "text-[#50e3c2]", sel: "border-[#50e3c2] bg-[#50e3c2]/10 ring-[#50e3c2]", hov: "enabled:hover:border-[#50e3c2] enabled:hover:bg-[#50e3c2]/5" },
-  { num: "text-[#f9cb28]", sel: "border-[#f9cb28] bg-[#f9cb28]/10 ring-[#f9cb28]", hov: "enabled:hover:border-[#f9cb28] enabled:hover:bg-[#f9cb28]/5" },
+  { num: "text-amber-400", sel: "border-amber-400 bg-amber-400/10 ring-amber-400", hov: "enabled:hover:border-amber-400 enabled:hover:bg-amber-400/5" },
+  { num: "text-amber-300", sel: "border-amber-300 bg-amber-300/10 ring-amber-300", hov: "enabled:hover:border-amber-300 enabled:hover:bg-amber-300/5" },
+  { num: "text-amber-400", sel: "border-amber-400 bg-amber-400/10 ring-amber-400", hov: "enabled:hover:border-amber-400 enabled:hover:bg-amber-400/5" },
+  { num: "text-amber-300", sel: "border-amber-300 bg-amber-300/10 ring-amber-300", hov: "enabled:hover:border-amber-300 enabled:hover:bg-amber-300/5" },
 ];
 
 export function Playing({
@@ -286,9 +286,9 @@ export function Playing({
               disabled={!powerups.doubleDown || locked || doubleDownActive}
               className={`p-2.5 rounded-lg border text-center font-geist text-xs font-semibold uppercase transition-all ${
                 doubleDownActive
-                  ? "border-[#ff0080] bg-[#ff0080] text-black font-bold animate-pulse"
+                  ? "border-amber-400 bg-amber-400 text-black font-bold shadow-md"
                   : powerups.doubleDown
-                  ? "border-[#ff0080]/50 text-[#ff0080] bg-[#ff0080]/5 hover:bg-[#ff0080] hover:text-black active:scale-95 shadow-sm"
+                  ? "border-amber-400/50 text-amber-400 bg-amber-400/5 hover:bg-amber-400 hover:text-black active:scale-95 shadow-sm"
                   : "border-white/5 text-dim/30 pointer-events-none"
               }`}
             >
@@ -300,9 +300,9 @@ export function Playing({
               disabled={!powerups.shield || locked || shieldActive}
               className={`p-2.5 rounded-lg border text-center font-geist text-xs font-semibold uppercase transition-all ${
                 shieldActive
-                  ? "border-[#50e3c2] bg-[#50e3c2] text-black font-bold"
+                  ? "border-amber-400 bg-amber-400 text-black font-bold shadow-md"
                   : powerups.shield
-                  ? "border-[#50e3c2]/50 text-[#50e3c2] bg-[#50e3c2]/5 hover:bg-[#50e3c2] hover:text-black active:scale-95 shadow-sm"
+                  ? "border-amber-400/50 text-amber-400 bg-amber-400/5 hover:bg-amber-400 hover:text-black active:scale-95 shadow-sm"
                   : "border-white/5 text-dim/30 pointer-events-none"
               }`}
             >
@@ -313,7 +313,7 @@ export function Playing({
       )}
 
       {spectator ? (
-        <p className={`${EYEBROW} text-center text-[#00dfd8]`}>Spectating Match. React below.</p>
+        <p className={`${EYEBROW} text-center text-amber-400`}>Spectating Match. React below.</p>
       ) : (
         !hasGuessed && (
           <p className={`${EYEBROW} text-center`}>
@@ -364,7 +364,7 @@ function SpectrumVisualizer({ active }) {
           key={idx}
           className={`w-full rounded-sm transition-[height] duration-75 ${
             active
-              ? "bg-gradient-to-t from-[#50e3c2] to-[#00dfd8] shadow-[0_0_8px_rgba(80,227,194,0.4)]"
+              ? "bg-gradient-to-t from-[#f5a623] to-[#ffb84d] shadow-[0_0_8px_rgba(245,166,35,0.4)]"
               : "bg-white/10"
           }`}
           style={{
@@ -403,7 +403,7 @@ function TimeCounter({ timeRemainingMs, round, total = 10 }) {
       <div className="mt-4 h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
         <div
           className={`h-full transition-[width,background-color] duration-1000 ease-linear ${
-            low ? "bg-[#ee0000]" : "bg-[#50e3c2]"
+            low ? "bg-[#ee0000]" : "bg-amber-400"
           }`}
           style={{ width: `${pct}%` }}
         />

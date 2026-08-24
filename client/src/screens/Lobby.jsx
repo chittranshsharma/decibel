@@ -160,7 +160,7 @@ export function Lobby({
       <div>
         <div className="flex items-center justify-between pb-2">
           <p className={EYEBROW}>Connected Players</p>
-          <span className="font-console text-xs text-[#50e3c2] font-semibold">
+          <span className="font-console text-xs text-amber-400 font-semibold">
             {players.length} / 08 Active
           </span>
         </div>
@@ -176,14 +176,14 @@ export function Lobby({
                 <Avatar name={p.name} src={p.avatar} />
                 <span className="truncate font-geist text-sm font-medium text-white">{p.name}</span>
                 {p.google && (
-                  <span className="text-[#50e3c2] text-xs font-bold" title="Google verified">
+                  <span className="text-amber-400 text-xs font-bold" title="Google verified">
                     ✓
                   </span>
                 )}
               </span>
               <span className="font-console text-xs text-dim">
                 {p.isHost ? (
-                  <span className="font-console text-xs font-bold text-[#f5a623]">
+                  <span className="font-console text-xs font-bold text-amber-400">
                     ★ HOST
                   </span>
                 ) : (
@@ -198,8 +198,15 @@ export function Lobby({
       {isHost ? (
         <div className="space-y-6">
           <div>
-            <p className={EYEBROW}>Select Genre / Source</p>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="flex items-center justify-between pb-2">
+              <p className={EYEBROW}>Select Music Scene</p>
+              {isCustomSource && (
+                <span className="font-console text-[10px] font-bold text-amber-400 uppercase tracking-widest bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">
+                  Custom Source Active
+                </span>
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {GENRES.map((g) => {
                 const active = g.value === genre;
                 const isSpecial = g.value === "spotify" || g.value === "ai-vibe";
@@ -211,15 +218,9 @@ export function Lobby({
                     aria-pressed={active}
                     className={`rounded-xl px-4 py-2.5 font-geist text-xs font-semibold uppercase tracking-wider transition-all active:scale-95 ${
                       active
-                        ? g.value === "ai-vibe"
-                          ? "bg-gradient-to-r from-[#50e3c2] to-[#7928ca] text-black font-bold shadow-[0_0_20px_rgba(80,227,194,0.5)]"
-                          : isSpecial
-                          ? "bg-[#50e3c2] text-black shadow-[0_0_20px_rgba(80,227,194,0.4)]"
-                          : "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]"
-                        : g.value === "ai-vibe"
-                        ? "border border-[#7928ca]/50 bg-[#7928ca]/10 text-[#50e3c2] hover:border-[#50e3c2]"
+                        ? "bg-amber-400 text-black font-bold shadow-[0_0_16px_rgba(245,166,35,0.35)]"
                         : isSpecial
-                        ? "border border-[#50e3c2]/40 bg-[#50e3c2]/5 text-[#50e3c2] hover:border-[#50e3c2]"
+                        ? "border border-amber-400/40 bg-amber-400/5 text-amber-400 hover:border-amber-400"
                         : "border border-white/10 bg-[#121218]/90 text-bone hover:border-white/25 hover:bg-[#181822]"
                     }`}
                   >
@@ -232,10 +233,10 @@ export function Lobby({
 
           {/* AI Vibe Crate Input */}
           {genre === "ai-vibe" && (
-            <div className={`${PANEL} p-5 space-y-4 border-[#50e3c2]/30 bg-gradient-to-b from-[#50e3c2]/5 to-transparent`}>
+            <div className={`${PANEL} p-5 space-y-4 border-amber-400/30 bg-gradient-to-b from-amber-400/5 to-transparent`}>
               <div className="flex items-center justify-between">
                 <p className={EYEBROW}>🪄 Prompt-to-Crate Engine</p>
-                <span className="font-console text-[10px] font-bold text-[#50e3c2] uppercase tracking-wider bg-[#50e3c2]/10 px-2 py-0.5 rounded border border-[#50e3c2]/20">
+                <span className="font-console text-[10px] font-bold text-amber-400 uppercase tracking-wider bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">
                   Powered by Groq AI
                 </span>
               </div>
@@ -250,7 +251,7 @@ export function Lobby({
                     key={qv}
                     type="button"
                     onClick={() => setVibePrompt(qv)}
-                    className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 font-geist text-[11px] text-bone hover:border-[#50e3c2]/50 hover:text-[#50e3c2] transition-colors"
+                    className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 font-geist text-[11px] text-bone hover:border-amber-400/50 hover:text-amber-400 transition-colors"
                   >
                     + {qv}
                   </button>
@@ -264,20 +265,20 @@ export function Lobby({
                   value={vibePrompt}
                   onChange={(e) => setVibePrompt(e.target.value)}
                   maxLength={100}
-                  className="w-full rounded-lg border border-white/10 bg-black/60 px-3 py-2.5 font-geist text-xs text-bone placeholder:text-dim focus:border-[#50e3c2] focus:outline-none"
+                  className="w-full rounded-lg border border-white/10 bg-black/60 px-3 py-2.5 font-geist text-xs text-bone placeholder:text-dim focus:border-amber-400/70 focus:outline-none"
                 />
                 <button
                   type="submit"
                   disabled={vibeStatus?.loading || !vibePrompt.trim()}
-                  className="rounded-lg bg-gradient-to-r from-[#50e3c2] to-[#00dfd8] px-4 py-2 font-geist text-xs font-bold text-black transition-all hover:opacity-90 disabled:opacity-50 shrink-0"
+                  className="rounded-lg bg-gradient-to-r from-[#f5a623] to-[#ffb84d] px-4 py-2 font-geist text-xs font-bold text-black transition-all hover:opacity-90 disabled:opacity-50 shrink-0"
                 >
                   {vibeStatus?.loading ? "Curating…" : "Generate"}
                 </button>
               </form>
 
               {vibeStatus?.loading && (
-                <div className="flex items-center gap-2 font-console text-xs uppercase tracking-wider text-[#f5a623] animate-pulse">
-                  <span className="inline-block h-2 w-2 rounded-full bg-[#f5a623]"></span>
+                <div className="flex items-center gap-2 font-console text-xs uppercase tracking-wider text-amber-400 animate-pulse">
+                  <span className="inline-block h-2 w-2 rounded-full bg-amber-400"></span>
                   {vibeStatus.message || "Generating vibe crate with Groq AI…"}
                 </div>
               )}
@@ -287,12 +288,12 @@ export function Lobby({
               )}
 
               {vibeStatus?.ready && (
-                <div className="rounded-xl border border-[#50e3c2]/30 bg-[#50e3c2]/10 p-3.5 space-y-1">
+                <div className="rounded-xl border border-amber-400/30 bg-amber-400/10 p-3.5 space-y-1">
                   <div className="flex items-center justify-between">
                     <span className="font-geist text-sm font-bold text-white">
                       🎵 {vibeStatus.vibeTitle}
                     </span>
-                    <span className="font-console text-[10px] font-semibold text-[#50e3c2]">
+                    <span className="font-console text-[10px] font-semibold text-amber-400">
                       {vibeStatus.tracksCount} TRACKS READY
                     </span>
                   </div>
@@ -306,7 +307,7 @@ export function Lobby({
 
           {/* Spotify Playlist URL Input */}
           {genre === "spotify" && (
-            <div className={`${PANEL} p-5 space-y-3 border-[#50e3c2]/30`}>
+            <div className={`${PANEL} p-5 space-y-3 border-amber-400/30`}>
               <p className={EYEBROW}>Spotify Playlist URL</p>
               <form onSubmit={handleLoadPlaylist} className="flex gap-2">
                 <input
@@ -314,18 +315,18 @@ export function Lobby({
                   placeholder="https://open.spotify.com/playlist/..."
                   value={spotifyUrl}
                   onChange={(e) => setSpotifyUrl(e.target.value)}
-                  className="w-full rounded-lg border border-white/10 bg-black/60 px-3 py-2.5 font-geist text-xs text-bone placeholder:text-dim focus:border-[#50e3c2] focus:outline-none"
+                  className="w-full rounded-lg border border-white/10 bg-black/60 px-3 py-2.5 font-geist text-xs text-bone placeholder:text-dim focus:border-amber-400/70 focus:outline-none"
                 />
                 <button
                   type="submit"
                   disabled={playlistStatus?.loading || !spotifyUrl.trim()}
-                  className="rounded-lg bg-[#50e3c2] px-4 py-2 font-geist text-xs font-semibold text-black transition-opacity disabled:opacity-50 shrink-0"
+                  className="rounded-lg bg-amber-400 px-4 py-2 font-geist text-xs font-bold text-black transition-opacity disabled:opacity-50 shrink-0"
                 >
                   {playlistStatus?.loading ? "Loading…" : "Load"}
                 </button>
               </form>
               {playlistStatus?.loading && (
-                <p className="font-console text-xs uppercase tracking-wider text-[#f5a623] animate-pulse">
+                <p className="font-console text-xs uppercase tracking-wider text-amber-400 animate-pulse">
                   Extracting tracks & finding audio snippets…
                 </p>
               )}
@@ -333,7 +334,7 @@ export function Lobby({
                 <p className="font-console text-xs text-[#ee0000]">{playlistStatus.error}</p>
               )}
               {playlistStatus?.tracksCount && (
-                <p className="font-console text-xs text-[#50e3c2]">
+                <p className="font-console text-xs text-amber-400">
                   ✓ Ready: "{playlistStatus.name}" ({playlistStatus.tracksCount} playable songs)
                 </p>
               )}
@@ -349,10 +350,6 @@ export function Lobby({
             <SettingRow label="Clip" options={CLIP_OPTS} value={settings.clip} onChange={setField("clip")} />
             <SettingRow label="Rounds" options={ROUND_OPTS} value={settings.rounds} onChange={setField("rounds")} />
             <SettingRow label="Timer" options={TIMER_OPTS} value={settings.roundMs} onChange={setField("roundMs")} />
-            <SettingRow label="Answers" options={OPTION_OPTS} value={settings.optionsCount} onChange={setField("optionsCount")} />
-            {!isCustomSource && (
-              <SettingRow label="Era" options={availableDecades} value={settings.decade} onChange={setField("decade")} />
-            )}
           </div>
 
           <button type="button" onClick={handleStart} className={`${BTN_AMBER} w-full`}>
@@ -383,9 +380,9 @@ export function Lobby({
 
 function SettingRow({ label, options, value, onChange }) {
   return (
-    <div>
-      <p className={EYEBROW}>{label}</p>
-      <div className="mt-2 flex flex-wrap gap-2">
+    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-white/5 pb-3">
+      <span className={EYEBROW}>{label}</span>
+      <div className="flex flex-wrap gap-1.5">
         {options.map((opt) => {
           const active = opt.value === value;
           return (
@@ -396,7 +393,7 @@ function SettingRow({ label, options, value, onChange }) {
               aria-pressed={active}
               className={`rounded-lg px-3.5 py-1.5 font-geist text-xs font-semibold transition-all duration-200 active:scale-95 border ${
                 active
-                  ? "bg-[#50e3c2]/10 border-[#50e3c2] text-white shadow-[0_0_12px_rgba(80,227,194,0.2)]"
+                  ? "bg-amber-400/15 border-amber-400 text-white shadow-[0_0_12px_rgba(245,166,35,0.2)]"
                   : "border-white/5 bg-white/[0.02] backdrop-blur-md text-dim hover:text-white hover:border-white/15 hover:bg-white/[0.05]"
               }`}
             >
@@ -410,4 +407,3 @@ function SettingRow({ label, options, value, onChange }) {
 }
 
 export default Lobby;
-

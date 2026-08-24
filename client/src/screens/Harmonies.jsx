@@ -139,7 +139,7 @@ export function Harmonies({ onBack }) {
                 aria-pressed={isSel}
                 className={`flex min-h-[4.75rem] items-center justify-center p-3 text-center rounded-xl font-geist text-xs font-semibold uppercase tracking-wide transition-all active:scale-95 ${
                   isSel
-                    ? "bg-[#50e3c2] text-black font-bold border border-[#50e3c2] shadow-[0_0_15px_rgba(80,227,194,0.4)]"
+                    ? "bg-amber-400 text-black font-bold border border-amber-400 shadow-[0_0_15px_rgba(245,166,35,0.35)]"
                     : "border border-white/10 bg-[#121218]/90 text-bone hover:border-white/25 hover:bg-[#181822]"
                 }`}
               >

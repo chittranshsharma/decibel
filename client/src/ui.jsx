@@ -6,13 +6,13 @@ import sound from "./sound";
 export const EYEBROW = "font-console text-[11px] uppercase tracking-[0.18em] text-dim font-medium";
 export const PANEL = "bento-card";
 
-// Mint Green / Neon Jam CTA Button (Glossy + Glassy)
+// Warm Arcade Gold / Amber CTA Button (Glossy + Glassy)
 export const BTN_AMBER =
-  "relative bg-gradient-to-r from-[#50e3c2] to-[#00dfd8] px-6 py-3 font-geist font-bold text-sm rounded-xl text-black " +
-  "border border-[#50e3c2]/40 backdrop-blur-md " +
-  "shadow-[0_0_24px_rgba(80,227,194,0.25)] hover:shadow-[0_0_36px_rgba(80,227,194,0.45)] " +
-  "transition-all duration-200 hover:brightness-110 active:scale-[.98] " +
-  "focus:outline-none focus:ring-2 focus:ring-[#50e3c2] focus:ring-offset-2 focus:ring-offset-black " +
+  "relative bg-gradient-to-r from-[#f5a623] to-[#ffb84d] px-6 py-3 font-geist font-bold text-sm rounded-xl text-black " +
+  "border border-[#f5a623]/40 backdrop-blur-md " +
+  "shadow-[0_0_20px_rgba(245,166,35,0.25)] hover:shadow-[0_0_32px_rgba(245,166,35,0.45)] " +
+  "transition-all duration-200 hover:brightness-105 active:scale-[.98] " +
+  "focus:outline-none focus:ring-2 focus:ring-[#f5a623] focus:ring-offset-2 focus:ring-offset-black " +
   "disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-dim disabled:shadow-none disabled:transform-none";
 
 // Dark Glass 8px Rounded Button (Glossy + Glassy)

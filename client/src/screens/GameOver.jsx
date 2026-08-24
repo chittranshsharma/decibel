@@ -25,13 +25,13 @@ export function GameOver({ gameOver, players, myId, onRestart, messages, onChat 
 
       {/* DJ Decibel Final Verdict Card */}
       {gameOver?.djVerdict && (
-        <div className="relative overflow-hidden rounded-2xl border border-[#50e3c2]/40 bg-gradient-to-r from-[#50e3c2]/10 via-[#7928ca]/15 to-[#ff0080]/10 p-5 backdrop-blur-md transition-all shadow-[0_0_30px_rgba(80,227,194,0.15)] animate-rise">
+        <div className="relative overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-r from-amber-400/10 via-black/40 to-amber-400/5 p-5 backdrop-blur-md transition-all shadow-[0_0_30px_rgba(245,166,35,0.12)] animate-rise">
           <div className="flex items-center gap-2 pb-2">
             <span className="flex h-2.5 w-2.5 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#50e3c2] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#50e3c2]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400"></span>
             </span>
-            <span className="font-console text-xs font-bold uppercase tracking-widest text-[#50e3c2]">
+            <span className="font-console text-xs font-bold uppercase tracking-widest text-amber-400">
               🎙️ DJ DECIBEL'S MATCH VERDICT
             </span>
           </div>
@@ -45,12 +45,11 @@ export function GameOver({ gameOver, players, myId, onRestart, messages, onChat 
         <BorderGlow
           animated={true}
           borderRadius={24}
-          glowColor="168 76 60"
-          backgroundColor="rgba(14, 14, 20, 0.9)"
-          colors={['#50e3c2', '#ff0080', '#00dfd8']}
+          glowColor="40 90 70"
+          backgroundColor="rgba(14, 13, 19, 0.9)"
         >
           <div className="p-6 text-center space-y-3">
-            <p className="font-console text-xs font-bold text-[#50e3c2] uppercase tracking-widest">
+            <p className="font-console text-xs font-bold text-amber-400 uppercase tracking-widest">
               👑 Match Champion
             </p>
             <div className="flex items-center justify-center gap-3">

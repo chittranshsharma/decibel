@@ -135,7 +135,7 @@ export function Lyricles({ onBack }) {
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className="rounded-md border border-white/10 bg-black px-1.5 py-0.5 font-console text-[10px] text-[#50e3c2] font-bold">
+                <span className="rounded-md border border-white/10 bg-black px-1.5 py-0.5 font-console text-[10px] text-amber-400 font-bold">
                   L{idx + 1}
                 </span>
                 {isRevealed ? (
@@ -157,7 +157,7 @@ export function Lyricles({ onBack }) {
             placeholder="Type song title or artist..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full rounded-lg border border-white/10 bg-black/60 px-4 py-3 font-geist text-xs text-bone placeholder:text-dim focus:border-[#50e3c2] focus:outline-none"
+            className="w-full rounded-lg border border-white/10 bg-black/60 px-4 py-3 font-geist text-xs text-bone placeholder:text-dim focus:border-amber-400/70 focus:outline-none"
           />
           <div className="flex gap-2">
             <button

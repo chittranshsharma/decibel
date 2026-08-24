@@ -213,14 +213,14 @@ export function Wordzic({ onBack }) {
       </div>
 
       {toast && (
-        <p className="font-geist text-center text-sm font-semibold text-[#50e3c2] animate-pulse">
+        <p className="font-geist text-center text-sm font-semibold text-amber-400 animate-pulse">
           {toast}
         </p>
       )}
 
       {/* Victory / Game Over card */}
       {status !== "playing" && (
-        <div className={`${PANEL} p-5 text-center space-y-3 border-[#50e3c2]/40`}>
+        <div className={`${PANEL} p-5 text-center space-y-3 border-amber-400/40`}>
           <p className="font-geist text-xl font-bold uppercase text-white">
             {status === "won" ? "★ PUZZLE SOLVED! ★" : `WORD WAS: ${targetWord}`}
           </p>
@@ -247,7 +247,7 @@ export function Wordzic({ onBack }) {
               const st = keyStatuses[k];
               const isWide = k === "ENTER" || k === "⌫";
               let bg = "bg-[#121218]/90 text-bone border-white/10";
-              if (st === "correct") bg = "bg-[#50e3c2] text-black font-bold border-[#50e3c2]";
+              if (st === "correct") bg = "bg-[#22c55e] text-black font-bold border-[#22c55e]";
               else if (st === "present") bg = "bg-[#f5a623] text-black font-bold border-[#f5a623]";
               else if (st === "absent") bg = "bg-black/60 text-dim/30 border-white/5";
 

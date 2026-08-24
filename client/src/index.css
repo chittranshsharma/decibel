@@ -35,53 +35,53 @@ body {
   transform: translateX(-50%);
   width: min(100%, 750px);
   height: 380px;
-  background: radial-gradient(ellipse at 50% 30%, rgba(80, 227, 194, 0.08) 0%, rgba(121, 40, 202, 0.04) 45%, transparent 70%);
+  background: radial-gradient(ellipse at 50% 30%, rgba(245, 166, 35, 0.08) 0%, rgba(255, 255, 255, 0.03) 45%, transparent 70%);
   filter: blur(50px);
   pointer-events: none;
   z-index: 0;
 }
 
-/* High-Contrast Luminous Text Gradients */
+/* High-Contrast Luxury Text Gradients */
 .text-gradient-jam {
-  background: linear-gradient(135deg, #50e3c2 0%, #00dfd8 35%, #c084fc 70%, #f472b6 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f5a623 50%, #ffb84d 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-mint {
-  background: linear-gradient(135deg, #50e3c2 0%, #38bdf8 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #ededed 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-sunset {
-  background: linear-gradient(135deg, #fb7185 0%, #facc15 100%);
+  background: linear-gradient(135deg, #f5a623 0%, #ff8800 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* Bento Card System */
 .bento-card {
-  background-color: rgba(14, 14, 19, 0.8);
+  background-color: rgba(14, 13, 19, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 16px;
-  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.7);
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .bento-card:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.7), 0 0 24px -6px rgba(121, 40, 202, 0.35);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.85), 0 0 20px -4px rgba(245, 166, 35, 0.12);
   transform: translateY(-2px);
 }
 
 /* Spotlight Card with Inner Luminosity */
 .spotlight-card {
   position: relative;
-  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.06), transparent 40%),
-              rgba(14, 14, 19, 0.85);
+  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.04), transparent 40%),
+              rgba(14, 13, 19, 0.85);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 18px;

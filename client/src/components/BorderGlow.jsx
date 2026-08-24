@@ -53,15 +53,15 @@ export default function BorderGlow({
   children,
   className = '',
   edgeSensitivity = 28,
-  glowColor = '168 76 60', // Mint glow default
-  backgroundColor = 'rgba(18, 18, 24, 0.85)',
-  borderRadius = 20,
-  glowRadius = 32,
-  glowIntensity = 1.0,
-  coneSpread = 25,
+  glowColor = '40 90 70', // Warm amber / pearl default
+  backgroundColor = 'rgba(14, 13, 19, 0.85)',
+  borderRadius = 18,
+  glowRadius = 28,
+  glowIntensity = 0.8,
+  coneSpread = 30,
   animated = false,
-  colors = ['#50e3c2', '#7928ca', '#00dfd8'],
-  fillOpacity = 0.35,
+  colors = ['rgba(255, 255, 255, 0.4)', 'rgba(245, 166, 35, 0.35)', 'rgba(255, 255, 255, 0.15)'],
+  fillOpacity = 0.25,
   onClick,
   style
 }) {
