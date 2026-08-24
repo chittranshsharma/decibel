@@ -23,6 +23,7 @@ import { Reveal } from "./screens/Reveal";
 import { GameOver } from "./screens/GameOver";
 import FloatingDockNav from "./components/FloatingDockNav";
 import AudioBackground from "./components/AudioBackground";
+import { NoiseTexture } from "./components/ui/noise-texture";
 
 // Performance: Code-split heavy solo puzzle mini-games
 const Harmonies = lazy(() => import("./screens/Harmonies").then((m) => ({ default: m.Harmonies })));
@@ -241,6 +242,7 @@ export default function App() {
   return (
     <div className="crt-scan min-h-screen bg-void font-console text-bone antialiased selection:bg-amber selection:text-black">
       <AudioBackground />
+      <NoiseTexture noiseOpacity={0.35} className="opacity-20 fixed inset-0 z-0 pointer-events-none" />
       {error && <ErrorBar message={error} />}
       {loading && <LoadingOverlay message={loading.message} />}
       {countdown && (
