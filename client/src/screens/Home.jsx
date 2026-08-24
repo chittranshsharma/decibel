@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { EYEBROW, PANEL, BTN_AMBER } from "../ui";
 import DriftWall from "../components/DriftWall";
+import Strands from "../components/Strands";
 
 export const GAMES = [
   { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM", gradient: "from-[#ff0080] to-[#7928ca]" },
@@ -20,9 +21,26 @@ export function Home({ games, stats, onOpen, onProfile }) {
       {/* Background Multi-Point Aurora Spotlight */}
       <div className="jam-aurora" />
 
-      {/* Hero Section */}
-      <div className="relative z-10 space-y-6 pt-4 text-center sm:text-left">
-        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+      {/* Hero Section with Ambient Strands Wave */}
+      <div className="relative z-10 space-y-6 pt-4 pb-4 text-center sm:text-left overflow-hidden rounded-3xl p-6 sm:p-10 border border-white/10 bg-[#0e0e14]/70 backdrop-blur-xl shadow-2xl">
+        {/* Ambient WebGL Strands glowing ribbons */}
+        <div className="absolute inset-0 pointer-events-none opacity-45 mix-blend-screen overflow-hidden">
+          <Strands
+            colors={["#00DFD8", "#7928CA", "#FF0080", "#50E3C2"]}
+            count={3}
+            speed={0.45}
+            amplitude={0.9}
+            waviness={1.2}
+            thickness={0.65}
+            glow={2.8}
+            intensity={0.65}
+            saturation={1.4}
+            opacity={0.85}
+            scale={1.3}
+          />
+        </div>
+
+        <div className="relative z-10 flex flex-wrap items-center justify-center sm:justify-start gap-2">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1 font-console text-[11px] font-semibold tracking-[0.14em] text-bone backdrop-blur-md shadow-sm">
             <span className="h-2 w-2 rounded-full bg-[#50e3c2] animate-ping" />
             78,890 TRACKS LIVE
@@ -32,17 +50,17 @@ export function Home({ games, stats, onOpen, onProfile }) {
           </span>
         </div>
 
-        <h1 className="font-geist text-5xl font-extrabold tracking-[-2.4px] text-white leading-[1.04] sm:text-6xl">
+        <h1 className="relative z-10 font-geist text-5xl font-extrabold tracking-[-2.4px] text-white leading-[1.04] sm:text-6xl">
           Guess the song.
           <br />
           <span className="text-gradient-jam">Beat your squad.</span>
         </h1>
 
-        <p className="mx-auto sm:mx-0 max-w-lg font-geist text-base font-normal leading-relaxed text-[#8f8f8f]">
+        <p className="relative z-10 mx-auto sm:mx-0 max-w-lg font-geist text-base font-normal leading-relaxed text-[#8f8f8f]">
           Real-time multiplayer music trivia with zero latency. Scrape custom Spotify playlists or battle through underground crate cuts.
         </p>
 
-        <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3">
+        <div className="relative z-10 pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3">
           <button
             type="button"
             onClick={() => onOpen(games.find((g) => g.key === "musicquiz"))}
