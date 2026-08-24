@@ -24,29 +24,29 @@ export function Home({ games, stats, onOpen, onProfile }) {
       {/* Hero Section */}
       <div className="relative z-10 space-y-6 pt-4 text-center sm:text-left">
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
-          <span className="inline-flex items-center gap-2.5 font-console text-xs tracking-wider text-[#50e3c2]">
+          <span className="inline-flex items-center gap-2.5 font-console text-xs font-semibold tracking-wider text-[#50e3c2] drop-shadow-sm">
             <span className="flex items-end gap-0.5 h-3.5">
               <span className="w-0.5 bg-[#50e3c2] animate-bounce" style={{ height: "60%", animationDuration: "0.8s" }} />
               <span className="w-0.5 bg-[#50e3c2] animate-bounce" style={{ height: "100%", animationDuration: "1.1s" }} />
               <span className="w-0.5 bg-[#50e3c2] animate-bounce" style={{ height: "45%", animationDuration: "0.7s" }} />
               <span className="w-0.5 bg-[#50e3c2] animate-bounce" style={{ height: "85%", animationDuration: "0.9s" }} />
             </span>
-            78,890 TRACKS LIVE
+            78,890 SONGS READY
           </span>
-          <span className="text-white/20">·</span>
-          <span className="font-console text-xs tracking-wider text-dim uppercase">
-            11 SCENE ROSTERS
+          <span className="text-white/30">·</span>
+          <span className="font-console text-xs font-medium tracking-wider text-slate-300 uppercase">
+            11 MUSIC SCENES
           </span>
         </div>
 
-        <h1 className="font-geist text-5xl font-extrabold tracking-[-2.4px] text-white leading-[1.04] sm:text-6xl">
+        <h1 className="font-geist text-5xl font-extrabold tracking-[-2.4px] text-white leading-[1.04] sm:text-6xl drop-shadow-[0_2px_16px_rgba(0,0,0,0.8)]">
           Guess the song.
           <br />
           <span className="text-gradient-jam">Beat your squad.</span>
         </h1>
 
-        <p className="mx-auto sm:mx-0 max-w-lg font-geist text-base font-normal leading-relaxed text-[#8f8f8f]">
-          Real-time multiplayer music trivia with zero latency. Scrape custom Spotify playlists or battle through underground crate cuts.
+        <p className="mx-auto sm:mx-0 max-w-lg font-geist text-base font-normal leading-relaxed text-slate-200 drop-shadow-md">
+          Real-time multiplayer music trivia. Play your favorite Spotify playlists or battle with friends through underground crate cuts.
         </p>
 
         <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3">
@@ -87,7 +87,7 @@ export function Home({ games, stats, onOpen, onProfile }) {
             </span>
             <div>
               <p className="font-geist text-sm font-semibold text-white">Player Profile & Records</p>
-              <p className="font-console text-xs text-dim">Local device performance</p>
+              <p className="font-console text-xs text-dim">Local match performance</p>
             </div>
           </span>
           <span className="font-console text-xs font-semibold tabular-nums text-[#50e3c2]">
@@ -179,7 +179,7 @@ function GameBentoCard({ game, onOpen }) {
           <h3 className="font-geist text-base font-semibold tracking-[-0.3px] text-white group-hover:text-[#50e3c2] transition-colors">
             {game.title}
           </h3>
-          <p className="font-geist text-xs leading-relaxed text-[#8f8f8f]">
+          <p className="font-geist text-xs leading-relaxed text-slate-300">
             {game.sub}
           </p>
         </div>
@@ -189,21 +189,21 @@ function GameBentoCard({ game, onOpen }) {
 }
 
 const WHY_ITEMS = [
-  { t: "78,890 Indexed Tracks", d: "11 scene rosters powered by Supabase PostgreSQL and Apple Search CDN." },
-  { t: "<1.8ms Query Latency", d: "Optimized GIN array containment and point index lookups for instant rounds." },
-  { t: "Keyless Spotify Scraper", d: "Paste any Spotify playlist URL to parse songs and stream direct 30s clips." },
-  { t: "Arcade Power-Ups", d: "50:50 Eliminator, 2X Double Down Multiplier, and Streak Shields." },
+  { t: "Massive 78,000+ Song Catalog", d: "11 curated music scenes from Hip-Hop and Pop to Indie and Alt Rock." },
+  { t: "Instant Real-Time Battles", d: "Multiplayer rooms with zero lag, instant scoring, and live reaction emojis." },
+  { t: "Custom Spotify Playlists", d: "Paste any public Spotify link to instantly generate a custom trivia match." },
+  { t: "Power-Ups & Streak Bonuses", d: "50:50 Eliminator, 2X Double Down Multiplier, and Streak Shields to boost your rank." },
 ];
 
 function WhyDecibel() {
   return (
     <div className="space-y-4 pt-4">
-      <p className={EYEBROW}>Engine Architecture</p>
+      <p className={EYEBROW}>Game Highlights</p>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {WHY_ITEMS.map((item) => (
           <div key={item.t} className={`${PANEL} p-5 space-y-1`}>
             <p className="font-geist text-sm font-semibold text-white">{item.t}</p>
-            <p className="font-geist text-xs leading-relaxed text-[#8f8f8f]">{item.d}</p>
+            <p className="font-geist text-xs leading-relaxed text-slate-300">{item.d}</p>
           </div>
         ))}
       </div>
@@ -212,7 +212,7 @@ function WhyDecibel() {
 }
 
 const FAQ_ITEMS = [
-  { q: "How do custom playlists work?", a: "Enter any public Spotify playlist URL in Create Room. The engine fetches tracks instantly and streams legal 30s audio previews with zero delay." },
+  { q: "How do custom playlists work?", a: "Paste any public Spotify playlist link when creating a room. Decibel instantly generates a custom trivia match with 30-second audio clips." },
   { q: "How does scoring calculate speed?", a: "Base score is awarded for correct answers, plus up to 350 speed bonus points based on millisecond reaction time." },
   { q: "Can I play solo?", a: "Yes! Single-player modes include Harmonies (connections), Wordzic (5-letter term), Lyricles (progression guesser), and Crosszic (5x5 crossword)." },
 ];
@@ -237,7 +237,7 @@ function Faq() {
                 <span className="font-console text-xs text-dim">{isOpen ? "▲" : "▼"}</span>
               </button>
               {isOpen && (
-                <div className="border-t border-white/5 px-4 py-3 font-geist text-xs leading-relaxed text-[#8f8f8f]">
+                <div className="border-t border-white/5 px-4 py-3 font-geist text-xs leading-relaxed text-slate-300">
                   {item.a}
                 </div>
               )}
@@ -252,8 +252,8 @@ function Faq() {
 function SiteFooter() {
   return (
     <footer className="pt-8 text-center font-console text-[11px] text-dim border-t border-white/5 space-y-2">
-      <p>Decibel · Multiplayer Music Engine & Scene Crate Discovery</p>
-      <p className="text-[10px] text-dim/60">Built with Vite, Tailwind CSS, Supabase PostgreSQL, and Apple iTunes Search API.</p>
+      <p className="text-bone font-medium">Decibel · The Ultimate Multiplayer Music Guessing Game</p>
+      <p className="text-[10px] text-dim">Play live with friends or test your music knowledge across every genre.</p>
     </footer>
   );
 }

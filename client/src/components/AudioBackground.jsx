@@ -123,7 +123,7 @@ export default function AudioBackground() {
         float sharpRings = smoothstep(0.7, 0.98, rings) * (1.0 - smoothstep(0.0, 2.2, d));
 
         // Ultra-Curated Bespoke Color Palette: Deep Obsidian, Iridescent Mint, Ultra-Violet & Neon Cyan
-        vec3 bgVoid = vec3(0.031, 0.031, 0.047); // Pure Obsidian Studio #08080c
+        vec3 bgVoid = vec3(0.015, 0.015, 0.022); // Deep Obsidian Studio #08080c
         vec3 colMint = vec3(0.314, 0.890, 0.761); // Jam Mint #50e3c2
         vec3 colCyan = vec3(0.0, 0.875, 0.847);   // Electric Cyan #00dfd8
         vec3 colViolet = vec3(0.475, 0.157, 0.792); // Deep Violet #7928ca
@@ -132,21 +132,21 @@ export default function AudioBackground() {
         // Blend layers through chromatic frequency spectrum
         vec3 color = bgVoid;
         
-        // Fluid nebula blend
-        color = mix(color, colViolet, clamp(f * f * 3.2, 0.0, 1.0) * 0.55);
-        color = mix(color, colMint, clamp(length(q) * 1.2, 0.0, 1.0) * 0.45);
-        color = mix(color, colCyan, clamp(length(r.x) * 1.4, 0.0, 1.0) * 0.4);
+        // Fluid nebula blend (subtle dark atmospheric luminescence)
+        color = mix(color, colViolet, clamp(f * f * 2.5, 0.0, 1.0) * 0.28);
+        color = mix(color, colMint, clamp(length(q) * 1.0, 0.0, 1.0) * 0.22);
+        color = mix(color, colCyan, clamp(length(r.x) * 1.1, 0.0, 1.0) * 0.20);
         
         // Add glowing resonant ring accents
-        color += colMint * sharpRings * 0.35;
-        color += colMagenta * pow(clamp(f * r.y * 2.2, 0.0, 1.0), 3.0) * 0.6;
+        color += colMint * sharpRings * 0.18;
+        color += colMagenta * pow(clamp(f * r.y * 1.8, 0.0, 1.0), 3.0) * 0.25;
 
         // Subtle chromatic vignette
-        float vignette = smoothstep(2.0, 0.4, length(uv * 0.85));
+        float vignette = smoothstep(1.8, 0.3, length(uv * 0.85));
         color *= vignette;
 
-        // Tone map for deep rich obsidian contrast
-        color = pow(color, vec3(1.15));
+        // Deep contrast curve
+        color = pow(color, vec3(1.2));
 
         gl_FragColor = vec4(color, 1.0);
       }
@@ -232,15 +232,15 @@ export default function AudioBackground() {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#07070a]">
       {/* 60FPS Reactive Holographic WebGL Audio Canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-60" />
+
+      {/* Dark Backdrop Scrim for Crystal-Clear Text Contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#07070a]/40 via-transparent to-[#07070a]/85 pointer-events-none" />
 
       {/* Tactile Analog Noise Grain Texture Overlay */}
       <div className="noise-overlay" />
-
-      {/* Subtle Studio Top Vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#08080c]/60 pointer-events-none" />
     </div>
   );
 }

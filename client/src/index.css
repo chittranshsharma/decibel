@@ -41,21 +41,21 @@ body {
   z-index: 0;
 }
 
-/* Gradients */
+/* High-Contrast Luminous Text Gradients */
 .text-gradient-jam {
-  background: linear-gradient(135deg, #00dfd8 0%, #7928ca 50%, #ff0080 100%);
+  background: linear-gradient(135deg, #50e3c2 0%, #00dfd8 35%, #c084fc 70%, #f472b6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-mint {
-  background: linear-gradient(135deg, #50e3c2 0%, #007cf0 100%);
+  background: linear-gradient(135deg, #50e3c2 0%, #38bdf8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-sunset {
-  background: linear-gradient(135deg, #ff0080 0%, #f9cb28 100%);
+  background: linear-gradient(135deg, #fb7185 0%, #facc15 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
