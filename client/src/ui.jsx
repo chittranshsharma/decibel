@@ -230,35 +230,42 @@ export function ReactionOverlay({ reactions }) {
 // Countdown Overlay — counts down from `seconds` to 0 in real-time
 export function CountdownOverlay({ seconds: initialSeconds, round, worth, maxPoints }) {
   const [secs, setSecs] = useState(initialSeconds ?? 3);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     setSecs(initialSeconds ?? 3);
+    setVisible(true);
     if (!initialSeconds || initialSeconds <= 0) return;
     let remaining = initialSeconds;
     const id = setInterval(() => {
       remaining -= 1;
       setSecs(remaining);
-      if (remaining <= 0) clearInterval(id);
+      if (remaining <= 0) {
+        clearInterval(id);
+        setTimeout(() => setVisible(false), 400);
+      }
     }, 1000);
     return () => clearInterval(id);
   }, [round, initialSeconds]);
+
+  if (!visible || secs <= 0) return null;
 
   const totalPoints = (worth ?? 0) + (maxPoints ?? 0);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md animate-rise">
       <div className="text-center space-y-3">
-        <p className="font-console text-xs uppercase tracking-[0.25em] text-[#50e3c2]">
+        <p className="font-console text-xs uppercase tracking-[0.25em] text-amber-400">
           ROUND {round} STARTING
         </p>
         <p
           key={secs}
           className="font-geist text-8xl font-bold tracking-tight text-white animate-digitpop"
         >
-          {Math.max(0, secs)}
+          {Math.max(1, secs)}
         </p>
         <p className="font-geist text-sm text-dim">
-          Worth up to <span className="text-[#f5a623] font-semibold">{totalPoints}</span> pts
+          Worth up to <span className="text-amber-400 font-semibold">{totalPoints}</span> pts
         </p>
       </div>
     </div>
@@ -269,7 +276,7 @@ export function LoadingOverlay({ message }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md">
       <div className="text-center space-y-3">
-        <div className="mx-auto h-8 w-8 rounded-full border-2 border-white/20 border-t-[#50e3c2] animate-spin" />
+        <div className="mx-auto h-8 w-8 rounded-full border-2 border-white/20 border-t-amber-400 animate-spin" />
         <p className="font-geist text-sm text-bone">{message || "Loading..."}</p>
       </div>
     </div>

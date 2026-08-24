@@ -1313,6 +1313,21 @@ io.on("connection", (socket) => {
     io.to(room.code).emit("reaction", { id: socket.id, name: player.name, token, ts: Date.now() }); // SAFE
   });
 
+  // --- leave: explicit user intent to quit the room immediately ---
+  socket.on("leave", () => {
+    const room = roomOf(socket);
+    if (!room) return;
+    const player = room.players.get(socket.id);
+    if (player?.token) {
+      const existingTimer = room.disconnectGrace.get(player.token);
+      if (existingTimer) {
+        clearTimeout(existingTimer);
+        room.disconnectGrace.delete(player.token);
+      }
+    }
+    finalizeLeave(room, socket.id);
+  });
+
   // --- disconnect ---
   socket.on("disconnect", () => {
     const room = roomOf(socket);

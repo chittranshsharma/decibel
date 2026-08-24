@@ -191,6 +191,7 @@ export function useGameSocket() {
   const requestFiftyFifty = useCallback(() => socketRef.current?.emit("fiftyFifty"), []);
   const usePowerUp = useCallback((type) => socketRef.current?.emit("usePowerUp", { type }), []);
   const leaveRoom = useCallback(() => {
+    socketRef.current?.emit("leave");
     clearSession();
     socketRef.current?.disconnect();
     setRoomCode(null);
@@ -204,6 +205,8 @@ export function useGameSocket() {
     setPlaylistStatus(null);
     setVibeStatus(null);
     setFiftyFiftyResult(null);
+    setLoading(null);
+    setError(null);
     socketRef.current?.connect();
   }, []);
 

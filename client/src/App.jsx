@@ -256,7 +256,7 @@ export default function App() {
       <NoiseTexture noiseOpacity={0.35} className="opacity-20 fixed inset-0 z-0 pointer-events-none" />
       {error && <ErrorBar message={error} />}
       {loading && <LoadingOverlay message={loading.message} />}
-      {countdown && (
+      {countdown && view === "play" && joined && state && phase !== "LOBBY" && phase !== "GAME_OVER" && (
         <CountdownOverlay
           key={countdown.round}
           seconds={countdown.seconds}
