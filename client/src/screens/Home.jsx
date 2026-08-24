@@ -9,10 +9,10 @@ export const GAMES = [
   { key: "musicquiz", glyph: "♬", title: "Music Quiz", sub: "Name the track from a 10s snippet", status: "play", clip: "RANDOM" },
   { key: "heardle", glyph: "▶", title: "Heardle", sub: "Guess the song from its intro", status: "play", clip: "INTRO" },
   { key: "create", glyph: "+", title: "Create", sub: "Private room — challenge your friends", status: "play", clip: "RANDOM" },
-  { key: "harmonies", glyph: "⌘", title: "Harmonies", sub: "Music connections puzzle", status: "soon" },
-  { key: "wordzic", glyph: "▦", title: "Wordzic", sub: "Guess the music word", status: "soon" },
-  { key: "lyricles", glyph: "❝", title: "Lyricles", sub: "Guess the song from its lyrics", status: "soon" },
-  { key: "crosszic", glyph: "✚", title: "Crosszic", sub: "Music crossword puzzle", status: "soon" },
+  { key: "harmonies", glyph: "⌘", title: "Harmonies", sub: "Music connections puzzle", status: "play" },
+  { key: "wordzic", glyph: "▦", title: "Wordzic", sub: "Guess the music word", status: "play" },
+  { key: "lyricles", glyph: "❝", title: "Lyricles", sub: "Guess the song from its lyrics", status: "play" },
+  { key: "crosszic", glyph: "✚", title: "Crosszic", sub: "Music crossword puzzle", status: "play" },
 ];
 
 // ---------- Home hub (landing) ----------

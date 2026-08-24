@@ -21,6 +21,10 @@ import { Lobby } from "./screens/Lobby";
 import { Playing } from "./screens/Playing";
 import { Reveal } from "./screens/Reveal";
 import { GameOver } from "./screens/GameOver";
+import { Harmonies } from "./screens/Harmonies";
+import { Wordzic } from "./screens/Wordzic";
+import { Lyricles } from "./screens/Lyricles";
+import { Crosszic } from "./screens/Crosszic";
 
 export default function App() {
   const {
@@ -143,7 +147,7 @@ export default function App() {
     setMenuOpen(false);
   };
 
-  // Route into the room flow from a Home game card.
+  // Route into the room flow or solo puzzle screen from a Home game card.
   const openGame = (game) => {
     if (!game || game.status !== "play") return;
     if (joined) {
@@ -152,8 +156,12 @@ export default function App() {
       }
       leaveRoom();
     }
-    setClipPref(game.clip || "RANDOM");
-    setView("play");
+    if (["harmonies", "wordzic", "lyricles", "crosszic"].includes(game.key)) {
+      setView(game.key);
+    } else {
+      setClipPref(game.clip || "RANDOM");
+      setView("play");
+    }
     setMenuOpen(false);
   };
 
@@ -266,6 +274,14 @@ export default function App() {
             <Home games={GAMES} stats={stats} onOpen={openGame} onProfile={() => setView("profile")} />
           ) : !joined && view === "profile" ? (
             <Profile stats={stats} onBack={() => setView("home")} />
+          ) : !joined && view === "harmonies" ? (
+            <Harmonies onBack={() => setView("home")} />
+          ) : !joined && view === "wordzic" ? (
+            <Wordzic onBack={() => setView("home")} />
+          ) : !joined && view === "lyricles" ? (
+            <Lyricles onBack={() => setView("home")} />
+          ) : !joined && view === "crosszic" ? (
+            <Crosszic onBack={() => setView("home")} />
           ) : !joined ? (
             <EntryScreen
               onCreate={handleCreate}
