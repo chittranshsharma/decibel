@@ -50,10 +50,12 @@ export function useGameSocket() {
 
   useEffect(() => {
     const expiryTimers = new Set();
-    const targetUrl = import.meta.env.VITE_SOCKET_URL || 
-      (window.location.hostname.includes("vercel.app") 
-        ? "https://decibel-4crh.onrender.com" 
-        : window.location.origin);
+    const rawUrl = import.meta.env.VITE_SOCKET_URL || "";
+    const isLocalhost = rawUrl.includes("localhost") || rawUrl.includes("127.0.0.1");
+    const targetUrl =
+      window.location.hostname.includes("vercel.app")
+        ? (!rawUrl || isLocalhost ? "https://decibel-4crh.onrender.com" : rawUrl)
+        : (rawUrl || window.location.origin);
 
     const socket = io(targetUrl, {
       transports: ["websocket"],
