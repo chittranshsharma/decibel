@@ -1,6 +1,5 @@
 // Reveal: round answer, winner card, per-player results, leaderboard.
-import { EYEBROW, PANEL, Avatar, Leaderboard, ReactionBar } from "../ui";
-import Counter from "../components/Counter";
+import { EYEBROW, PANEL, Avatar, Leaderboard, ReactionBar, useCountUp } from "../ui";
 
 export function Reveal({ reveal, myId, onReact, players }) {
   const results = reveal?.results ?? [];
@@ -17,6 +16,7 @@ export function Reveal({ reveal, myId, onReact, players }) {
   const winnerResult = winner ? results.find((r) => r.name === winner.name) : null;
   const winnerPoints = winnerResult?.pointsEarned ?? 0;
   const winnerStreak = winnerResult?.streakBonus ?? 0;
+  const shownPoints = useCountUp(winnerPoints);
 
   return (
     <div className="space-y-6 animate-rise">
@@ -60,10 +60,9 @@ export function Reveal({ reveal, myId, onReact, players }) {
               </p>
               <p className="mt-1 font-console text-xs tabular-nums text-dim">{winner.answerTimeSeconds}s response time</p>
             </div>
-            <div className="shrink-0 flex items-center font-geist text-4xl font-extrabold text-[#50e3c2]">
-              <span>+</span>
-              <Counter value={winnerPoints} fontSize={36} fontWeight={800} textColor="#50e3c2" />
-            </div>
+            <p className="shrink-0 font-geist text-4xl font-extrabold tabular-nums text-[#50e3c2]">
+              +{shownPoints}
+            </p>
           </div>
         </div>
       ) : (

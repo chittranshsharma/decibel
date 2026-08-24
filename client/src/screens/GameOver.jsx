@@ -1,7 +1,6 @@
 // Game over: champion podium card, high scores, round history, chat, restart.
 import { useState } from "react";
-import { EYEBROW, PANEL, BTN_AMBER, Avatar, Chat, Leaderboard } from "../ui";
-import Counter from "../components/Counter";
+import { EYEBROW, PANEL, BTN_AMBER, Avatar, Chat, Leaderboard, useCountUp } from "../ui";
 
 export function GameOver({ gameOver, players, myId, onRestart, messages, onChat }) {
   const rows =
@@ -12,6 +11,7 @@ export function GameOver({ gameOver, players, myId, onRestart, messages, onChat 
   const history = gameOver?.roundHistory ?? null;
   const avatarOf = {};
   for (const p of players ?? []) avatarOf[p.id] = p.avatar;
+  const shownScore = useCountUp(champ?.score ?? 0, 900);
 
   return (
     <div className="space-y-8 animate-rise">
@@ -36,10 +36,9 @@ export function GameOver({ gameOver, players, myId, onRestart, messages, onChat 
             <Avatar name={champ.name} src={avatarOf[champ.id]} size={36} />
             <p className="font-geist text-2xl font-bold text-white">{champ.name}</p>
           </div>
-          <div className="font-geist text-5xl font-extrabold text-white flex items-baseline justify-center gap-2">
-            <Counter value={champ?.score ?? 0} fontSize={48} fontWeight={800} textColor="#ffffff" />
-            <span className="text-sm font-normal text-dim">PTS</span>
-          </div>
+          <p className="font-geist text-5xl font-extrabold tabular-nums text-white">
+            {shownScore} <span className="text-sm font-normal text-dim">PTS</span>
+          </p>
         </div>
       )}
 
