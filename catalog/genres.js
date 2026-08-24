@@ -92,14 +92,14 @@ export const GENRE_FAMILIES = {
       // Scene-famous, substantial following
       "Arpit Bala", "Chaar Diwaari", "Nanku", "Karun",
       "Yashraj", "Tienas", "Rawal", "Prabh Deep", "Ahmer",
-      "Siyaahi", "Swadesi", "Dhanji", "Tarun",
+      "Siyaahi", "Dhanji", "Tarun",
     ],
     underground: [
       // User-requested deep cuts
-      "Prathamesh", "Naam Sujal", "Vichaar", "Shauharty", "MC Altaf",
+      "MC Amrit", "Naam Sujal", "Vichaar", "Shauharty", "MC Altaf",
       // True underground / niche scene
-      "Frappe Ash", "Full Power", "The Siege", "Bagi Munda",
-      "Mark Bhatia", "Darcy", "Qaab", "Sikander Kahlon",
+      "Frappe Ash", "The Siege", "Bagi Munda",
+      "Mark Bhatia", "Darcy", "Qaab",
       "SOS", "Straight Outta Srinagar", "Wolf.Cryman", "Tsumyoki",
       "Farhan Khan", "DRV", "Panther", "EPR Iyer", "Umer Anjum",
       "Lil Kabeer", "Smoke", "Ruab", "Sammad", "Rebel 7", "Bharg",
