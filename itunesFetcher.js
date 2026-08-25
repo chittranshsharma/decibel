@@ -10,6 +10,7 @@
 // so it cannot leak the answer to a client inspecting the network tab.
 
 import fetch from "node-fetch";
+import { isJunkVersion, JUNK_VERSION_RE } from "./catalog/normalize.js";
 
 // ----- Constants -----
 // The endpoint is overridable via ITUNES_BASE so tests can point at a local
@@ -76,8 +77,7 @@ function sample(pool, n) {
 // Filters: must have previewUrl, must be longer than 20s. Dedupes by trackId
 // (iTunes can return the same track from multiple albums) to avoid repeats.
 // releaseYear is kept so callers can filter by decade.
-const JUNK_TRACK_REGEX =
-  /\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|radio edit remix|live at|live from|live in|live version|live 20\d\d|anniversary edition|demo|instrumental|karaoke|tribute|cover|acoustic|acoustic version|type beat|slowed|sped.?up|nightcore|reverb|orchestral|synthesizer|piano version|guitar cover|re-?record(ed)?|remaster(ed)?)\b|[([].*?\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|live|acoustic|instrumental|karaoke|tribute|cover|demo|sped.?up|slowed)\b.*?[)\]]/i;
+export const JUNK_TRACK_REGEX = JUNK_VERSION_RE;
 
 function normalize(results) {
   const list = Array.isArray(results) ? results : [];
@@ -86,7 +86,7 @@ function normalize(results) {
   for (const r of list) {
     if (!r || !r.previewUrl) continue;                       // need a playable preview
     if (!(Number(r.trackTimeMillis) > MIN_DURATION_MS)) continue; // duration > 20s
-    if (r.trackName && JUNK_TRACK_REGEX.test(r.trackName)) continue; // skip instrumentals/karaoke
+    if (r.trackName && isJunkVersion(r.trackName, r.collectionName)) continue; // skip remixes, slowed, reverb, live, karaoke
     if (seen.has(r.trackId)) continue;                       // dedupe -> avoid repeats
     seen.add(r.trackId);
     out.push({

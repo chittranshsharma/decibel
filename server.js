@@ -436,13 +436,15 @@ function startRound(room, n) {
   }
 
   const qv = questionValueFor(n - 1);
-  // SAFE: no correct answer field.
+  // SAFE: audioUrl is an opaque random hash from CDN without metadata, allowing client to preload during 3-2-1.
   io.to(room.code).emit("countdown", {
     seconds: 3,
     round: n,
     questionValue: qv,
     maxSpeedBonus: MAX_SPEED_BONUS,
     maxPoints: qv + MAX_SPEED_BONUS,
+    audioUrl: picked.audioUrl,
+    clip: room.settings.clip,
   });
   room.timers.countdown = setTimeout(() => beginPlaying(room), 3000);
 }

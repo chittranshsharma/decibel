@@ -104,6 +104,13 @@ describe("normalize", () => {
     expect(toCatalogRow(raw({ trackName: "Song (Karaoke Version)" }))).toBeNull();
     expect(toCatalogRow(raw({ trackName: "Song (Remastered 2011)" }))).toBeNull();
     expect(toCatalogRow(raw({ trackName: "Song (Sped Up)" }))).toBeNull();
+    expect(toCatalogRow(raw({ trackName: "Song (Slowed + Reverb)" }))).toBeNull();
+    expect(toCatalogRow(raw({ trackName: "Song (Remix)" }))).toBeNull();
+    expect(toCatalogRow(raw({ trackName: "Song - Club Mix" }))).toBeNull();
+    expect(toCatalogRow(raw({ trackName: "Song (Nightcore)" }))).toBeNull();
+    expect(toCatalogRow(raw({ trackName: "Song (Acoustic Version)" }))).toBeNull();
+    expect(toCatalogRow(raw({ trackName: "Song [8-Bit]" }))).toBeNull();
+    expect(toCatalogRow(raw({ trackName: "Song Type Beat" }))).toBeNull();
     expect(toCatalogRow(raw({ collectionName: "Live At Wembley" }))).toBeNull();
     expect(toCatalogRow(raw({ collectionName: "Tribute to Artist" }))).toBeNull();
     // Hits compilations: the one album type observed carrying wrong dates.

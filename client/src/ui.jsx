@@ -233,14 +233,20 @@ export function CountdownOverlay({ seconds: initialSeconds, round, worth, maxPoi
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    setSecs(initialSeconds ?? 3);
+    const startSec = initialSeconds ?? 3;
+    setSecs(startSec);
     setVisible(true);
-    if (!initialSeconds || initialSeconds <= 0) return;
-    let remaining = initialSeconds;
+    if (startSec > 0) {
+      sound.play("count");
+    }
+    let remaining = startSec;
     const id = setInterval(() => {
       remaining -= 1;
       setSecs(remaining);
-      if (remaining <= 0) {
+      if (remaining > 0) {
+        sound.play("count");
+      } else if (remaining === 0) {
+        sound.play("go");
         clearInterval(id);
         setTimeout(() => setVisible(false), 400);
       }
@@ -249,6 +255,7 @@ export function CountdownOverlay({ seconds: initialSeconds, round, worth, maxPoi
   }, [round, initialSeconds]);
 
   if (!visible || secs <= 0) return null;
+
 
   const totalPoints = (worth ?? 0) + (maxPoints ?? 0);
 

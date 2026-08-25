@@ -239,8 +239,26 @@ export default function App() {
     guess(opt);
   };
 
+  // Pre-buffer audio during the 3-2-1 countdown so playback starts with 0ms latency
+  useEffect(() => {
+    if (countdown && countdown.audioUrl) {
+      const el = audioRef.current;
+      if (el) {
+        try {
+          el.pause();
+          el.src = countdown.audioUrl;
+          el.preload = "auto";
+          el.load();
+        } catch {
+          /* ignore */
+        }
+      }
+    }
+  }, [countdown]);
+
   return (
     <div className="crt-scan min-h-screen bg-void font-console text-bone antialiased selection:bg-amber selection:text-black">
+      <audio ref={audioRef} preload="auto" playsInline className="hidden" />
       <DecibelWavefield />
       <NoiseTexture noiseOpacity={0.30} className="opacity-20 fixed inset-0 z-0 pointer-events-none" />
       {error && <ErrorBar message={error} />}

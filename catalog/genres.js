@@ -250,11 +250,62 @@ export function seedArtistsFor(key, vibe = "all") {
   return fam.seedArtists.slice();
 }
 
+export function getArtistSegments(artistName) {
+  if (!artistName) return [];
+  const protectedName = String(artistName).replace(/AC\/DC/i, "__ACDC__");
+  const parts = protectedName
+    .split(/[,;&/]+|\bfeat\.?\b|\bft\.?\b|\bwith\b|\bx\b|\bvs\.?\b|\band\b/i)
+    .map((s) => s.replace(/__ACDC__/g, "AC/DC").trim().toLowerCase())
+    .filter(Boolean);
+  return parts;
+}
+
+export function matchesArtist(artistName, seedArtist) {
+  if (!artistName || !seedArtist) return false;
+  const s = String(seedArtist).toLowerCase().trim();
+  const a = String(artistName).toLowerCase().trim();
+  if (a === s) return true;
+
+  const sNoThe = s.replace(/^the\s+/i, "");
+  const aNoThe = a.replace(/^the\s+/i, "");
+  if (aNoThe === sNoThe) return true;
+
+  const segs = getArtistSegments(artistName);
+  for (const seg of segs) {
+    if (seg === s) return true;
+    const segNoThe = seg.replace(/^the\s+/i, "");
+    if (segNoThe === sNoThe) return true;
+  }
+  return false;
+}
+
+export function genresForArtist(artistName) {
+  if (!artistName) return [];
+  const matchingGenres = [];
+  for (const [genreKey, fam] of Object.entries(GENRE_FAMILIES)) {
+    const allSeeds = [...(fam.mainstream || []), ...(fam.underground || [])];
+    for (const seed of allSeeds) {
+      if (matchesArtist(artistName, seed)) {
+        matchingGenres.push(genreKey);
+        break;
+      }
+    }
+  }
+  return matchingGenres;
+}
+
+export function isArtistInGenre(artistName, genreKey) {
+  const fam = GENRE_FAMILIES[String(genreKey ?? "").toLowerCase()];
+  if (!fam) return false;
+  const allSeeds = [...(fam.mainstream || []), ...(fam.underground || [])];
+  return allSeeds.some((seed) => matchesArtist(artistName, seed));
+}
+
 export function isUndergroundArtist(artistName, genreKey) {
   const fam = GENRE_FAMILIES[String(genreKey ?? "").toLowerCase()];
   if (!fam || !fam.underground) return false;
-  const name = String(artistName ?? "").toLowerCase();
-  return fam.underground.some((u) => u.toLowerCase() === name);
+  return fam.underground.some((u) => matchesArtist(artistName, u));
 }
 
 export default GENRE_FAMILIES;
+

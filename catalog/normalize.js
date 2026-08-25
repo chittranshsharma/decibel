@@ -3,14 +3,14 @@
 // Converts raw iTunes track objects into clean, normalized catalog rows.
 // Automatically tags tracks with genre families and mainstream/underground vibe tiers.
 
-import { familiesForAppleGenre, isUndergroundArtist } from "./genres.js";
+import { familiesForAppleGenre, isUndergroundArtist, genresForArtist, matchesArtist } from "./genres.js";
 
 export const MIN_DURATION_MS = 20 * 1000; // 20s minimum duration
 
-const JUNK_VERSION_RE =
-  /\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|radio edit remix|live|live at|live from|live in|karaoke|tribute|cover|remaster(ed)?|re-?record(ed)?|instrumental|acoustic|acoustic version|sped.?up|slowed|reverb|8.?bit|lullaby|workout|dj mix|medley|originally performed|in the style of|made famous|demo)\b|[([].*?\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|live|acoustic|instrumental|karaoke|tribute|cover|demo|sped.?up|slowed)\b.*?[)\]]/i;
+export const JUNK_VERSION_RE =
+  /\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|dub mix|radio edit|dj mix|continuous mix|megamix|minimix|dance mix|house mix|trap mix|slowed|reverb|reverbed|slowed.?(\+|and|&)?.?reverb|slowed down|slow version|sped.?up|speed.?up|nightcore|daycore|screwed|chopped|instrumental|karaoke|tribute|cover|remaster(ed)?|re-?record(ed)?|acoustic version|unplugged|live at|live from|live in|live version|live 19\d\d|live 20\d\d|concert|session|audiotree|bbc session|type beat|lofi|lo-fi|8.?bit|8 bit|lullaby|workout|medley|originally performed|in the style of|made famous|demo|snippet|leak|teaser|skit|interlude|commentary|interview|voice memo|bonus track|anniversary edition|orchestral|synthesizer|piano version|guitar cover)\b|[-–—]\s*(live|remix|acoustic|instrumental|edit|mix)\b|[([].*?\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|live|acoustic|instrumental|karaoke|tribute|cover|demo|sped.?up|speed.?up|slowed|reverb|nightcore|lofi|remaster)\b.*?[)\]]/i;
 
-const COMPILATION_RE =
+export const COMPILATION_RE =
   /\b(greatest hits|best of|number one|number ones|anthology|essential|the hits|hits collection|for the record|ultimate collection|decades|the collection)\b/i;
 
 export function isJunkVersion(trackName, collectionName) {
@@ -39,7 +39,17 @@ export function toCatalogRow(raw, seedGenreKeys = []) {
   const appleGenre = raw.primaryGenreName || null;
   const matched = familiesForAppleGenre(appleGenre);
   const seeded = (seedGenreKeys || []).map((k) => String(k).toLowerCase());
-  const baseGenreKeys = [...new Set([...matched, ...seeded])];
+  const artistGenres = genresForArtist(artistName);
+
+  let baseGenreKeys = [];
+  if (seeded.length > 0) {
+    baseGenreKeys = [...new Set([...matched, ...seeded])];
+  } else if (artistGenres.length > 0) {
+    baseGenreKeys = [...new Set([...artistGenres, ...matched])];
+  } else {
+    baseGenreKeys = matched;
+  }
+
   if (baseGenreKeys.length === 0) return null;
 
   // Add vibe tags (:underground or :mainstream) for fine-grained filtering
@@ -82,4 +92,5 @@ export function toCatalogRows(rawList, seedGenreKeys = []) {
   return [...byId.values()];
 }
 
-export default { toCatalogRow, toCatalogRows, isJunkVersion, baseTitle, MIN_DURATION_MS };
+export default { toCatalogRow, toCatalogRows, isJunkVersion, baseTitle, MIN_DURATION_MS, JUNK_VERSION_RE };
+

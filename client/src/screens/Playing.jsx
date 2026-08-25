@@ -60,26 +60,27 @@ export function Playing({
     if (onClearFiftyFifty) onClearFiftyFifty();
   }, [state.round]);
 
-  // Audio Playback effect
+  // Audio Playback effect — instant playback using pre-buffered audio from countdown
   useEffect(() => {
     const el = audioRef.current;
     if (!el) return;
 
     let pauseTimer = null;
-    el.pause();
-    el.src = state.audioUrl;
-    el.load();
+
+    // If not already preloaded during countdown, load now
+    if (!el.src || !el.src.includes(state.audioUrl)) {
+      el.pause();
+      el.src = state.audioUrl;
+      el.load();
+    }
 
     const start = () => {
       try {
         if (state.clip === "INTRO") {
           el.currentTime = 0;
-        } else {
-          const maxOffset = Math.max(0, el.duration - 10);
-          el.currentTime = Math.random() * Math.min(15, maxOffset);
         }
       } catch {
-        /* not seekable yet */
+        /* ignore */
       }
       const p = el.play();
       if (p && typeof p.then === "function") {
@@ -106,17 +107,21 @@ export function Playing({
     };
     el.addEventListener("error", onError);
 
-    if (el.readyState >= 1) start();
-    else el.addEventListener("loadedmetadata", start, { once: true });
+    if (el.readyState >= 2) {
+      start();
+    } else {
+      el.addEventListener("canplay", start, { once: true });
+    }
 
     return () => {
       if (pauseTimer) clearTimeout(pauseTimer);
-      el.removeEventListener("loadedmetadata", start);
+      el.removeEventListener("canplay", start);
       el.removeEventListener("error", onError);
       el.pause();
       setIsPlaying(false);
     };
-  }, [state.audioUrl, audioRef]);
+  }, [state.audioUrl, state.round, audioRef]);
+
 
   const retryAudio = () => {
     const el = audioRef.current;

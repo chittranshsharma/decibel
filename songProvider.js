@@ -10,7 +10,8 @@
 import fetch from "node-fetch";
 import { fetchSongs } from "./itunesFetcher.js";
 import { sampleTracks, samplePlaylistTracks, genreCount, catalogReady } from "./catalog/store.js";
-import { seedArtistsFor, isGenreKey } from "./catalog/genres.js";
+import { seedArtistsFor, isGenreKey, matchesArtist } from "./catalog/genres.js";
+import { isJunkVersion, JUNK_VERSION_RE } from "./catalog/normalize.js";
 import { sampleDiverse, filterDecade, shuffle } from "./catalog/sample.js";
 import { log } from "./log.js";
 
@@ -44,9 +45,6 @@ export async function fetchVibeTracks(searchQueries = [], count = 20, opts = {})
   return samplePlaylistTracks(merged, count);
 }
 
-const JUNK_TRACK_REGEX =
-  /\b(instrumental|karaoke|tribute|cover|acoustic|type beat|slowed|sped up|nightcore|reverb|orchestral|synthesizer|piano version|guitar cover)\b|\((instrumental|karaoke|tribute|cover)\)|\[(instrumental|karaoke|tribute|cover)\]/i;
-
 /**
  * Directly fetch tracks for the exact curated artists registered in genres.js.
  * Guarantees all tracks in the game pool come strictly from the configured artists.
@@ -74,24 +72,16 @@ export async function fetchCuratedGenrePool(genre, count = 20, opts = {}) {
         query = `${artist} band`;
       }
 
-      const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=10${countryParam}`;
+      const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=15${countryParam}`;
       const res = await fetch(url);
       if (!res.ok) return [];
       const data = await res.json();
       const results = (data.results || []).filter((r) => {
         if (!r || !r.previewUrl || !r.trackName || !r.artistName) return false;
         if (Number(r.trackTimeMillis) <= 20000) return false;
-        if (JUNK_TRACK_REGEX.test(r.trackName)) return false; // Filter instrumentals & karaoke
+        if (isJunkVersion(r.trackName, r.collectionName)) return false; // Filter junk, remix, slowed, reverb, live
 
-        const rLower = r.artistName.toLowerCase();
-        
-        // Split collaboration string into individual artist segments:
-        const segments = rLower
-          .split(/[,;&/]+|\bfeat\.?\b|\bft\.?\b|\bwith\b|\bx\b/i)
-          .map((s) => s.trim())
-          .filter(Boolean);
-
-        return segments.some((seg) => seg === aLower || seg.startsWith(aLower) || aLower.startsWith(seg));
+        return matchesArtist(r.artistName, artist);
       });
 
       return results.map((r) => ({
@@ -177,9 +167,31 @@ export async function getSongs(genre, count, opts = {}) {
   }
 
   // 5. Fallback: live iTunes search
-  return fetchSongs(genre, count, { decade });
+  try {
+    const live = await fetchSongs(genre, count, { decade });
+    if (Array.isArray(live) && live.length >= Math.min(count, 4)) {
+      return live;
+    }
+  } catch (e) {
+    log.warn("live fetchSongs failed; falling back to catalog emergency recovery", {
+      error: String((e && e.message) || e),
+    });
+  }
+
+  // 6. Emergency fallback: sample from catalog ignoring pool size threshold
+  if (catalogReady()) {
+    try {
+      const emergency = await sampleTracks({ genre, decade: "all", vibe: "all", count });
+      if (emergency && emergency.length > 0) return emergency;
+    } catch {
+      // ignore
+    }
+  }
+
+  return [];
 }
 
 export default getSongs;
+
 
 

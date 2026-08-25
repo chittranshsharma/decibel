@@ -5,6 +5,7 @@
 // Supports Spotify Web API with Client Credentials when configured for full pagination of 500+ song playlists.
 
 import fetch from "node-fetch";
+import { JUNK_VERSION_RE } from "./catalog/normalize.js";
 
 // In-memory cache for resolved playlists: playlistId -> { playlistId, name, tracks, resolvedAt }
 const playlistCache = new Map();
@@ -14,11 +15,11 @@ const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 const CONCURRENCY_LIMIT = 8;
 const MAX_PLAYLIST_CANDIDATES = 500;
 
-const SPOTIFY_JUNK_REGEX =
-  /\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|radio edit remix|live at|live from|live in|live version|anniversary edition|demo|instrumental|karaoke|tribute|cover|acoustic|acoustic version|sped.?up|slowed|reverb|nightcore)\b|[([].*?\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|live|acoustic|instrumental|karaoke|tribute|cover|demo|sped.?up|slowed)\b.*?[)\]]/i;
+const SPOTIFY_JUNK_REGEX = JUNK_VERSION_RE;
 
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || "";
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || "";
+
 
 let spotifyApiToken = null;
 let spotifyApiTokenExpiresAt = 0;
