@@ -139,7 +139,8 @@ const SEARCH_SEEDS = {
   drill: ["pop smoke", "central cee", "brooklyn drill", "uk drill"],
   trap: ["young thug", "migos", "future", "playboi carti", "21 savage"],
   "oldschool-hiphop": ["2pac", "notorious big", "wu-tang clan", "nas", "jay-z", "snoop dogg", "outkast", "a tribe called quest"],
-  "desi-hip-hop": ["divine hip hop", "krsna rap", "seedhe maut", "mc stan", "raftaar", "dino james", "emiway bantai", "ikka rap", "young stunners", "prabh deep"],
+  // Seeds MUST match genres.js artist list exactly — no outside artists allowed
+  "desi-hip-hop": ["KR$NA rap", "Seedhe Maut", "MC Stan rap", "Talha Anjum", "Young Stunners", "Prabh Deep", "Ahmer rap", "Chaar Diwaari", "Ikka rap", "King hip hop India", "Tienas", "Rawal rap"],
   rock: ["nirvana", "radiohead", "arctic monkeys", "foo fighters", "linkin park", "red hot chili peppers", "green day"],
   indie: ["arctic monkeys", "tame impala", "the strokes", "vampire weekend", "mitski", "phoebe bridgers", "the 1975"],
   "bedroom-pop": ["clairo", "rex orange county", "cavetown", "girl in red", "mac demarco", "tv girl"],

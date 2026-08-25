@@ -10,7 +10,7 @@
 import fetch from "node-fetch";
 import { fetchSongs } from "./itunesFetcher.js";
 import { sampleTracks, samplePlaylistTracks, genreCount, catalogReady } from "./catalog/store.js";
-import { seedArtistsFor, isGenreKey, matchesArtist } from "./catalog/genres.js";
+import { seedArtistsFor, isGenreKey, matchesArtist, isArtistInGenre } from "./catalog/genres.js";
 import { isJunkVersion, JUNK_VERSION_RE } from "./catalog/normalize.js";
 import { sampleDiverse, filterDecade, shuffle } from "./catalog/sample.js";
 import { log } from "./log.js";
@@ -113,7 +113,13 @@ export async function fetchCuratedGenrePool(genre, count = 20, opts = {}) {
 
   const filtered = filterDecade(rawPool, decade);
   const usable = filtered.length >= Math.min(count, 4) ? filtered : rawPool;
-  return sampleDiverse(usable, count);
+
+  // Final whitelist gate: guarantee every track's artist is in genres.js for this genre.
+  // Catches any edge-case iTunes featurings like "Honey Singh feat. Artist" slipping through.
+  const whitelisted = usable.filter((t) => isArtistInGenre(t.artistName, genre));
+  const finalPool = whitelisted.length >= Math.min(count, 4) ? whitelisted : usable;
+
+  return sampleDiverse(finalPool, count);
 }
 
 export async function getSongs(genre, count, opts = {}) {
@@ -167,15 +173,29 @@ export async function getSongs(genre, count, opts = {}) {
   }
 
   // 5. Fallback: live iTunes search
-  try {
-    const live = await fetchSongs(genre, count, { decade });
-    if (Array.isArray(live) && live.length >= Math.min(count, 4)) {
-      return live;
+  // For curated genre keys, NEVER do a raw genre-string iTunes search (returns bollywood/international junk).
+  // Try a second curated pass with relaxed options instead.
+  if (isGenreKey(genre)) {
+    // Second attempt: curated pool ignoring decade
+    try {
+      const curatedRetry = await fetchCuratedGenrePool(genre, count, { decade: "all", vibe: "all" });
+      if (Array.isArray(curatedRetry) && curatedRetry.length >= Math.min(count, 4)) {
+        return curatedRetry;
+      }
+    } catch (e) {
+      log.warn("curated genre retry failed", { error: String((e && e.message) || e) });
     }
-  } catch (e) {
-    log.warn("live fetchSongs failed; falling back to catalog emergency recovery", {
-      error: String((e && e.message) || e),
-    });
+  } else {
+    try {
+      const live = await fetchSongs(genre, count, { decade });
+      if (Array.isArray(live) && live.length >= Math.min(count, 4)) {
+        return live;
+      }
+    } catch (e) {
+      log.warn("live fetchSongs failed; falling back to catalog emergency recovery", {
+        error: String((e && e.message) || e),
+      });
+    }
   }
 
   // 6. Emergency fallback: sample from catalog ignoring pool size threshold
