@@ -10,11 +10,9 @@ export const GENRE_FAMILIES = {
     match: /hip-?hop|rap/i,
     mainstream: [
       "Kendrick Lamar", "Drake", "J. Cole", "Travis Scott", "Kanye West",
-      "Eminem", "21 Savage", "Tyler, The Creator", "Lil Baby", "Gunna",
-      "Lil Wayne", "Future", "A$AP Rocky", "Megan Thee Stallion", "Doja Cat",
-      "Jack Harlow", "Post Malone", "Cardi B", "Roddy Ricch", "Polo G",
-      "Lil Durk", "Lil Yachty", "Don Toliver", "YoungBoy Never Broke Again",
-      "JID", "Denzel Curry", "JPEGMAFIA", "Earl Sweatshirt", "Danny Brown",
+      "Eminem", "Tyler, The Creator", "Lil Wayne", "A$AP Rocky", "Megan Thee Stallion", "Doja Cat",
+      "Jack Harlow", "Post Malone", "Cardi B", "Polo G", "Lil Durk", "Lil Yachty",
+      "YoungBoy Never Broke Again", "JID", "Denzel Curry", "JPEGMAFIA", "Earl Sweatshirt", "Danny Brown",
       "Freddie Gibbs", "Mac Miller", "Vince Staples", "Baby Keem", "Schoolboy Q",
       "Joey Bada$$", "Cordae", "Saba", "Smino", "Mick Jenkins", "Noname",
     ],
@@ -107,14 +105,14 @@ export const GENRE_FAMILIES = {
   },
   rock: {
     label: "Rock & Alt Rock",
-    match: /rock|metal|punk|grunge|alternative/i,
+    match: /rock|metal|punk|grunge/i,
     mainstream: [
       "Queen", "AC/DC", "Nirvana", "Linkin Park", "Foo Fighters", "Led Zeppelin",
       "Guns N' Roses", "Red Hot Chili Peppers", "Green Day", "Metallica", "Aerosmith",
       "The Rolling Stones", "Pink Floyd", "The Beatles", "Pearl Jam", "Soundgarden",
-      "Blink-182", "System of a Down", "Arctic Monkeys", "The Killers", "Radiohead",
+      "Blink-182", "System of a Down", "The Killers",
       "Muse", "Fall Out Boy", "Paramore", "My Chemical Romance", "Smashing Pumpkins",
-      "Jeff Buckley", "The Smiths", "Depeche Mode", "The Cure",
+      "Depeche Mode", "The Cure",
     ],
     underground: [
       "Black Country, New Road", "Fontaines D.C.", "King Gizzard & The Lizard Wizard",
@@ -151,7 +149,7 @@ export const GENRE_FAMILIES = {
     mainstream: [
       "Clairo", "Rex Orange County", "Cavetown", "Girl In Red", "Cuco",
       "Boy Pablo", "Conan Gray", "Beabadoobee", "Wallows", "Dominic Fike",
-      "Gus Dapperton", "Still Woozy", "Omar Apollo", "BENEE", "Mac DeMarco",
+      "Gus Dapperton", "Still Woozy", "BENEE", "Mac DeMarco",
       "TV Girl", "The Marías", "Men I Trust",
     ],
     underground: [
@@ -168,8 +166,8 @@ export const GENRE_FAMILIES = {
     match: /r&b|soul|funk|neo-soul/i,
     mainstream: [
       "SZA", "The Weeknd", "Frank Ocean", "Beyoncé", "Brent Faiyaz", "Daniel Caesar",
-      "Usher", "Chris Brown", "Alicia Keys", "Rihanna", "Bryson Tiller", "Giveon",
-      "H.E.R.", "Summer Walker", "Jhené Aiko", "Bruno Mars", "Silk Sonic",
+      "Usher", "Chris Brown", "Alicia Keys", "Bryson Tiller", "Giveon",
+      "H.E.R.", "Summer Walker", "Jhené Aiko", "Silk Sonic",
       "Kehlani", "Khalid", "PARTYNEXTDOOR", "Mariah Carey", "Whitney Houston",
       "Kelela", "Sampha", "FKA twigs", "Snoh Aalegra", "Omar Apollo", "SiR", "Lucky Daye",
     ],
@@ -193,7 +191,7 @@ export const GENRE_FAMILIES = {
     ],
     underground: [
       "Magdalena Bay", "Remi Wolf", "Allie X", "The Japanese House", "Sky Ferreira",
-      "Yeule", "Empress Of", "Carly Rae Jepsen", "Marina", "Rina Sawayama",
+      "Yeule", "Empress Of", "Carly Rae Jepsen", "Marina",
       "Maisie Peters", "Fletcher", "Gracie Abrams", "Holly Humberstone", "Blu DeTiger",
       "Ethel Cain", "Tori Kelly", "Donna Missal", "CYN", "Lolo Zouaï",
     ],
