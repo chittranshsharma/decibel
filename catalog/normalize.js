@@ -52,10 +52,11 @@ export function toCatalogRow(raw, seedGenreKeys = []) {
   const artistGenres = genresForArtist(artistName);
 
   let baseGenreKeys = [];
-  if (seeded.length > 0) {
-    baseGenreKeys = [...new Set([...matched, ...seeded])];
-  } else if (artistGenres.length > 0) {
-    baseGenreKeys = [...new Set([...artistGenres, ...matched])];
+  if (artistGenres.length > 0) {
+    // Curated artist roster is the ultimate source of truth
+    baseGenreKeys = artistGenres;
+  } else if (seeded.length > 0) {
+    baseGenreKeys = seeded;
   } else {
     baseGenreKeys = matched;
   }

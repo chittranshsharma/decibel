@@ -28,7 +28,7 @@ export const GENRE_FAMILIES = {
   },
   "oldschool-hiphop": {
     label: "Old School Rap",
-    match: /hip-?hop|rap/i,
+    match: null,
     mainstream: [
       "2Pac", "The Notorious B.I.G.", "Wu-Tang Clan", "Nas", "Snoop Dogg",
       "Dr. Dre", "Ice Cube", "Jay-Z", "A Tribe Called Quest", "Outkast",

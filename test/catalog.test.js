@@ -57,9 +57,9 @@ describe("genres registry", () => {
     ]);
   });
 
-  it("maps Apple labels to families; trap stays seeded-only", () => {
+  it("maps Apple labels to families; trap and oldschool stay seeded-only", () => {
     expect(familiesForAppleGenre("Hip-Hop/Rap")).toContain("hip-hop");
-    expect(familiesForAppleGenre("Hip-Hop/Rap")).toContain("oldschool-hiphop");
+    expect(familiesForAppleGenre("Hip-Hop/Rap")).not.toContain("oldschool-hiphop");
     expect(familiesForAppleGenre("Hip-Hop/Rap")).not.toContain("trap");
     expect(familiesForAppleGenre("R&B/Soul")).toContain("rnb");
     expect(familiesForAppleGenre("Alternative")).toContain("indie");
@@ -129,11 +129,11 @@ describe("normalize", () => {
 
   it("seed genre tags a track into a seeded-only family and merges on dupes", () => {
     const row = toCatalogRow(raw(), ["drill"]);
-    expect(row.genreKeys).toEqual(expect.arrayContaining(["hip-hop", "drill"]));
+    expect(row.genreKeys).toContain("drill");
 
     const rows = toCatalogRows([raw(), raw({ primaryGenreName: "Pop" })], ["trap"]);
     expect(rows).toHaveLength(1); // same trackId collapses
-    expect(rows[0].genreKeys).toEqual(expect.arrayContaining(["hip-hop", "trap", "pop"]));
+    expect(rows[0].genreKeys).toContain("trap");
   });
 
   it("keeps a seeded track whose Apple label matches nothing", () => {

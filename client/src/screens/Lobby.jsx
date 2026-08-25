@@ -475,9 +475,12 @@ export function Lobby({
         <button
           type="button"
           onClick={onLeave}
-          className={`${BTN_GHOST} w-full text-center text-dim hover:text-[#ee0000] hover:border-[#ee0000]/40`}
+          className="group relative w-full overflow-hidden rounded-xl border border-red-500/30 bg-gradient-to-r from-red-950/40 via-red-900/20 to-red-950/40 px-5 py-3 font-geist text-sm font-semibold tracking-wide text-red-300 shadow-[0_0_20px_rgba(239,68,68,0.15)] backdrop-blur-md transition-all duration-200 hover:border-red-500/60 hover:bg-red-500/20 hover:text-white hover:shadow-[0_0_30px_rgba(239,68,68,0.35)] active:scale-[0.98]"
         >
-          Leave Lobby
+          <span className="relative z-10 flex items-center justify-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-red-400 group-hover:animate-ping" />
+            Leave Lobby
+          </span>
         </button>
       </div>
     </div>
