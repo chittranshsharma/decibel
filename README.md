@@ -162,59 +162,52 @@ flowchart TD
 
 ---
 
-## 🚀 Quick Start & Local Setup
+## ⚡ Real-Time Audio Pipeline & 0ms Pre-Buffering
 
-### Prerequisites
-- **Node.js**: v20+
-- **npm**: v10+
+Decibel eliminates audio playback stutter through a synchronized dual-phase countdown engine:
 
-### 1. Clone & Install Dependencies
-```bash
-git clone https://github.com/chittranshsharma/decibel.git
-cd decibel
-
-# Install backend dependencies
-npm install
-
-# Install frontend dependencies
-cd client && npm install && cd ..
+```text
+  [ SERVER FSM ]                      [ NETWORK LAYER ]                  [ CLIENT AUDIO ENGINE ]
+  ──────────────                      ─────────────────                  ───────────────────────
+  1. Room State: START_ROUND          ─── emits 'countdown' (3s) ───►   Persistent HTML5 Audio Element
+  2. Selects Clean Track Hash         (Includes Opaque Audio CDN URL)    Pre-buffers 256k AAC Stream in BG
+  3. Holds Answer on Server ONLY                                         Web Audio Context plays 3-2-1 SFX
+                                                                                 │
+  [ T - 0.00s: ROUND_PLAYING ]        ─── emits 'roundStart' ────────►   Instant 0ms Playback Launch
+  4. Monotonic High-Res Clock Starts                                     Canvas Harmonic Wavefield Activates
 ```
 
-### 2. Configure Environment Variables
-Copy `.env.example` to `.env`:
-```bash
-cp .env.example .env
-```
-
-| Variable | Description | Required | Default |
-| :--- | :--- | :---: | :--- |
-| `PORT` | Node.js backend port | No | `3000` |
-| `CLIENT_ORIGIN` | Allowed CORS client origins | No | `*` (dev) |
-| `GROQ_API_KEY` | Groq LPU API key for AI DJ & Crate Generator | No | Fallback crates |
-| `SPOTIFY_CLIENT_ID` | Spotify Web API client ID for playlist battles | No | Public scraper fallback |
-| `SPOTIFY_CLIENT_SECRET` | Spotify Web API client secret | No | Public scraper fallback |
-| `DATABASE_URL` | Supabase / PostgreSQL connection string | No | In-memory snapshot fallback |
-
-### 3. Run Development Servers
-```bash
-# Terminal 1: Start Backend (Port 3000)
-npm run dev
-
-# Terminal 2: Start Frontend (Port 5173)
-cd client
-npm run dev
-```
-
-### 4. Run Test Suite
-```bash
-npm test
-```
+- **Opaque Hash CDN Pre-buffering**: Pre-loads the 10-second studio audio slice during the 3-2-1 visual countdown without leaking track or artist metadata in network inspection payloads.
+- **Zero Asset Footprint Sound Synthesis**: Every arcade UI sound effect (countdown pips, launch chimes, power-up zaps, streak rewards) is synthesized on-the-fly via Web Audio API oscillators with exponential gain ramps — 0 audio asset downloads required.
+- **Sub-150ms Auditory Reflex Validation**: Enforces human auditory latency thresholds (`MIN_REACTION_MS = 150ms`) to neutralize automated scraping bots and script injection.
 
 ---
 
-## 🧪 Quality & Test Suite
+## 🧠 Groq LPU & AI DJ Commentary Engine
 
-Decibel is tested and verified with **62 automated unit and integration tests** via Vitest:
+Powered by the **Groq LPU Inference Engine (Llama 3.1 70B)**, Decibel introduces dynamic AI host personality to live multiplayer lobbies:
+
+- **🎙️ Live Match Roasting & Hype**: Analyzes millisecond reaction times, broken streaks, and clutch answer snipes to deliver live contextual color commentary.
+- **🪄 Natural Language Vibe Crates**: Accepts arbitrary aesthetic prompts (e.g. *"late night drives through Shibuya in 1998"*, *"rainy underground Berlin techno dungeon"*) and resolves prompt seeds into authentic, playable trivia crates.
+- **🏆 Match Post-Mortem Verdicts**: Synthesizes match statistics, accuracy deltas, and speed percentiles into tailored podium roasts and MVP accolades.
+
+---
+
+## ⚔️ Tactical Power-Up Metagame
+
+Every match grants players tactical single-use modifiers to flip the leaderboard:
+
+| Power-Up | Tactical Role | Mechanics |
+| :--- | :--- | :--- |
+| **💣 50:50 Eliminator** | Risk Mitigation | Strips 2 incorrect distractor choices. Correct answer is server-guaranteed safe. |
+| **⚡ 2X Double Down** | High-Stakes Gamble | Multiplies base round points and velocity bonus by $2\times$. Penalizes incorrect guesses. |
+| **🛡️ Streak Shield** | Combo Preservation | Prevents active combo multiplier ($1.1\times \to 1.4\times$) from resetting on wrong answers. |
+
+---
+
+## 🧪 Engineering Quality & Integrity
+
+Decibel is engineered with **62 automated unit and integration tests** verifying server state machines, scoring maths, audio filters, and catalog integrity:
 
 ```text
  ✓ test/profanity.test.js (6 tests)
@@ -236,4 +229,5 @@ Decibel is tested and verified with **62 automated unit and integration tests** 
 Built with ❤️ by **[Chittransh Sharma](https://github.com/chittranshsharma)**.  
 All music previews are served via authorized CDN previews strictly for trivia identification under fair use.  
 All rights reserved © 2026.
+
 
