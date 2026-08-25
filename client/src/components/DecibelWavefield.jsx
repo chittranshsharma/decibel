@@ -55,9 +55,19 @@ export default function DecibelWavefield() {
       mouse.active = false;
     };
 
+    const handleTouchMove = (e) => {
+      if (e.touches && e.touches[0]) {
+        mouse.targetX = e.touches[0].clientX;
+        mouse.targetY = e.touches[0].clientY;
+        mouse.active = true;
+      }
+    };
+
     window.addEventListener("resize", handleResize);
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
     window.addEventListener("mouseleave", handleMouseLeave);
+
 
     let phase = 0;
     let isVisible = !document.hidden;
