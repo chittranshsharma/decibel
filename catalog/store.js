@@ -7,7 +7,8 @@ import { readFile, writeFile, rename, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { sampleDiverse, decadeRange } from "./sample.js";
-import { seedArtistsFor, isUndergroundArtist } from "./genres.js";
+import { seedArtistsFor, isUndergroundArtist, isArtistInGenre } from "./genres.js";
+import { isJunkVersion } from "./normalize.js";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const snapshotPath = () => process.env.CATALOG_FILE || path.join(HERE, "snapshot.json");
@@ -300,16 +301,23 @@ export async function sampleTracks({ genre, decade = "all", vibe = "all", count 
   const n = Number.isFinite(count) ? Math.max(0, Math.floor(count)) : 0;
   if (n === 0) return [];
 
+  const sanitize = (list) =>
+    (list || []).filter(
+      (r) => r && !isJunkVersion(r.trackName, r.collectionName, r.artistName)
+    );
+
   const range = decadeRange(decade);
   if (range) {
     const inDecade = await candidates(genre, n, range, vibe);
-    const sampled = sampleDiverse(inDecade, n);
+    const cleanDecade = sanitize(inDecade);
+    const sampled = sampleDiverse(cleanDecade, n);
     if (sampled.length >= n) return sampled;
   }
 
   const pool_ = await candidates(genre, n, null, vibe);
-  if (pool_.length === 0) return [];
-  return sampleDiverse(pool_, n);
+  const cleanPool = sanitize(pool_);
+  if (cleanPool.length === 0) return [];
+  return sampleDiverse(cleanPool, n);
 }
 
 export function samplePlaylistTracks(playlistTracks, count = 20) {

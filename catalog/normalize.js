@@ -8,18 +8,28 @@ import { familiesForAppleGenre, isUndergroundArtist, genresForArtist, matchesArt
 export const MIN_DURATION_MS = 20 * 1000; // 20s minimum duration
 
 export const JUNK_VERSION_RE =
-  /\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|dub mix|radio edit|dj mix|continuous mix|megamix|minimix|dance mix|house mix|trap mix|slowed|reverb|reverbed|slowed.?(\+|and|&)?.?reverb|slowed down|slow version|sped.?up|speed.?up|nightcore|daycore|screwed|chopped|instrumental|karaoke|tribute|cover|remaster(ed)?|re-?record(ed)?|acoustic version|unplugged|live at|live from|live in|live version|live 19\d\d|live 20\d\d|concert|session|audiotree|bbc session|type beat|lofi|lo-fi|8.?bit|8 bit|lullaby|workout|medley|originally performed|in the style of|made famous|demo|snippet|leak|teaser|skit|interlude|commentary|interview|voice memo|bonus track|anniversary edition|orchestral|synthesizer|piano version|guitar cover)\b|[-–—]\s*(live|remix|acoustic|instrumental|edit|mix)\b|[([].*?\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|bootleg|flip|edit|dub mix|live|acoustic|instrumental|karaoke|tribute|cover|demo|sped.?up|speed.?up|slowed|reverb|nightcore|lofi|remaster)\b.*?[)\]]/i;
+  /\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|mash-?up|bootleg|flip|dub mix|radio edit|dj mix|continuous mix|megamix|mega mix|minimix|dance mix|house mix|trap mix|party mix|jukebox|non.?stop|slowed|reverb|reverbed|slowed.?(\+|and|&)?.?reverb|slowed down|slow version|sped.?up|speed.?up|nightcore|daycore|screwed|chopped|instrumental|karaoke|tribute|cover|remaster(ed)?|re-?record(ed)?|acoustic version|unplugged|live at|live from|live in|live version|live 19\d\d|live 20\d\d|concert|session|audiotree|bbc session|type beat|lofi|lo-fi|8.?bit|8 bit|lullaby|workout|medley|originally performed|in the style of|made famous|demo|snippet|leak|teaser|skit|interlude|commentary|interview|voice memo|bonus track|anniversary edition|orchestral|synthesizer|piano version|guitar cover)\b|[-–—]\s*(live|remix|acoustic|instrumental|edit|mix)\b|[([].*?\b(remix|re-?mix|club mix|extended mix|vip mix|vip edit|mashup|mash-?up|bootleg|flip|edit|dub mix|live|acoustic|instrumental|karaoke|tribute|cover|demo|sped.?up|speed.?up|slowed|reverb|nightcore|lofi|remaster)\b.*?[)\]]/i;
 
 export const COMPILATION_RE =
-  /\b(greatest hits|best of|number one|number ones|anthology|essential|the hits|hits collection|for the record|ultimate collection|decades|the collection)\b/i;
+  /\b(greatest hits|best of|number one|number ones|anthology|essential|the hits|hits collection|for the record|ultimate collection|decades|the collection|party mix|jukebox|mashup)\b/i;
 
-export function isJunkVersion(trackName, collectionName) {
-  return (
+export function isJunkVersion(trackName, collectionName, artistName) {
+  if (
     JUNK_VERSION_RE.test(String(trackName || "")) ||
     JUNK_VERSION_RE.test(String(collectionName || "")) ||
-    COMPILATION_RE.test(String(collectionName || ""))
-  );
+    COMPILATION_RE.test(String(collectionName || "")) ||
+    COMPILATION_RE.test(String(trackName || ""))
+  ) {
+    return true;
+  }
+  // Reject mega-mashups with more than 4 collaborating artists listed in artistName
+  if (artistName) {
+    const parts = String(artistName).split(/[,;&/]+|\bfeat\.?\b|\bft\.?\b|\bwith\b|\bx\b|\bvs\.?\b|\band\b/i);
+    if (parts.length > 4) return true;
+  }
+  return false;
 }
+
 
 export function baseTitle(name) {
   return String(name || "")
