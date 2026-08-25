@@ -162,6 +162,56 @@ flowchart TD
 
 ---
 
+## 🚀 Quick Start & Local Setup
+
+### Prerequisites
+- **Node.js**: v20+
+- **npm**: v10+
+
+### 1. Clone & Install Dependencies
+```bash
+git clone https://github.com/chittranshsharma/decibel.git
+cd decibel
+
+# Install backend dependencies
+npm install
+
+# Install frontend dependencies
+cd client && npm install && cd ..
+```
+
+### 2. Configure Environment Variables
+Copy `.env.example` to `.env`:
+```bash
+cp .env.example .env
+```
+
+| Variable | Description | Required | Default |
+| :--- | :--- | :---: | :--- |
+| `PORT` | Node.js backend port | No | `3000` |
+| `CLIENT_ORIGIN` | Allowed CORS client origins | No | `*` (dev) |
+| `GROQ_API_KEY` | Groq LPU API key for AI DJ & Crate Generator | No | Fallback crates |
+| `SPOTIFY_CLIENT_ID` | Spotify Web API client ID for playlist battles | No | Public scraper fallback |
+| `SPOTIFY_CLIENT_SECRET` | Spotify Web API client secret | No | Public scraper fallback |
+| `DATABASE_URL` | Supabase / PostgreSQL connection string | No | In-memory snapshot fallback |
+
+### 3. Run Development Servers
+```bash
+# Terminal 1: Start Backend (Port 3000)
+npm run dev
+
+# Terminal 2: Start Frontend (Port 5173)
+cd client
+npm run dev
+```
+
+### 4. Run Test Suite
+```bash
+npm test
+```
+
+---
+
 ## 🧪 Quality & Test Suite
 
 Decibel is tested and verified with **62 automated unit and integration tests** via Vitest:
@@ -186,3 +236,4 @@ Decibel is tested and verified with **62 automated unit and integration tests** 
 Built with ❤️ by **[Chittransh Sharma](https://github.com/chittranshsharma)**.  
 All music previews are served via authorized CDN previews strictly for trivia identification under fair use.  
 All rights reserved © 2026.
+
